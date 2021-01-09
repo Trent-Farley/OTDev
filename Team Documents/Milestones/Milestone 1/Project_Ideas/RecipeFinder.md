@@ -1,6 +1,6 @@
 ## Find a recipe from your fridge
 At a grocery store, everything looks good to eat. When it comes time to make a meal, it is difficult to come up with a recipe. There are many websites that will give you a recipe if you know what you want, but there is no application to find a recipe based off of ingredients that you already own. This application would go find a recipe based off of ingredients that a person has in their pantry/fridge. 
 
-For the API portion, there are two great ones [SpoonacularApi](https://spoonacular.com/food-api) and the [MyCookbook.io](https://rapidapi.com/mycookbook/api/mycookbook-io1) api. Both of these have fairly good documentation and have been around for a while. 
+For the API portion, there are two great ones [SpoonacularApi](https://spoonacular.com/food-api) and the [EdamamAPI](https://developer.edamam.com/edamam-recipe-api) api. Both of these have fairly good documentation and have been around for a while. 
 
 As far as algorithms go, one must be used to compare the data to what is used in the recipe. Another algorithm will have to be used to decrement the ingredients that are in the fridge/pantry after the recipe is selected. These decremented ingredients will be stored in persistent storage to be used later in a different recipe. There will have to be a way to delete these old ingredients in case they expire or are used up without telling the app. 
