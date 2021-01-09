@@ -1,0 +1,8 @@
+## Play Tabletop games with your friends online
+Given current events, it has become very difficult to just sit around a table and play some games with your friends. Sure, there are some solutions to this, but they have various downsides, such as limitation in scope, server issues, or they are just plain outdated. With Tabletop connect, we want groups of friends to bring in their boards, maps, cards, what have you, and allow them to create a simple rules system for their game to follow, and invite their friends to play along with them.
+
+To show this project off, we would start with an implementation of the D&D(Dungeons and Dragons) SRD(Systems Reference Document), a publically availible resource licensed under OGL(Open Gaming License), accessed through the D&D 5th Edition API(www.dnd5eapi.co) with a backup of the Open5e API(open5e.com), both of which use the D&D SRD for 5th edition. Depending on the progress of the project, we might even look into using AI api's for computer controlled tokens.
+
+For the algorithmic component, we will be implementing some basic token pathfinding algoritms that can be used to create addition rules depending on the system being played, as well as some work on aiming and line of sight that would be required for the D&D implementation.
+
+As for the connective part of the project, currently there are two options availible, either webhooks connected to the host of the game, or a server based setup, or some hybrid of the two to allow for move validation and such.
