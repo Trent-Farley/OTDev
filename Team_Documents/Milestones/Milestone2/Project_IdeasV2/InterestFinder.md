@@ -3,7 +3,7 @@
 
 The approach to my idea is to incorporate similar algorithms and applications that rely on keywords and user information and cross references the same words among other users. 
 This idea would include  club data similar to what is on WOU’s Engage but would be a more user friendly application that focuses on individual interests rather than 
-organizations.There are other applications that may function similarly, but this idea is unique in that it builds upon the Engage system[a] in a different way and will be 
+organizations.There are other applications that may function similarly, but this idea is unique in that it builds upon the Engage system in a different way and will be 
 primarily used by WOU students.
 
 
@@ -19,7 +19,7 @@ This way a user can join or create something based on their interests rather tha
 Some of the major features this application would comprise is a database to hold information, both student and organization. An algorithm would need to be implemented to
 filter through the database to find information similar to another student in the event of a query. A calendar-like api of some sort would also be implemented to plan events, 
 meet up times, etc. An account system that utilizes email confirmation would also need to be implemented in order to protect student information. 
-There would also need to be an MVC framework to take in student information and display it accordingly.[b]
+There would also need to be an MVC framework to take in student information and display it accordingly.
 
 
 ## What resources will be required for you to complete this project that are not already included in the class. i.e. you already have the Microsoft stack, server, database so what else would you need? 
@@ -39,6 +39,6 @@ algorithm would include many other activities the student may not be interested 
 
 ## Rate the topic with a difficulty rating of 1-10.
         
-I would rate this project a 5 out of 10 on a difficulty scale. I think that compared to my peers’ ideas[c] that this is a moderate common ground. It requires a good portion of 
+I would rate this project a 5 out of 10 on a difficulty scale. I think that compared to my peers’ ideas that this is a moderate common ground. It requires a good portion of 
 our skills involved in MVC, API’s, and databases but also leaves some breathing room to add any additional ideas that may arise in implementation. Also we would need some access 
 to Engage to use their information, which may add some difficulty to the project. 
