@@ -28,5 +28,3 @@ As far as algorithms go, one must be used to compare the data to what is used in
 
 ## 6. Rate the topic with a difficulty rating of 1-10. One being supremely easy to implement (not necessarily short though). Ten would require the best CS students using lots of what they learned in their CS degree, plus additional independent learning, to complete successfully.
 For difficulty the project would be rated around a 7 to 8 with room to add more complex features as the project becomes more fleshed out. It would utilize everything learned in the class so far, as well as meeting the requirements of the project. Requiring external API calls, a robust database, and a functional, user-friendly front-end.
-
-
