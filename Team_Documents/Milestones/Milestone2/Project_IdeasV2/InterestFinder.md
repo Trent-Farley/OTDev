@@ -22,8 +22,7 @@ meet up times, etc. An account system that utilizes email confirmation would als
 There would also need to be an MVC framework to take in student information and display it accordingly.[b]
 
 
-## What resources will be required for you to complete this project that are not already included in the class. i.e. you already have the Microsoft stack, server, database so 
-what else would you need? 
+## What resources will be required for you to complete this project that are not already included in the class. i.e. you already have the Microsoft stack, server, database so what else would you need? 
 
 
 We would  need to utilize a calendar api service, preferably one from Google, to implement our applications events feature. Additionally we could seek access to WOU’s 
