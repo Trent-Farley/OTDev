@@ -1,4 +1,4 @@
-﻿## What is new/original about this idea? What are related websites/apps? 
+## What is new/original about this idea? What are related websites/apps? 
 
 The approach to my idea is to incorporate similar algorithms and applications that rely on keywords and user information and cross references the same words among other users. 
 This idea would include  club data similar to what is on WOU’s Engage but would be a more user friendly application that focuses on individual interests rather than 
