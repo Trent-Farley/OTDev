@@ -1,0 +1,4 @@
+## Recipe finder vision statement
+<p>
+    As a team, we will strive to create a platform for people that are uncertain about what to make from their current ingredients. The Recipe Finder system will provide individuals with what to make for a meal off of the items that are in their inventory. These recipes should also be searchable by name, type, or other specified filters. The system will store the current inventory as well as the individual's preferences. These preferences will include what the person dislikes as well as any dietary accommodations that must be made. If an inventory does not contain enough ingredients or the individual wants to make an entire menu for any amount of days a shopping list should automatically be generated. Unlike the current applications, our application will accommodate a menu, shopping list, and both types of searches (by inventory and by name). 
+</p>
