@@ -1,0 +1,63 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model ExpeditionAdder
+
+<div style="background-color:whitesmoke" class="text-center p-2">
+    <form asp-action="AddExpeditionSubmit" method="post">
+
+        <h1>Add an Expedition</h1>
+        <div>
+            <label asp-for="Expedition.Year"  required></label>
+            <input asp-for="Expedition.Year" min="1920" max="2021" value="2019"/>
+
+            <label asp-for="Expedition.StartDate"  required></label>
+            <input asp-for="Expedition.StartDate" type="datetime-local" value="2019-01-01T19:30" />
+
+
+            <label asp-for="Expedition.Season" style="border:1px"></label>
+            <select asp-for="Expedition.Season">
+                <option value="Winter"> Winter</option>
+                <option value="Spring"> Spring</option>
+                <option value="Summer"> Summer</option>
+                <option value="Autumn"> Autumn</option>
+            </select>
+            <label asp-for="OxyCheck"> Was Oxygen Used?</label>
+            <input asp-for="OxyCheck" type="checkbox"/>
+        </div>
+        <label asp-for="Expedition.TrekkingAgencyId" style="margin-top:10px">Trekking Agency</label>
+        <select asp-for="Expedition.TrekkingAgencyId" class="form-control">
+            @foreach (TrekkingAgency i in Model.TrekkingAgencies)
+            {
+                <option value="@i.Id">@i.Name</option>
+            }
+        </select>
+        <label asp-for="Expedition.PeakId">Peak</label>
+        <select asp-for="Expedition.PeakId" class="form-control">
+            @foreach (Peak i in Model.Peaks)
+            {
+                <option value="@i.Id">@i.Name</option>
+            }
+        </select>
+        <label asp-for="Expedition.TerminationReason">Termination Reason</label>
+        <select asp-for="Expedition.TerminationReason" class="form-control">
+            <option value="Success (main peak)">Success</option>
+            <option value="Bad weather (storms, high winds)">Bad weather (storms, high winds)</option>
+            <option value="Accident (death or serious injury)">Accident (death or serious injury)</option>
+            <option value="Did not attempt climb">Did not attempt climb</option>
+            <option value="Route technically too difficult, lack of experience, strength, or motivation">Route technically too difficult, lack of experience, strength, or motivation</option>
+            <option value="Unknown">Unknown</option>
+            <option value="Lack of time">Lack of time</option>
+            <option value="Lack (or loss) of supplies or equipment">Lack (or loss) of supplies or equipment</option>
+            <option value="Did not reach base camp">Did not reach base camp</option>
+            <option value="Illness, AMS, exhaustion, or frostbite">Illness, AMS, exhaustion, or frostbite</option>
+            <option value="Bad conditions (deep snow, avalanching, falling ice, or rock)">Bad conditions (deep snow, avalanching, falling ice, or rock)</option>
+            <option value="Attempt rumoured">Attempt rumoured</option>
+            <option value="Other">Other</option>
+        </select>
+        <br/>
+        <button class="btn btn-success" type="submit" id="ExpeditionSubmit"> Submit </button>
+    </form>
+</div>

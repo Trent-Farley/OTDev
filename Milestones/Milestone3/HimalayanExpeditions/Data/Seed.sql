@@ -1,4 +1,6 @@
-﻿INSERT INTO [Peak](Name,Height,ClimbingStatus,FirstAscentYear) VALUES ('Ama Dablam',6814,1,1961);
+﻿INSERT INTO [Climber](Name, Age) VALUES ('Joe Shmoe', 33);
+INSERT INTO [Climber](Name, Age) VALUES ('Jane Doe', 25);
+INSERT INTO [Peak](Name,Height,ClimbingStatus,FirstAscentYear) VALUES ('Ama Dablam',6814,1,1961);
 INSERT INTO [Peak](Name,Height,ClimbingStatus,FirstAscentYear) VALUES ('Amphu Gyabjen',5630,1,1953);
 INSERT INTO [Peak](Name,Height,ClimbingStatus,FirstAscentYear) VALUES ('Annapurna I',8091,1,1950);
 INSERT INTO [Peak](Name,Height,ClimbingStatus,FirstAscentYear) VALUES ('Annapurna II',7937,1,1960);

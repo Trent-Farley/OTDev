@@ -17,6 +17,7 @@ namespace HimalayanExpeditions.Models
         {
         }
 
+        public virtual DbSet<Climber> Climbers { get; set; }
         public virtual DbSet<Expedition> Expeditions { get; set; }
         public virtual DbSet<Peak> Peaks { get; set; }
         public virtual DbSet<TrekkingAgency> TrekkingAgencies { get; set; }
@@ -25,7 +26,7 @@ namespace HimalayanExpeditions.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=ConnectionStrings:HimalayanExpeditions");
+                optionsBuilder.UseSqlServer("Name=HimalayanExpeditions");
             }
         }
 

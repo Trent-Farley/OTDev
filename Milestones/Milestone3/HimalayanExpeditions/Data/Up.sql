@@ -25,6 +25,13 @@ CREATE TABLE [TrekkingAgency] (
 )
 GO
 
+CREATE TABLE [Climber](
+[ID] INT PRIMARY KEY IDENTITY(1,1),
+[Name] NVARCHAR(60),
+[AGE] INT,
+)
+GO
+
 ALTER TABLE [Expedition] ADD CONSTRAINT [Expedition_FK_Peak] FOREIGN KEY ([PeakID]) REFERENCES [Peak] ([ID])
 ALTER TABLE [Expedition] ADD CONSTRAINT [Expedition_FK_TrekkingAgency] FOREIGN KEY ([TrekkingAgencyID]) REFERENCES [TrekkingAgency] ([ID])
 GO

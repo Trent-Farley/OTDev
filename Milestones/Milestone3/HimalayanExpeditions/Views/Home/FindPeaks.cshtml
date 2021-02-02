@@ -3,8 +3,8 @@
 @model Search
 
 <h1>Unclimbed Peaks</h1>
-<div style="border: 1px solid black; padding:5px; margin-right:75%; background-color:whitesmoke" >
-    <p>Search Again</p>
+<div class="card shadow-lg" style="opacity:0.7;background-color:aliceblue;">
+    <h3 class="card-title">Search</h3>
     <form asp-controller="Home" asp-action="FindPeaks" method=get>
         <div>
             <label> Season  </label>
@@ -15,7 +15,7 @@
                 <option value="Summer"> Summer</option>
                 <option value="Autumn"> Autumn</option>
             </select>
-            <button type="submit"> Search </button>
+            <button class="btn btn-primary" type="submit"> Search </button>
         </div>
     </form>
     <p>@Model.Count Results Returned</p>
@@ -33,7 +33,7 @@
                 </th>
         </thead>
         <tbody>
-            @foreach (var item in Model.ExpeditionList)
+            @foreach (var item in Model.ExpeditionList.Data)
             {
                 <tr>
                     <td> @item.Peak.Name </td>
@@ -42,3 +42,12 @@
             }
     </table>
 </div>
+<cs-pager cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link" asp-action="FindPeaks"
+          asp-controller="Home"
+          asp-route-pagesize="@Model.ExpeditionList.PageSize"
+          cs-paging-pagenumber="@Model.ExpeditionList.PageNumber"
+          cs-paging-totalitems="@Model.ExpeditionList.TotalItems"></cs-pager>
