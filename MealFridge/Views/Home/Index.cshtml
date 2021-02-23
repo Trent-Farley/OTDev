@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+<div class="container">
+    <div id="main" class="card-columns"></div>
+    <div class="jumbotron shadow-lg">
+        <h1 class="card-title text-center">Welcome to MealFridge </h1>
+        <p class="card-text">
+            MealFridge is an app that helps users find recipes based on their own ingredients,
+            create shopping lists, and much more!
+        </p>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card shadow-lg">
+                <h4 class="card-title">Meal Planning</h4>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow-lg">
+                <h3 class="text-center">Search by Recipe Name!</h3>
+                <div class="input-group">
+                    <input id="sbn" type="text" class="form-control" placeholder="Hot Chili" aria-label="Search for recipes by name">
+                    <div class="input-group-append">
+                        <button class="btn btn-success" onclick="searchFromMainPage()" type="button">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/js/Home/Index.js"></script>
+}

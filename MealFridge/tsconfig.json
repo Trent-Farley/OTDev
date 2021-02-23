@@ -1,0 +1,18 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmitOnError": true,
+    "removeComments": true,
+    "sourceMap": true,
+    "moduleResolution": "Classic",
+    "module": "commonjs",
+    "target": "ES2015",
+    "lib": [ "es2015.promise", "es2016", "es5", "dom" ],
+    "rootDir": "Scripts/",
+    "outDir": "wwwroot/js"
+  },
+  "include": [
+    "Scripts/"
+  ]
+}
