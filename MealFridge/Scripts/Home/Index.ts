@@ -9,5 +9,5 @@ search.addEventListener("keydown", (e) => {
 function searchFromMainPage(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     window.sessionStorage.setItem("prevSearch", search.value);
-    window.location.href = "/SearchByName";
+    window.location.href = "/Search";
 }

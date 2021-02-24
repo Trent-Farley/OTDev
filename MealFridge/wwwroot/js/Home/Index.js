@@ -7,6 +7,6 @@ search.addEventListener("keydown", (e) => {
 function searchFromMainPage() {
     let search = document.getElementById("sbn");
     window.sessionStorage.setItem("prevSearch", search.value);
-    window.location.href = "/SearchByName";
+    window.location.href = "/Search";
 }
 //# sourceMappingURL=Index.js.map
