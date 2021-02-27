@@ -17,20 +17,21 @@ window.onload = () => {
     }
 };
 class Search {
-    constructor(query) {
+    constructor(query, type) {
         this.URL = "/api/SearchByName/";
         this.query = query;
+        this.type = type;
     }
     getPossibleRecipes() {
         return __awaiter(this, void 0, void 0, function* () {
-            return Promise.resolve(this.fetchAPI(this.query).then(data => {
+            return Promise.resolve(this.fetchAPI(this.query, this.type).then(data => {
                 this.showRecipes(data);
             }));
         });
     }
-    fetchAPI(query) {
+    fetchAPI(query, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = fetch(this.URL + query, {
+            const response = fetch(this.URL + query + "/" + type, {
                 method: 'GET'
             });
             return (yield response).json();
@@ -59,11 +60,12 @@ class Search {
 }
 function searchByName() {
     let search = document.getElementById("sbn");
+    let type = document.getElementById("searchType");
     if (!search.value) {
         alert("Search can not be empty!");
         return;
     }
-    let searcher = new Search(search.value);
+    let searcher = new Search(search.value, type.value);
     searcher.getPossibleRecipes();
 }
 const inputSearch = document.getElementById("sbn");

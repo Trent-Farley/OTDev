@@ -13,19 +13,21 @@
 class Search {
     private readonly URL: string = "/api/SearchByName/"
     private readonly query: string;
+    private readonly type: string;
     public recipes: [string];
-    constructor(query: string) {
+    constructor(query: string, type: string) {
         this.query = query;
+        this.type = type;
     }
 
     public async getPossibleRecipes(): Promise<void | [string]> {
-        return Promise.resolve(this.fetchAPI(this.query).then(data => {
+        return Promise.resolve(this.fetchAPI(this.query, this.type).then(data => {
             this.showRecipes(<[Object]>data);
         }))
     }
 
-    private async fetchAPI<T>(query: string): Promise<T> {
-        const response = fetch(this.URL + query, {
+    private async fetchAPI<T>(query: string, type: string): Promise<T> {
+        const response = fetch(this.URL + query + "/" + type , {
             method: 'GET'
         })
         return (await response).json() as Promise<T>;
@@ -56,11 +58,12 @@ class Search {
 
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
+    let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
     if (!search.value) {
         alert("Search can not be empty!");
         return;
     }
-    let searcher = new Search(search.value);
+    let searcher = new Search(search.value, type.value);
     searcher.getPossibleRecipes();
 }
 
