@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Fridge>
+
+<body>
+    <div class="table table-bordered table-striped table-sm">
+        <table style="width:100%;height:100%">
+            <tr>
+                <th> Name </th>
+                <th> Amount </th>
+                <th> Aisle </th>
+                <th> Cost </th>
+            </tr>
+            <tr>
+                 @foreach(var i in Model)
+                    {
+                        <td> @i.Ingred.Name </td>
+                        <td> @i.Quantity </td>
+                        <td> @i.Ingred.Aisle</td>
+                        <td> @i.Ingred.Cost</td>
+                    }
+            </tr>
+        </table>
+    </div>
+</body>

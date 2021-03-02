@@ -7,12 +7,14 @@ using System.Linq;
 using System.Diagnostics;
 using System.Collections.Generic;
 
+
 namespace MealFridge.Controllers
 {
     public class SearchApiController : Controller
     {
         private readonly IConfiguration _config;
         private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
+
         private readonly string _searchByIngredientEndpoint = "https://api.spoonacular.com/recipes/findByIngredients";
         private readonly MealFridgeDbContext _db;
         public SearchApiController(IConfiguration config, MealFridgeDbContext context)
