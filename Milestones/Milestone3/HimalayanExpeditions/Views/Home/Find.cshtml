@@ -1,0 +1,112 @@
+@using cloudscribe.Web.Pagination
+@model Search
+
+@{ ViewData["Title"] = "Find an expedition"; }
+
+<div class="row">
+
+    <div class="col">
+        <div class="card shadow-lg" style="opacity:0.7;background-color:aliceblue;">
+            <h3 class="card-title">Search</h3>
+
+            <form asp-controller="Home" asp-action="FindPeaks" method=get>
+                <div>
+                    <label class="card-text"> Season  </label>
+                    <select class="form-check-inline" asp-for="Season">
+                        <option value="Any">Any</option>
+                        <option value="Winter">Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Autumn">Autumn</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </div>
+            </form>
+            <p class="card-footer">Looking for a Challenge? Find Expeditions that have never been completed:</p>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow-lg" style="opacity:0.7;background-color:aliceblue;">
+            <h3 class="card-title">Search Expeditions</h3>
+            <form asp-controller="Home" asp-action="Find" method=get>
+                <div>
+                    <label asp-for="Year"> Year  </label>
+                    <input asp-for="Year" min="1920" max="2019">
+                    <label asp-for="Peak"> Peak  </label>
+                    <input asp-for="Peak"><br />
+                    <label asp-for="Season"> Season  </label>
+                    <select asp-for="Season">
+                        <option value="Any"> Any</option>
+                        <option value="Winter"> Winter</option>
+                        <option value="Spring">Spring</option>
+                        <option value="Summer"> Summer</option>
+                        <option value="Autumn"> Autumn</option>
+                    </select>
+                    <br />
+                    <label asp-for="TerminationReason">Termination Reason</label>
+                    <select asp-for="TerminationReason">
+                        <option value="Any">Any</option>
+                        <option value="Success (main peak)">Success</option>
+                        <option value="Bad weather (storms, high winds)">Bad weather (storms, high winds)</option>
+                        <option value="Accident (death or serious injury)">Accident (death or serious injury)</option>
+                        <option value="Did not attempt climb">Did not attempt climb</option>
+                        <option value="Route technically too difficult, lack of experience, strength, or motivation">Route technically too difficult, lack of experience, strength, or motivation</option>
+                        <option value="Unknown">Unknown</option>
+                        <option value="Lack of time">Lack of time</option>
+                        <option value="Lack (or loss) of supplies or equipment">Lack (or loss) of supplies or equipment</option>
+                        <option value="Did not reach base camp">Did not reach base camp</option>
+                        <option value="Illness, AMS, exhaustion, or frostbite">Illness, AMS, exhaustion, or frostbite</option>
+                        <option value="Bad conditions (deep snow, avalanching, falling ice, or rock)">Bad conditions (deep snow, avalanching, falling ice, or rock)</option>
+                        <option value="Attempt rumoured">Attempt rumoured</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <button class="btn btn-primary" type="submit"> Search </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<br />
+
+@if (Model != null)
+{
+    @if (Model != null)
+    {
+        <p>@Model.Count Results Returned</p>
+        <div class="text-center p-2">
+            <table class="table table-bordered table-striped table-sm table-dark">
+                <thead>
+                    <tr>
+                        <th>Year</th>
+                        <th>Peak</th>
+                        <th>Start Date</th>
+                        <th>Success / Failure</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ExpeditionList.Data)
+                    {
+                        <tr>
+                            <td> @item.Year </td>
+                            <td> @item.Peak.Name </td>
+                            <td> @item.StartDate </td>
+                            <td> @item.TerminationReason </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    <cs-pager cs-pager-li-current-class="page-item active"
+              cs-pager-li-other-class="page-item"
+              cs-pager-li-non-active-class="page-item disabled"
+              cs-pager-link-current-class="page-link"
+              cs-pager-link-other-class="page-link"
+              asp-action="Find"
+              asp-controller="Home"
+              asp-route-pagesize="@Model.ExpeditionList.PageSize"
+              cs-paging-pagenumber="@Model.ExpeditionList.PageNumber"
+              cs-paging-totalitems="@Model.ExpeditionList.TotalItems"></cs-pager>
+}

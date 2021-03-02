@@ -1,0 +1,53 @@
+﻿@{
+}
+@model Search
+
+<h1>Unclimbed Peaks</h1>
+<div class="card shadow-lg" style="opacity:0.7;background-color:aliceblue;">
+    <h3 class="card-title">Search</h3>
+    <form asp-controller="Home" asp-action="FindPeaks" method=get>
+        <div>
+            <label> Season  </label>
+            <select asp-for="Season">
+                <option value="Any"> Any</option>
+                <option value="Winter"> Winter</option>
+                <option value="Spring">Spring</option>
+                <option value="Summer"> Summer</option>
+                <option value="Autumn"> Autumn</option>
+            </select>
+            <button class="btn btn-primary" type="submit"> Search </button>
+        </div>
+    </form>
+    <p>@Model.Count Results Returned</p>
+</div>
+
+<div class="text-center p-2">
+    <table class="table table-bordered table-striped table-sm table-dark">
+        <thead>
+            <tr>
+                <th>
+                    Peak
+                </th>
+                <th>
+                    Season
+                </th>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ExpeditionList.Data)
+            {
+                <tr>
+                    <td> @item.Peak.Name </td>
+                    <td> @item.Season </td>
+                </tr>
+            }
+    </table>
+</div>
+<cs-pager cs-pager-li-current-class="page-item active"
+          cs-pager-li-other-class="page-item"
+          cs-pager-li-non-active-class="page-item disabled"
+          cs-pager-link-current-class="page-link"
+          cs-pager-link-other-class="page-link" asp-action="FindPeaks"
+          asp-controller="Home"
+          asp-route-pagesize="@Model.ExpeditionList.PageSize"
+          cs-paging-pagenumber="@Model.ExpeditionList.PageNumber"
+          cs-paging-totalitems="@Model.ExpeditionList.TotalItems"></cs-pager>
