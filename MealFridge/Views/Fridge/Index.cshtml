@@ -10,14 +10,31 @@
                 <th> Cost </th>
             </tr>
             <tr>
-                 @foreach(var i in Model)
-                    {
-                        <td> @i.Ingred.Name </td>
-                        <td> @i.Quantity </td>
-                        <td> @i.Ingred.Aisle</td>
-                        <td> @i.Ingred.Cost</td>
-                    }
+                @foreach (var i in Model)
+                {
+                    <td> @i.Ingred.Name </td>
+                    <td> @i.Quantity </td>
+                    <td> @i.Ingred.Aisle</td>
+                    <td> @i.Ingred.Cost</td>
+                }
             </tr>
         </table>
     </div>
+
+    <div class="card" style="width: 24rem;">
+        <div class="card-body">
+            <h4 class="card-title">Find an ingredient(s) below:</h4>
+            <input id="ingredSearch" placeholder="Salt" />
+            <button type="button" class="btn btn-primary" onclick="SearchByIngredientName()"> Find Ingredients </button>
+        </div>
+    </div>
+
+    <div id="fridge_main" class="card-columns">
+        
+    </div>
 </body>
+
+@section Scripts{
+    <script src="~/js/Fridge/Index.js"></script>
+
+}

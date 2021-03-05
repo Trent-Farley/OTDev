@@ -1,11 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 #nullable disable
 
 namespace MealFridge.Models
 {
-
     public partial class Fridge
     {
         public int? Id { get; set; }

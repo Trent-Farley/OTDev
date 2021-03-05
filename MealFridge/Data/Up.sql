@@ -11,6 +11,7 @@ GO
 
 CREATE TABLE [INGREDIENTS] (
   [id] int PRIMARY KEY,
+  [image] nvarchar(255),
   [name] nvarchar(255),
   [aisle] nvarchar(255),
   [cost] money
@@ -56,7 +57,6 @@ GO
 
 CREATE TABLE [MEAL] (
   [account_id] NVARCHAR(255),
-  [account_id] int,
   [day] datetime,
   [recipe_id] int,
   [meal] nvarchar(255),
