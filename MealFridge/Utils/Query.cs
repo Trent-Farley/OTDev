@@ -17,7 +17,17 @@ namespace MealFridge.Utils
         {
             get
             {
-                return Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number;
+                string u;
+                switch (SearchType)
+                {
+                    case "IngredientDetails":
+                        u = Url + QueryValue + "/information?apikey=" + Credentials + "&amount=1&unit=serving";
+                        break;
+                    default:
+                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number;
+                        break;
+                }
+                return u;
             }
         }
     }

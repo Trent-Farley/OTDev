@@ -37,6 +37,10 @@ namespace MealFridge.Controllers
             {
                 var user_id = _user.GetUserId(User);
                 var temp = _context.Fridges.Where(f => f.AccountId == user_id);
+                foreach (var f in temp)
+                {
+                    f.Ingred = _context.Ingredients.Find(f.IngredId);
+                }
                 return View("Index", temp.ToList());
             }
             else
@@ -44,9 +48,16 @@ namespace MealFridge.Controllers
                 return RedirectToAction("Index", "Home");
             }
         }
-
-        
-
+        public IActionResult AddItem(int id, int amount)
+        {
+            var newItem = new Fridge();
+            newItem.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            newItem.IngredId = id;
+            newItem.Quantity = amount;
+            _context.Add(newItem);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
 
     }
 }

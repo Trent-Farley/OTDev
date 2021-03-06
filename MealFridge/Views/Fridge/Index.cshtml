@@ -1,36 +1,41 @@
 ﻿@model IEnumerable<Fridge>
 
 <body>
-    <div class="table table-bordered table-striped table-sm">
-        <table align="right">
-            <tr>
-                <th> Name </th>
-                <th> Amount </th>
-                <th> Aisle </th>
-                <th> Cost </th>
-            </tr>
-            <tr>
-                @foreach (var i in Model)
-                {
-                    <td> @i.Ingred.Name </td>
-                    <td> @i.Quantity </td>
-                    <td> @i.Ingred.Aisle</td>
-                    <td> @i.Ingred.Cost</td>
-                }
-            </tr>
-        </table>
-    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Find an ingredient(s) below:</h4>
+                        <input id="ingredSearch" placeholder="Search Here!" />
+                        <button type="button" class="btn btn-primary" onclick="SearchByIngredientName()"> Find Ingredients </button>
+                    </div>
+                </div>
 
-    <div class="card" style="width: 24rem;">
-        <div class="card-body">
-            <h4 class="card-title">Find an ingredient(s) below:</h4>
-            <input id="ingredSearch" placeholder="Salt" />
-            <button type="button" class="btn btn-primary" onclick="SearchByIngredientName()"> Find Ingredients </button>
+                <div id="fridge_main">
+
+                </div>
+            </div>
+            <div class="col-4">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class="w-75"> Name </th>
+                            <th class="w-25"> Amount </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr>
+                            <td class="w-75"> @i.Ingred.Name </td>
+                            <td class="w-25"> @i.Quantity </td>                           
+                        </tr> 
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-
-    <div id="fridge_main" class="card-columns">
-        
     </div>
 </body>
 

@@ -15,10 +15,10 @@ namespace MealFridge.Controllers
     {
         private readonly IConfiguration _config;
         private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
-
         private readonly string _searchByIngredientEndpoint = "https://api.spoonacular.com/recipes/findByIngredients";
         private readonly string _searchByRecipeEndpoint = "https://api.spoonacular.com/recipes/{id}/information";
         private readonly string _searchIngredientByNameEndpoint = "https://api.spoonacular.com/food/ingredients/search";
+        private readonly string _searchIngredientDetailsEndpoint = "https://api.spoonacular.com/food/ingredients/"; // + {id}/information?amount=1
 
         private readonly MealFridgeDbContext _db;
         public SearchApiController(IConfiguration config, MealFridgeDbContext context)
@@ -36,25 +36,30 @@ namespace MealFridge.Controllers
 
             if (ingredient != null)
             {
-                foreach (var i in ingredient)
-                {
-                    possibleIngredients.Add(_db.Ingredients.Where(a => a.Id == i.Id).FirstOrDefault());
-                }
+                possibleIngredients = ingredient;
+                //Below is not needed I think
+                //foreach (var i in ingredient)
+                //{
+                //    possibleIngredients.Add(_db.Ingredients.Where(a => a.Id == i.Id).FirstOrDefault());
+                //}
             }
 
             if (possibleIngredients.Count < 10)
             {
                 var apiQuerier = new SearchSpnApi(_searchIngredientByNameEndpoint, _config["SApiKey"]);
-                possibleIngredients = apiQuerier.SearchIngredientsApi(query, "Ingredients");
-                if (possibleIngredients == null)
-                {
-                    possibleIngredients = new List<Ingredient>();
-                }
-                foreach (var i in possibleIngredients)
+                var newIngredients = apiQuerier.SearchIngredientsApi(query, "Ingredients");
+                foreach (var i in newIngredients)
                 {
                     if (!_db.Ingredients.Any(t => t.Id == i.Id))
                     {
-                        _db.Ingredients.Add(i);
+                        var apiCall = new SearchSpnApi(_searchIngredientDetailsEndpoint, _config["SApiKey"]);
+                        var details = apiCall.IngredientDetails(i, "IngredientDetails");
+                        _db.Ingredients.Add(details);
+                        possibleIngredients.Add(details);
+                    }
+                    else
+                    {
+                        possibleIngredients.Add(i);
                     }
                 }
                 _db.SaveChanges();
@@ -72,7 +77,7 @@ namespace MealFridge.Controllers
                 return Json(possibleRecipesByIngredient.OrderBy(r => r.Id));
             }
 
-public List<Recipe> SearchByIngredient(string query)
+        public List<Recipe> SearchByIngredient(string query)
         {
             var ingredient = _db.Ingredients.Where(a => a.Name.Contains(query)).FirstOrDefault();
             var recipesWithIngredient = _db.Recipeingreds.Where(a => a.IngredId == ingredient.Id).Take(10);
