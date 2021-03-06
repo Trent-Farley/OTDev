@@ -1,12 +1,30 @@
-﻿<div class="container">
-    <div class="jumbotron shadow-lg">
-        <h3 class="text-center">Search by Recipe Name or Ingredient!</h3>
+﻿
+
+
+<div class="container">
+    <h3 class="text-center">Search by Recipe Name or Ingredient!</h3>
+    <div class="jumbotron p-0 h-25 sticky-top shadow-lg">
+
+        <div class="collapse" id="shoppingList" style="background-color:whitesmoke">
+            <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
+            <div id="innerShopping">
+                <h3 id="shoppingListTitle" class="text-center">Shopping List</h3>
+                <table id="shoppingListTable" class="table table-responsive-sm">
+                </table>
+            </div>
+
+        </div>
         <div class="input-group">
-            <select id="searchType" class="form-control">
-                <option value="Recipe">Recipe Name</option>
-                <option value="Ingredient">Ingredient</option>
-            </select>
-            <input id="sbn" type="text" class="form-control" placeholder="Hot Chili" aria-label="Search for recipes by name">
+            <div class="input-group-prepend">
+                <button class="float-left btn btn-outline-success sticky-top" type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList">
+                    <i class="fa fa-shopping-cart"></i>
+                </button>
+                <select id="searchType" class=" w-auto custom-select bg-primary text-light">
+                    <option value="Recipe">Recipe Name</option>
+                    <option value="Ingredient">Ingredient</option>
+                </select>
+            </div>
+            <input id="sbn" type="text" class="w-auto form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="input-group-append">
                 <button class="btn btn-success" onclick="searchByName()" type="button">
                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -14,9 +32,34 @@
             </div>
         </div>
     </div>
-    <div id="main" class="card-columns"></div>
-</div>
+    <div id="spinner"></div>
 
-@section Scripts {
+    <div id="main" class="card-columns"></div>
+
+    <div class="modal" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_title">Recipe Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modal-main" class="card">
+                        <div id="modal-spinner"></div>
+                    </div>
+                </div>
+                <div class="modal-footer" id="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                    @*<button type="button" class="btn btn-primary">Save changes</button>*@
+                    <button type="button" id="button-cart" class="btn btn-outline-success" data-dismiss="modal"><i class="fa fa-shopping-basket"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
     <script src="~/js/Search/Index.js"></script>
+    <script src="~/js/Search/RecipeDetails.js"></script>
 }
