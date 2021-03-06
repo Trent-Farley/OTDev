@@ -44,7 +44,7 @@ class Search {
 
             main.innerHTML +=
                 `
-                <div class="card shadow-lg">
+                <div class="card shadow-lg h-50 w-50">
                     <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
                     <div class="card-body">
                         <h4 class="card-title">${r["title"]}</h4>

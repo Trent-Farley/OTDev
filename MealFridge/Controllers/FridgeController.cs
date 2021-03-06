@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
+using MealFridge.Utils;
 
 namespace MealFridge.Controllers
 {
@@ -19,7 +20,7 @@ namespace MealFridge.Controllers
     {
 
         private readonly IConfiguration _configuration;
-        MealFridgeDbContext _context;
+        private readonly MealFridgeDbContext _context;
         private readonly UserManager<IdentityUser> _user;
         // GET: SearchByName
         public FridgeController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
@@ -42,8 +43,10 @@ namespace MealFridge.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
         }
+
+        
+
 
     }
 }

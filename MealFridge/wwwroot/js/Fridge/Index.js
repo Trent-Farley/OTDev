@@ -10,68 +10,58 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 window.onload = () => {
     const prevSearch = window.sessionStorage.getItem("prevSearch");
     if (prevSearch !== null) {
-        let newSearch = document.getElementById("sbn");
+        let newSearch = document.getElementById("ingredSearch");
         newSearch.value = prevSearch;
         window.sessionStorage.clear();
         searchByName();
     }
 };
-class Search {
-    constructor(query, type) {
-        this.URL = "/api/SearchByName/";
+class IngredientSearch {
+    constructor(query) {
+        this.URL = "/api/SearchByIngredientName/";
         this.query = query;
-        this.type = type;
     }
-    getPossibleRecipes() {
+    getPossibleIngredients() {
         return __awaiter(this, void 0, void 0, function* () {
-            return Promise.resolve(this.fetchAPI(this.query, this.type).then(data => {
-                this.showRecipes(data);
+            return Promise.resolve(this.fetchAPI(this.query).then(data => {
+                console.log(data);
+                this.showIngredients(data);
             }));
         });
     }
-    fetchAPI(query, type) {
+    fetchAPI(query) {
         return __awaiter(this, void 0, void 0, function* () {
-            const response = fetch(this.URL + query + "/" + type, {
+            const response = fetch(this.URL + query, {
                 method: 'GET'
             });
             return (yield response).json();
         });
     }
-    showRecipes(recipes) {
-        let main = document.getElementById("main");
+    showIngredients(ingredients) {
+        let main = document.getElementById("fridge_main");
         main.innerHTML = "";
-        if (recipes.length < 1) {
-            main.innerHTML += "<p> No results found! </p>";
-            return;
-        }
-        recipes.forEach(r => {
+        console.log(ingredients);
+        ingredients.forEach(r => {
             main.innerHTML +=
                 `
-                <div class="card shadow-lg h-50 w-50">
-                    <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
+                <div class="card shadow-lg">
+                    <img class="card-img-top" src="${r["image"]}" alt="Ingredient Icon">
                     <div class="card-body">
-                        <h4 class="card-title">${r["title"]}</h4>
-                        <a href="#!" class="btn btn-primary">Recipe Details</a>
+                        <h4 class="card-title">${r["name"]}</h4>
+                       
                     </div>
                 </div>
             `;
         });
     }
 }
-function searchByName() {
-    let search = document.getElementById("sbn");
-    let type = document.getElementById("searchType");
+function SearchByIngredientName() {
+    let search = document.getElementById("ingredSearch");
     if (!search.value) {
         alert("Search can not be empty!");
         return;
     }
-    let searcher = new Search(search.value, type.value);
-    searcher.getPossibleRecipes();
+    let searcher = new IngredientSearch(search.value);
+    searcher.getPossibleIngredients();
 }
-const inputSearch = document.getElementById("sbn");
-inputSearch.addEventListener("keydown", (e) => {
-    if (e.keyCode === 13) {
-        searchByName();
-    }
-});
 //# sourceMappingURL=Index.js.map
