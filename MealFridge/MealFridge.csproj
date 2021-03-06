@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -37,13 +37,30 @@
 
   <ItemGroup>
     <Folder Include="Areas\Identity\Pages\Account\" />
+    <Folder Include="wwwroot\js\Home\" />
+    <Folder Include="wwwroot\js\Search\" />
   </ItemGroup>
   <ItemGroup>
     <Watch Include="**/*.ts" />
     <Watch Include="**/*.cshtml" />
     <Watch Include="**/*.css" />
   </ItemGroup>
-  <ItemGroup>
-    <Watch Remove="Scripts\Fridge\Index.ts" />
-  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>None</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptOutFile></TypeScriptOutFile>
+    <TypeScriptOutDir>C:\Users\trent\source\repos\otdev\MealFridge\wwwroot\js</TypeScriptOutDir>
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>False</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot>C:\Users\trent\source\repos\otdev\MealFridge\Scripts</TypeScriptSourceRoot>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
 </Project>

@@ -1,3 +1,4 @@
+
 window.onload = () => {
 
     const prevSearch = window.sessionStorage.getItem("prevSearch");
@@ -27,7 +28,15 @@ class Search {
         }))
     }
     private async fetchAPI<T>(query: string, type: string): Promise<T> {
-        const response = fetch(this.URL + query + "/" + type , {
+        document.getElementById("spinner").innerHTML +=
+            `
+                <div class="d-flex justify-content-center">
+                   <div class="spinner-grow text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            `;
+        const response = fetch(this.URL + query + "/" + type, {
             method: 'GET'
         })
         return (await response).json() as Promise<T>;
@@ -35,6 +44,7 @@ class Search {
     }
     private showRecipes(recipes: [Object]) {
         let main: HTMLElement = document.getElementById("main");
+        document.getElementById("spinner").innerHTML = "";
         main.innerHTML = "";
         if (recipes.length < 1) {
             main.innerHTML += "<p> No results found! </p>";
@@ -44,14 +54,18 @@ class Search {
 
             main.innerHTML +=
                 `
-                <div class="card shadow-lg h-50 w-50">
-                    <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
-                    <div class="card-body">
-                        <h4 class="card-title">${r["title"]}</h4>
-                        <a href="#!" class="btn btn-primary">Recipe Details</a>
+                <button class="btn" type="button" onClick="getDetails(${r["id"]})" data-toggle="collapse" data-target="#info-${r["id"]}" aria-expanded="false" aria-controls="info-${r["id"]}">
+                    <div class="card shadow-lg">
+                        <img class="card-img-top" src = "${r["image"]}" alt = "Recipe Image" >
+                        <div class="card-body" >
+                            <h4 class="card-title" > ${r["title"]} </h4>
+                            </div>
+                            <div id="info-${r["id"]}" class="collapse">
+                                ${r["title"]}
+                        </div>
                     </div>
-                </div>
-            `;
+                </button>
+                `;
         })
     }
 }

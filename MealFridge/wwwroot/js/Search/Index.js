@@ -31,6 +31,14 @@ class Search {
     }
     fetchAPI(query, type) {
         return __awaiter(this, void 0, void 0, function* () {
+            document.getElementById("spinner").innerHTML +=
+                `
+                <div class="d-flex justify-content-center">
+                   <div class="spinner-grow text-info" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+            `;
             const response = fetch(this.URL + query + "/" + type, {
                 method: 'GET'
             });
@@ -39,6 +47,7 @@ class Search {
     }
     showRecipes(recipes) {
         let main = document.getElementById("main");
+        document.getElementById("spinner").innerHTML = "";
         main.innerHTML = "";
         if (recipes.length < 1) {
             main.innerHTML += "<p> No results found! </p>";
@@ -47,14 +56,18 @@ class Search {
         recipes.forEach(r => {
             main.innerHTML +=
                 `
-                <div class="card shadow-lg h-50 w-50">
-                    <img class="card-img-top" src="${r["image"]}" alt="Recipe Image">
-                    <div class="card-body">
-                        <h4 class="card-title">${r["title"]}</h4>
-                        <a href="#!" class="btn btn-primary">Recipe Details</a>
+                <button class="btn" type="button" onClick="getDetails(${r["id"]})" data-toggle="collapse" data-target="#info-${r["id"]}" aria-expanded="false" aria-controls="info-${r["id"]}">
+                    <div class="card shadow-lg">
+                        <img class="card-img-top" src = "${r["image"]}" alt = "Recipe Image" >
+                        <div class="card-body" >
+                            <h4 class="card-title" > ${r["title"]} </h4>
+                            </div>
+                            <div id="info-${r["id"]}" class="collapse">
+                                ${r["title"]}
+                        </div>
                     </div>
-                </div>
-            `;
+                </button>
+                `;
         });
     }
 }
