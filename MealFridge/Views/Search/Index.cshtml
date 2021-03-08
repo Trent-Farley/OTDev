@@ -1,10 +1,9 @@
-﻿
-
+﻿@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
 
 <div class="container">
     <h3 class="text-center">Search by Recipe Name or Ingredient!</h3>
     <div class="jumbotron p-0 h-25 sticky-top shadow-lg">
-
         <div class="collapse" id="shoppingList" style="background-color:whitesmoke">
             <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
             <div id="innerShopping">
@@ -19,11 +18,18 @@
                 <button class="float-left btn btn-outline-success sticky-top" type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <button id="SearchInventory" class="float-right btn btn-outline-success sticky-top" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
+                        <i class="fas fa-box"></i>
+                    </button>
+                }
+                <input id="inventorySearch" value="@Model" hidden/>
                 <select id="searchType" class=" w-auto custom-select bg-primary text-light">
                     <option value="Recipe">Recipe Name</option>
                     <option value="Ingredient">Ingredient</option>
                 </select>
-            </div>
+            </div>  
             <input id="sbn" type="text" class="w-auto form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="input-group-append">
                 <button class="btn btn-success" onclick="searchByName()" type="button">

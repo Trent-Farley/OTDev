@@ -45,13 +45,29 @@ class IngredientSearch {
             main.innerHTML +=
                 `
                 <div class="card shadow-lg">
-                    <img class="card-img-top" src="${r["image"]}" alt="Ingredient Icon">
-                    <div class="card-body">
-                        <h4 class="card-title">${r["name"]}</h4>
-                       
+                    <div class="row">
+                        <div class="col-4">
+                            <img class="card-img-left" src="${r["image"]}" alt="Ingredient Icon">
+                        </div>
+                        <div class="card-body col-6">
+                            <h4 class="card-title">${r["name"]}</h4>
+                            <p class="card-text">Cost per Serving: ${r["cost"]}</p>
+                            <p class="card-text">Aisle: ${r["aisle"]}</p>
+                        </div>
+                        <div class="btn-group-vertical col-2" role="group">
+                            <button type="button" class="btn btn-primary addIngred" value="${r["id"]}" onclick="AddIngredient(this.value)">Add</button>
+                        </div>
                     </div>
                 </div>
             `;
+        });
+    }
+}
+function AddIngredient(id) {
+    let amount = prompt("Please enter the amount", "1");
+    if (amount != '' && !isNaN(+amount)) {
+        const response = fetch("Fridge/AddItem?id=" + id + "&amount=" + amount, {
+            method: 'GET'
         });
     }
 }
@@ -64,4 +80,10 @@ function SearchByIngredientName() {
     let searcher = new IngredientSearch(search.value);
     searcher.getPossibleIngredients();
 }
+const inputSearchFridge = document.getElementById("ingredSearch");
+inputSearchFridge.addEventListener("keydown", (e) => {
+    if (e.keyCode === 13) {
+        SearchByIngredientName();
+    }
+});
 //# sourceMappingURL=Index.js.map

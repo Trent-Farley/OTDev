@@ -26,10 +26,21 @@ namespace MealFridge.Utils
         {
             _query = query;
         }
+        public Ingredient IngredientDetails(Ingredient query, string searchType)
+        {
+            var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
+            var details = JObject.Parse(jsonResponse);
+            query.Aisle = (string)details["aisle"];
+            query.Cost = (decimal)details["estimatedCost"]["value"];
+            if ((string)details["estimatedCost"]["unit"] == "US Cents") 
+            {
+                query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
+            }
+            return query;
+        }
+        
         public List<Ingredient> SearchIngredientsApi(string query, string searchType)
         {
-
-
             if (Source != null)
             {
                 var temp = new Query
@@ -131,7 +142,6 @@ namespace MealFridge.Utils
             }
             return retingredients;
         }
-
         private string SendRequest()
         {
             try
@@ -156,5 +166,37 @@ namespace MealFridge.Utils
                 return null;
             }
         }
+        private static string SendRequest(string url, string credentials, string query, string searchType)
+        {
+            //number selects the number of results to return from API (FOR FUTURE REFERENCE)
+            HttpWebRequest request;
+            switch (searchType)
+            {
+                case "Recipe":
+                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
+                    break;
+                case "Ingredient":
+                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10");
+                    break;
+                case "IngredientDetails":
+                    request = (HttpWebRequest)WebRequest.Create(url + query + "/information?apiKey=" + credentials + "&amount=1&unit=serving");
+                    break;
+                default:
+                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
+                    break;
+            }
+            request.Accept = "application/json";
+            string jsonString = null;
+            using (WebResponse response = request.GetResponse())
+            {
+                Stream stream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(stream);
+                jsonString = reader.ReadToEnd();
+                reader.Close();
+                stream.Close();
+            }
+            return jsonString;
+        }
+
     }
 }

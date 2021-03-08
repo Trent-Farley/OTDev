@@ -69,7 +69,15 @@ class Search {
         })
     }
 }
-
+function inventorySearch(): void {
+    let search: HTMLInputElement = <HTMLInputElement>document.getElementById("inventorySearch");
+    if (search.value == "") {
+        alert("You have no saved ingredients. Visit the Inventory page to add ingredients to your fridge.")
+        return;
+    }
+    let searcher = new Search(search.value, "Ingredient");
+    searcher.getPossibleRecipes();
+}
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
