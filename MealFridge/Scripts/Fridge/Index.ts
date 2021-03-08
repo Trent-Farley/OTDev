@@ -50,7 +50,7 @@ class IngredientSearch {
                             <p class="card-text">Aisle: ${r["aisle"]}</p>
                         </div>
                         <div class="btn-group-vertical col-2" role="group">
-                            <button type="button" class="btn btn-primary addIngred" value="${r["id"]}" onclick="AddIngredient(this.value)">Add</button>
+                            <button type="button" class="btn btn-primary addIngred" value="${r["id"]}" onclick="AddIngredient(this.value, '${r["name"]}')">Add</button>
                         </div>
                     </div>
                 </div>
@@ -59,25 +59,39 @@ class IngredientSearch {
     }
 }
 
-function AddIngredient(id: string): void {
+function AddIngredient(id: string, name: string): void {
     let amount = prompt("Please enter the amount", "1");
     if (amount != '' && !isNaN(+amount)) {
         fetch("Fridge/AddItem?id=" + id + "&amount=" + amount, {
             method: 'GET'
         });
+        document.getElementById("fridge").innerHTML += `
+                        <tr id="${id}">
+                            <td class="w-75"> ${name} </td>
+                            <td class="w-25">
+                                <button type="button" class="btn btn-primary changeIngred" id="btn-${id}" value="${id}" onclick="ChangeIngredient(this.value)">
+                                    ${amount}
+                                </button>
+                            </td>                           
+                        </tr>
+        `
     }
 }
 
 function ChangeIngredient(id: string): void {
     let amount = prompt("Please enter new amount, or 0 to remove the item", "0");
-    if (amount != '' && !isNaN(+amount)) {
+    
+    if (amount != '' && amount != null && !isNaN(+amount)) {
+        var node = document.getElementById(id)
         if (amount == '0') {
             fetch("Fridge/RemoveItem?id=" + id, { method: 'GET' });
+            node.remove();
         }
         else {
             fetch("Fridge/UpdateItem?id=" + id + "&amount=" + amount, {
                 method: 'GET'
             });
+            document.getElementById("btn-" + id).textContent = amount;
         }
     }
 }

@@ -127,7 +127,8 @@ namespace MealFridge.Utils
             var retingredients = new List<Recipeingred>();
             foreach (var ing in ingredients)
             {
-
+                if (!int.TryParse(ing["id"].ToString(), out _))
+                    continue;
                 retingredients.Add(new Recipeingred
                 {
                     //Or amount + unit to get each component i.e 1.0 tbsp butter

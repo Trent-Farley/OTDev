@@ -54,8 +54,11 @@ namespace MealFridge.Controllers
             newItem.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             newItem.IngredId = id;
             newItem.Quantity = amount;
-            _context.Add(newItem);
-            _context.SaveChanges();
+            if (!_context.Fridges.Any(item => item == newItem))
+            {
+                _context.Add(newItem);
+                _context.SaveChanges();
+            }
             return Redirect("/");
         }
         public IActionResult RemoveItem(int id)
@@ -63,8 +66,11 @@ namespace MealFridge.Controllers
             var newItem = new Fridge();
             newItem.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             newItem.IngredId = id;
-            _context.Remove(newItem);
-            _context.SaveChanges();
+            if (_context.Fridges.Any(item => item == newItem))
+            {
+                _context.Remove(newItem);
+                _context.SaveChanges();
+            }
             return Redirect("/");
         }
         public IActionResult UpdateItem(int id, int amount)
@@ -73,8 +79,11 @@ namespace MealFridge.Controllers
             newItem.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             newItem.IngredId = id;
             newItem.Quantity = amount;
-            _context.Update(newItem);
-            _context.SaveChanges();
+            if (_context.Fridges.Any(item => item == newItem))
+            {
+                _context.Update(newItem);
+                _context.SaveChanges();
+            }
             return Redirect("/");
         }
     }

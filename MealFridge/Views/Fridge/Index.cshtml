@@ -17,7 +17,7 @@
                 </div>
             </div>
             <div class="col-4">
-                <table class="table">
+                <table class="table" id="fridge">
                     <thead>
                         <tr>
                             <th class="w-75"> Name </th>
@@ -27,14 +27,13 @@
                     <tbody>
                     @foreach (var i in Model)
                     {
-                        <tr>
+                        <tr id="@i.IngredId">
                             <td class="w-75"> @i.Ingred.Name </td>
                             <td class="w-25">
-                                <button type="button" class="btn btn-primary changeIngred" value="@i.IngredId" onclick="ChangeIngredient(this.value)">
+                                <button type="button" class="btn btn-primary changeIngred" id="btn-@i.IngredId" value="@i.IngredId" onclick="ChangeIngredient(this.value)">
                                     @i.Quantity
                                 </button>
                             </td>                           
-
                         </tr> 
                     }
                     </tbody>

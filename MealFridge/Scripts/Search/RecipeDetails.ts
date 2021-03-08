@@ -44,7 +44,7 @@ class Details {
             ingredients.push(i["ingred"]["name"]);
             return `
                             <li class="list-group-item-light">
-                                ${i["amount"]}}
+                                ${i["amount"]}
                             </li>
                         ` ;
         }).join('')}
