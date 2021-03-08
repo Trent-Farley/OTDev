@@ -71,6 +71,15 @@ class Search {
         });
     }
 }
+function inventorySearch() {
+    let search = document.getElementById("inventorySearch");
+    if (search.value == "") {
+        alert("You have no saved ingredients. Visit the Inventory page to add ingredients to your fridge.");
+        return;
+    }
+    let searcher = new Search(search.value, "Ingredient");
+    searcher.getPossibleRecipes();
+}
 function searchByName() {
     let search = document.getElementById("sbn");
     let type = document.getElementById("searchType");

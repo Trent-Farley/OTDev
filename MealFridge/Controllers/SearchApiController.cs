@@ -7,7 +7,7 @@ using System.Linq;
 using System.Diagnostics;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace MealFridge.Controllers
 {
@@ -19,12 +19,14 @@ namespace MealFridge.Controllers
         private readonly string _searchByRecipeEndpoint = "https://api.spoonacular.com/recipes/{id}/information";
         private readonly string _searchIngredientByNameEndpoint = "https://api.spoonacular.com/food/ingredients/search";
         private readonly string _searchIngredientDetailsEndpoint = "https://api.spoonacular.com/food/ingredients/"; // + {id}/information?amount=1
-
+        
+        private readonly UserManager<IdentityUser> _user;
         private readonly MealFridgeDbContext _db;
-        public SearchApiController(IConfiguration config, MealFridgeDbContext context)
+        public SearchApiController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
         {
             _db = context;
             _config = config;
+            _user = user;
         }
 
      
@@ -156,9 +158,6 @@ namespace MealFridge.Controllers
 
             return Json(possibleRecipes.OrderBy(r => r.Id).ToList());
         }
-
-
-
         [Route("/api/RecipeDetails/{id}")]
         public IActionResult RecipeDetails(string id)
         {
@@ -178,5 +177,7 @@ namespace MealFridge.Controllers
         }
 
     }
+
+    
 }
 
