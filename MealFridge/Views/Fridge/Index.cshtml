@@ -29,7 +29,12 @@
                     {
                         <tr>
                             <td class="w-75"> @i.Ingred.Name </td>
-                            <td class="w-25"> @i.Quantity </td>                           
+                            <td class="w-25">
+                                <button type="button" class="btn btn-primary changeIngred" value="@i.IngredId" onclick="ChangeIngredient(this.value)">
+                                    @i.Quantity
+                                </button>
+                            </td>                           
+
                         </tr> 
                     }
                     </tbody>

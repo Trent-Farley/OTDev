@@ -59,18 +59,33 @@ class IngredientSearch {
                         </div>
                     </div>
                 </div>
-            `;
+             `;
         });
     }
 }
 function AddIngredient(id) {
     let amount = prompt("Please enter the amount", "1");
     if (amount != '' && !isNaN(+amount)) {
-        const response = fetch("Fridge/AddItem?id=" + id + "&amount=" + amount, {
+        fetch("Fridge/AddItem?id=" + id + "&amount=" + amount, {
+
             method: 'GET'
         });
     }
 }
+function ChangeIngredient(id) {
+    let amount = prompt("Please enter new amount, or 0 to remove the item", "0");
+    if (amount != '' && !isNaN(+amount)) {
+        if (amount == '0') {
+            fetch("Fridge/RemoveItem?id=" + id, { method: 'GET' });
+        }
+        else {
+            fetch("Fridge/UpdateItem?id=" + id + "&amount=" + amount, {
+                method: 'GET'
+            });
+        }
+    }
+}
+
 function SearchByIngredientName() {
     let search = document.getElementById("ingredSearch");
     if (!search.value) {
@@ -86,4 +101,5 @@ inputSearchFridge.addEventListener("keydown", (e) => {
         SearchByIngredientName();
     }
 });
+
 //# sourceMappingURL=Index.js.map

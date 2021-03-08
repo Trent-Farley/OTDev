@@ -56,8 +56,26 @@ namespace MealFridge.Controllers
             newItem.Quantity = amount;
             _context.Add(newItem);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return Redirect("/");
         }
-
+        public IActionResult RemoveItem(int id)
+        {
+            var newItem = new Fridge();
+            newItem.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            newItem.IngredId = id;
+            _context.Remove(newItem);
+            _context.SaveChanges();
+            return Redirect("/");
+        }
+        public IActionResult UpdateItem(int id, int amount)
+        {
+            var newItem = new Fridge();
+            newItem.AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            newItem.IngredId = id;
+            newItem.Quantity = amount;
+            _context.Update(newItem);
+            _context.SaveChanges();
+            return Redirect("/");
+        }
     }
 }
