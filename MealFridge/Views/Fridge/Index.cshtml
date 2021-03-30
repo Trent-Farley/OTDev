@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Fridge>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Find an ingredient(s) below:</h4>
+                        <input id="ingredSearch" placeholder="Search Here!" />
+                        <button type="button" class="btn btn-primary" onclick="SearchByIngredientName()"> Find Ingredients </button>
+                    </div>
+                </div>
+
+                <div id="fridge_main">
+
+                </div>
+            </div>
+            <div class="col-4">
+                <table class="table" id="fridge">
+                    <thead>
+                        <tr>
+                            <th class="w-75"> Name </th>
+                            <th class="w-25"> Amount </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach (var i in Model)
+                    {
+                        <tr id="@i.IngredId">
+                            <td class="w-75"> @i.Ingred.Name </td>
+                            <td class="w-25">
+                                <button type="button" class="btn btn-primary changeIngred" id="btn-@i.IngredId" value="@i.IngredId" onclick="ChangeIngredient(this.value)">
+                                    @i.Quantity
+                                </button>
+                            </td>                           
+                        </tr> 
+                    }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+@section Scripts{
+    <script src="~/js/Fridge/Index.js"></script>
+
+}

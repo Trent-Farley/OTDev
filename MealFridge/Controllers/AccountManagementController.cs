@@ -9,8 +9,8 @@ namespace MealFridge.Controllers
     public class AccountManagementController : Controller
     {
         // GET: AccountManagement
-        
-        public ActionResult Index() 
+
+        public ActionResult Index()
         {
             return View();
         }
@@ -18,11 +18,11 @@ namespace MealFridge.Controllers
         {
             return View();
         }
-        public ActionResult FoodPreferences() 
+        public ActionResult FoodPreferences()
         {
             return View();
         }
-        public ActionResult FavoriteRecipes ()
+        public ActionResult FavoriteRecipes()
         {
             return View();
         }

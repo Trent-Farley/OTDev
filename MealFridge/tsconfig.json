@@ -5,14 +5,18 @@
     "noEmitOnError": true,
     "removeComments": true,
     "sourceMap": true,
-    "moduleResolution": "Classic",
+    "moduleResolution": "Node",
     "module": "commonjs",
-    "target": "ES2015",
-    "lib": [ "es2015.promise", "es2016", "es5", "dom" ],
+    "target": "ES6",
+    "lib": [ "es2015.promise", "ES2015", "es2016", "es5", "dom" ],
     "rootDir": "Scripts/",
     "outDir": "wwwroot/js"
   },
   "include": [
     "Scripts/"
+  ],
+  "exclude": [
+    "node_modules",
+    "wwwroot"
   ]
 }
