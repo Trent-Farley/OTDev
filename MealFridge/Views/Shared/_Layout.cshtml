@@ -35,7 +35,7 @@
                                 <a class="nav-link text-white" asp-area="" asp-controller="Fridge" asp-action="Index">Inventory</a>
                             </li>
                         }
-                        </ul>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -45,7 +45,11 @@
             @RenderBody()
         </main>
     </div>
-
+    <div id="loading-screen" class="d-none">
+        <div class="spinner-grow" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - MealFridge
