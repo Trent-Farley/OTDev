@@ -3,7 +3,7 @@
 
 <div class="container">
     <h3 class="text-center">Search by Recipe Name or Ingredient!</h3>
-    <div class="jumbotron p-0 h-25 sticky-top shadow-lg">
+    <div class="jumbotron p-0 h-25  shadow-lg">
         <div class="collapse" id="shoppingList" style="background-color:whitesmoke">
             <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
             <div id="innerShopping">
@@ -15,12 +15,12 @@
         <div class="input-group">
 
             <div class="input-group-prepend">
-                <button class="float-left btn btn-outline-success sticky-top" type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList" title="Open or close the shopping list">
+                <button class="float-left btn btn-outline-success " type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList" title="Open or close the shopping list">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <button id="SearchInventory" class="float-right btn btn-outline-success sticky-top" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
+                    <button id="SearchInventory" class="float-right btn btn-outline-success" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
                         <i class="fas fa-box"></i>
                     </button>
                 }
