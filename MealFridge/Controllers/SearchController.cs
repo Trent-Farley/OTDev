@@ -85,7 +85,7 @@ namespace MealFridge.Controllers
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes));
         }
-        [HttpPost]
+
         public async Task<IActionResult> RecipeDetails(Query query)
         {
             if (!int.TryParse(query.QueryValue, out var id))

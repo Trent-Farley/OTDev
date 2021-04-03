@@ -1,7 +1,9 @@
-﻿
+﻿@model List<Recipe>
 @{
     ViewBag.Title = "Home";
 }
+
+
 <div class="container">
     <div id="main" class="card-columns"></div>
     <div class="jumbotron shadow-lg">
@@ -9,7 +11,57 @@
         <p class="card-text">
             MealFridge is an app that helps users find recipes based on their own ingredients,
             create shopping lists, and much more!
+
         </p>
+        @if (Model.Count() < -29)
+        {
+            <a href="/Search/" class="btn btn-outline-primary d-flex justify-content-center">Search for a recipe</a>
+        }
+        @if (Model.Count() > 5)
+        {
+            <div id="demo-dialog" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner" role="listbox">
+                    <div class="carousel-item active">
+                        <div class="row">
+                            @for (var i = 0; i < Model.Count() / 2; ++i)
+                            {
+                                <div class="col">
+                                    <div class="card">
+                                        <img src="@Model[i].Image" alt="Recipe image" class="card-img-top" />
+                                        <h5 class="card-title">@Model[i].Title</h5>
+                                        <p class="card-text">@Model[i].Summery</p>
+                                        <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model[i].Id')">Details</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="row">
+                            @for (var i = Model.Count() / 2; i < Model.Count(); ++i)
+                            {
+                                <div class="col">
+                                    <div class="card">
+                                        <img src="@Model[i].Image" alt="Recipe image" class="card-img-top" />
+                                        <h5 class="card-title">@Model[i].Title</h5>
+                                        <p class="card-text">@Model[i].Summery</p>
+                                        <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model[i].Id')">Details</button>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev " href="#demo-dialog" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next " href="#demo-dialog" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        }
     </div>
     <div class="row">
         <div class="col">
@@ -32,6 +84,7 @@
         </div>
     </div>
 </div>
+<div id="modal-container"></div>
 @section Scripts {
     <script src="~/js/Home/Index.js"></script>
 }

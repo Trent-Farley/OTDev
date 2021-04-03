@@ -4,7 +4,7 @@
 {
     @foreach (var r in Model)
     {
-        <button class="btn" type="button" onClick="getDetails(@r.Id.ToString())" data-toggle="collapse" data-target="#info-@r.Id" aria-expanded="false" aria-controls="info-@r.Id">
+        <button class="btn" type="button" onClick="getDetails(@r.Id.ToString())">
             <div class="card shadow-lg">
                 <img class="card-img-top" src="@r.Image" alt="Recipe Image">
                 <div class="card-body">

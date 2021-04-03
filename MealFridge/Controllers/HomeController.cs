@@ -1,5 +1,7 @@
 ﻿using MealFridge.Models;
+using MealFridge.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -21,8 +23,16 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
-
-            return await Task.FromResult(View());
+            var randomRecipes = _db.Recipes
+                .OrderBy(r => Guid.NewGuid())
+                .Take(6)
+                .ToList();
+            return await Task.FromResult(View("Index", randomRecipes));
+        }
+        [HttpPost]
+        public async Task<IActionResult> RecipeDetails(Query query)
+        {
+            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { QueryValue = query.QueryValue }));
         }
     }
 }
