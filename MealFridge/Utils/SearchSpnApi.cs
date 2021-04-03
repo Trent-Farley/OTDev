@@ -39,37 +39,41 @@ namespace MealFridge.Utils
             var nutrients = details["nutrition"]["nutrients"].ToList();
             foreach (var n in nutrients)
             {
-                if (n.Children()[0].Contains("Calories"))
+                if (n["name"].ToString() == "Calories")
                 {
                     query.Calories = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Saturated Fat"))
+                else if (n["name"].ToString() == "Saturated Fat")
                 {
                     query.SatFat = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Fat"))
+                else if (n["name"].ToString() == "Fat")
                 {
                     query.TotalFat = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Net Carbohydrates"))
+                else if (n["name"].ToString() == "Net Carbohydrates")
                 {
                     query.NetCarbs = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Carbohydrates"))
+                else if (n["name"].ToString() == "Carbohydrates")
                 {
                     query.Carbs = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Cholesterol"))
+                else if (n["name"].ToString() == "Cholesterol")
                 {
                     query.Cholesterol = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Sodium"))
+                else if (n["name"].ToString() == "Sodium")
                 {
                     query.Sodium = (float)n["amount"];
                 }
-                else if (n["name"].Contains("Protein"))
+                else if (n["name"].ToString() == "Protein")
                 {
                     query.Protein = (float)n["amount"];
+                }
+                else if (n["name"].ToString() == "Sugar")
+                {
+                    query.Sugar = (float)n["amount"];
                 }
                 else
                 {
