@@ -19,18 +19,10 @@ namespace MealFridge.Controllers
             _db = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
-        }
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-        public IActionResult TestIndex()
-        {
-            return PartialView("~/Views/Partials/test.cshtml");
+
+            return await Task.FromResult(View());
         }
     }
 }

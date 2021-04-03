@@ -44,7 +44,7 @@ namespace MealFridge.Controllers
 
 
         /// <summary>
-        /// Main entry point to add an item. This will either pdate or add an item to the db
+        /// Main entry point to add an item. This will either udate or add an item to the db
         /// </summary>
         /// <param name="id">Id of the ingredient to be added/updated</param>
         /// <param name="amount">Amount of the ingredient to be added or updated</param>

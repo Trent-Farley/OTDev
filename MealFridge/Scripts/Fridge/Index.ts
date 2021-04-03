@@ -1,5 +1,4 @@
-﻿
-function addIngredient(id: string, amount: string): void {
+﻿function addIngredient(id: string, amount: string): void {
     let current = parseInt($("#current-card-" + id).text(), 10);
     $("#current-card-" + id).empty()
     $("#current-card-" + id).append((current + 1).toString());//Add one for updated value

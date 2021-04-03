@@ -72,7 +72,9 @@ namespace MealFridge.Utils
                     break;
 
                 case "Ingredient":
-                    JArray recipesByIngredients = JArray.Parse(jsonResponse);
+                    JObject res = JObject.Parse(jsonResponse);
+
+                    JArray recipesByIngredients = res["results"] as JArray;
 
                     if (recipesByIngredients.Count <= 0)
                         return null;
