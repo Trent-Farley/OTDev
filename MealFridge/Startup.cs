@@ -33,7 +33,7 @@ namespace MealFridge
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<MealFridgeDbContext>(opts =>
             {
-                opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"] + ";MultipleActiveResultSets=true");
+                opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"]);
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
