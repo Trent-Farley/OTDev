@@ -36,6 +36,47 @@ namespace MealFridge.Utils
             {
                 query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
             }
+            var nutrients = details["nutrition"]["nutrients"].ToList();
+            foreach (var n in nutrients)
+            {
+                if (n.Children()[0].Contains("Calories"))
+                {
+                    query.Calories = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Saturated Fat"))
+                {
+                    query.SatFat = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Fat"))
+                {
+                    query.TotalFat = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Net Carbohydrates"))
+                {
+                    query.NetCarbs = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Carbohydrates"))
+                {
+                    query.Carbs = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Cholesterol"))
+                {
+                    query.Cholesterol = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Sodium"))
+                {
+                    query.Sodium = (float)n["amount"];
+                }
+                else if (n["name"].Contains("Protein"))
+                {
+                    query.Protein = (float)n["amount"];
+                }
+                else
+                {
+                    Console.WriteLine("Skipped: " + (string)n["name"]);
+                }
+            }
+            
             return query;
         }
         
