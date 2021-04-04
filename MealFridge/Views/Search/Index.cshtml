@@ -18,12 +18,21 @@
                 <button class="float-left btn btn-outline-success " type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList" title="Open or close the shopping list">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
+                
                 @if (signInManager.IsSignedIn(User))
-                {
-                    <button id="SearchInventory" class="float-right btn btn-outline-success" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
-                        <i class="fas fa-box"></i>
-                    </button>
-                }
+                 {
+                    <div class="dropdown">
+                        <button id="SearchInventory" class="float-right btn btn-outline-success" type="button" title="Find recipes based on ingredients in your fridge"  onclick="inventorySearch()">
+                            <i class="fas fa-box"></i>
+                        </button>
+                        <div class="dropdown-content" id="pantryTool">
+                            <label class="switch" id="pSlider" title="Ignore common food items such as salt and water to improve search results when searching by ingredients in your inventory.">
+                                    <input type="checkbox" id="panCheck">
+                                    <span class="slider"><p id="pToolLabel">Refine</p></span>
+                            </label>
+                        </div>
+                    </div>
+                 }
                 <input id="inventorySearch" value="@Model" hidden />
                 <select id="searchType" class=" w-auto custom-select bg-primary text-light">
                     <option value="Recipe">Recipe Name</option>
@@ -41,6 +50,7 @@
     <div id="spinner"></div>
     <div id="main" class="card-columns"></div>
     <div id="modal-container"></div>
+
 </div>
 @section Scripts{
     <script src="~/js/Search/Index.js"></script>

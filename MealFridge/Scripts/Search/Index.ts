@@ -9,6 +9,7 @@ window.onload = () => {
 };
 function inventorySearch(): void {
     let search = $("#inventorySearch");
+    let refine: HTMLInputElement = <HTMLInputElement>document.getElementById("panCheck");
     if (search.val() == "") {
         $("#main").empty();
         $("#main").append("You have no saved ingredients. Visit the Inventory page to add ingredients to your fridge.")
@@ -19,7 +20,8 @@ function inventorySearch(): void {
         type: "POST",
         data: {
             QueryValue: search.val(),
-            SearchType: "Ingredient"
+            SearchType: "Ingredient",
+            Refine: refine.checked
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {

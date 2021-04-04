@@ -67,7 +67,6 @@ namespace MealFridge.Controllers
             var ingredient = _db.Ingredients.Where(a => a.Name.Contains(query.QueryValue)).FirstOrDefault();//This will be a problem when we are searching for more then one ingredient
             var recipesWithIngredient = _db.Recipeingreds.Where(a => a.IngredId == ingredient.Id).Take(10);
             List<Recipe> possibleRecipes = new List<Recipe>();
-
             if (ingredient != null)
             {
                 foreach (var recipeIngred in recipesWithIngredient)
@@ -114,9 +113,13 @@ namespace MealFridge.Controllers
         {
             var apiQuerier = new SearchSpnApi(query);
             var possibleRecipes = apiQuerier.SearchAPI();
-            foreach (var recipe in possibleRecipes)
-                if (!_db.Recipes.Any(t => t.Id == recipe.Id))
-                    await _db.Recipes.AddAsync(recipe);
+            if(possibleRecipes != null)
+            {
+                foreach (var recipe in possibleRecipes)
+                    if (!_db.Recipes.Any(t => t.Id == recipe.Id))
+                        await _db.Recipes.AddAsync(recipe);
+            }
+            
 
             await _db.SaveChangesAsync();
             return await Task.FromResult(possibleRecipes.OrderBy(r => r.Id).ToList());

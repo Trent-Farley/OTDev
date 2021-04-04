@@ -72,9 +72,17 @@ namespace MealFridge.Utils
                     break;
 
                 case "Ingredient":
-                    JObject res = JObject.Parse(jsonResponse);
-
-                    JArray recipesByIngredients = res["results"] as JArray;
+                    JArray recipesByIngredients = new JArray();
+                    if (jsonResponse[0] == '{')
+                    {
+                        var res = JObject.Parse(jsonResponse);
+                        recipesByIngredients = res["results"] as JArray;
+                    }
+                    else
+                    {
+                        var res = JArray.Parse(jsonResponse);
+                        recipesByIngredients = res;
+                    }
 
                     if (recipesByIngredients.Count <= 0)
                         return null;
@@ -133,7 +141,6 @@ namespace MealFridge.Utils
         {
             try
             {
-                //number selects the number of results to return from API (FOR FUTURE REFERENCE)
                 HttpWebRequest request;
                 request = (HttpWebRequest)WebRequest.Create(_query.GetUrl);
                 request.Accept = "application/json";
@@ -163,7 +170,7 @@ namespace MealFridge.Utils
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
                     break;
                 case "Ingredient":
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10");
+                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10" + "&ignorePantry=");
                     break;
                 case "IngredientDetails":
                     request = (HttpWebRequest)WebRequest.Create(url + query + "/information?apiKey=" + credentials + "&amount=1&unit=serving");
