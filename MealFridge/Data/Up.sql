@@ -43,16 +43,37 @@ CREATE TABLE [RECIPES] (
   [servings] int,
   [minutes] int,
   [summery] nvarchar(255),
-  [instructions] nvarchar(255)
+  [instructions] nvarchar(255),
+  [cost] money,
+  [serving_size] float,
+  [serving_unit] nvarchar(255),
+  [calories] float,
+  [total_fat] float,
+  [sat_fat] float,
+  [carbs] float,
+  [net_carbs] float,
+  [sugar] float,
+  [cholesterol] float,
+  [sodium] float,
+  [protein] float
 )
 
 
 CREATE TABLE [RECIPEINGRED] (
   [recipe_id] int,
   [ingred_id] int,
-  [amount] nvarchar(255),
-  [step] int,
+  [amount] float,
   [direction] nvarchar(255),
+  [serving_unit] nvarchar(255),
+  [calories] float,
+  [total_fat] float,
+  [sat_fat] float,
+  [carbs] float,
+  [net_carbs] float,
+  [sugar] float,
+  [cholesterol] float,
+  [sodium] float,
+  [protein] float
   PRIMARY KEY ([recipe_id], [ingred_id])
 )
 
