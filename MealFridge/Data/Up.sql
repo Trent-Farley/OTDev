@@ -22,6 +22,7 @@ CREATE TABLE [RESTRICTIONS] (
   [account_id] NVARCHAR(255),
   [ingred_id] int,
   [dislike] bit,
+  [banned] bit,
   PRIMARY KEY ([account_id], [ingred_id])
 )
 GO
@@ -51,6 +52,7 @@ CREATE TABLE [SAVEDRECIPES] (
   [account_id] NVARCHAR(255),
   [recipe_id] int,
   [shelved] bit,
+  [favorited] bit,
   PRIMARY KEY ([account_id], [recipe_id])
 )
 GO
