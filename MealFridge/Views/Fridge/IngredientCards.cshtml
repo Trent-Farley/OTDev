@@ -1,0 +1,36 @@
+﻿@model IEnumerable<IngredientInventory>
+
+@if (Model == null)
+{
+    <div class="card">
+        <div class="card-body">
+            <h6 class="card-title">No results found!</h6>
+        </div>
+    </div>
+}
+@if (Model != null)
+{
+    @foreach (var ingredient in Model)
+    {
+        <div class="card">
+            <div class="card-body">
+                <img src="@ingredient.Image" alt="@ingredient.Name" class="card-img" />
+            </div>
+            <h6 class="card-title">@ingredient.Name</h6>
+            <div class="card-footer">
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-light disabled">
+                        Currently you have <p id="current-card-@ingredient.IngredientId">@ingredient.Quantity</p>
+                    </button>
+                    <button type="button"
+                            onclick="addIngredient('@ingredient.IngredientId', 1)"
+                            title="Add one"
+                            class="btn btn-outline-success">
+                        <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+}
+

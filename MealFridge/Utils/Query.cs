@@ -13,6 +13,12 @@ namespace MealFridge.Utils
         public string Credentials { get; set; }
         public string SearchType { get; set; }
         private readonly string Number = "10";
+        public Query() { }
+        public Query(string _url, string cred)
+        {
+            Url = _url;
+            Credentials = cred;
+        }
         public string GetUrl
         {
             get

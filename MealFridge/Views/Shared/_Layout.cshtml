@@ -23,19 +23,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Search" asp-action="Index">Search</a>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-white" asp-area="" asp-controller="Fridge" asp-action="Index">Inventory</a>
-                            </li>
-                        }
-                        </ul>
+                    </ul>
                 </div>
             </div>
         </nav>
@@ -45,7 +33,11 @@
             @RenderBody()
         </main>
     </div>
-
+    <div id="loading-screen" class="d-none">
+        <div class="spinner-grow" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
     <footer class="border-top footer text-muted">
         <div class="container">
             &copy; 2021 - MealFridge

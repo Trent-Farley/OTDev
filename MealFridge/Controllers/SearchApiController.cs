@@ -48,13 +48,13 @@ namespace MealFridge.Controllers
 
             if (possibleIngredients.Count < 10)
             {
-                var apiQuerier = new SearchSpnApi(_searchIngredientByNameEndpoint, _config["SApiKey"]);
-                var newIngredients = apiQuerier.SearchIngredientsApi(query, "Ingredients");
+                var apiQuerier = new SearchSpnApi(new Query(_searchIngredientByNameEndpoint, _config["SApiKey"]));
+                var newIngredients = apiQuerier.SearchIngredients();
                 foreach (var i in newIngredients)
                 {
                     if (!_db.Ingredients.Any(t => t.Id == i.Id))
                     {
-                        var apiCall = new SearchSpnApi(_searchIngredientDetailsEndpoint, _config["SApiKey"]);
+                        var apiCall = new SearchSpnApi(new Query(_searchIngredientDetailsEndpoint, _config["SApiKey"]));
                         var details = apiCall.IngredientDetails(i, "IngredientDetails");
                         _db.Ingredients.Add(details);
                         possibleIngredients.Add(details);

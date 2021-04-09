@@ -7,40 +7,68 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Find an ingredient(s) below:</h4>
-                        <input id="ingredSearch" placeholder="Search Here!" />
-                        <button type="button" class="btn btn-primary" onclick="SearchByIngredientName()"> Find Ingredients </button>
+                        <div class="input-group">
+                            <input class="form-control" id="ingredSearch" placeholder="Search for an ingredient" />
+                            <div class="input-group-append">
+                                <button type="button" title="search" class=" btn btn-outline-success" onclick="SearchByIngredientName()">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div id="fridge_main">
+                <div id="fridge_main" class="card-columns">
+
 
                 </div>
             </div>
             <div class="col-4">
-                <table class="table" id="fridge">
-                    <thead>
-                        <tr>
-                            <th class="w-75"> Name </th>
-                            <th class="w-25"> Amount </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach (var i in Model)
+                <h2 class="card-title text-center">Current Inventory</h2>
+                <div id="fridge-table-main">
+                    @if (Model.Count() < 1)
                     {
-                        <tr id="@i.IngredId">
-                            <td class="w-75"> @i.Ingred.Name </td>
-                            <td class="w-25">
-                                <button type="button" class="btn btn-primary changeIngred" id="btn-@i.IngredId" value="@i.IngredId" onclick="ChangeIngredient(this.value)">
-                                    @i.Quantity
-                                </button>
-                            </td>                           
-                        </tr> 
+                        <div class="card shadow-lg">
+                            <h6 class="card-title text-center">Inventory is currently empty!</h6>
+                        </div>
                     }
-                    </tbody>
-                </table>
+                    @if (Model.Count() > 0)
+                    {
+
+                        <table class="table" id="fridge">
+                            <thead>
+                                <tr>
+                                    <th class="w-75"> Name </th>
+                                    <th class="w-25"> Amount </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var i in Model)
+                                {
+                                    <tr id="@i.IngredId">
+                                        <td class="w-75"> @i.Ingred.Name </td>
+
+                                        <td class="w-25">
+                                            <div class="btn-group btn-group-sm">
+                                                <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId" onclick="updateInventory('@i.Ingred.Id', -1)">
+                                                    <i class="fa fa-minus"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-light disabled">@i.Quantity</button>
+                                                <button type="button" title="Add one" class="btn btn-outline-success" onclick="updateInventory('@i.Ingred.Id', 1)">
+                                                    <i class="fa fa-plus"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
             </div>
         </div>
     </div>
+
 </body>
 
 @section Scripts{

@@ -17,11 +17,6 @@ namespace MealFridge.Utils
         public string Source { get; set; }
         private string Secret { get; set; }
 
-        public SearchSpnApi(string endpoint, string key)
-        {
-            Source = endpoint;
-            Secret = key;
-        }
         public SearchSpnApi(Query query)
         {
             _query = query;
@@ -32,7 +27,7 @@ namespace MealFridge.Utils
             var details = JObject.Parse(jsonResponse);
             query.Aisle = (string)details["aisle"];
             query.Cost = (decimal)details["estimatedCost"]["value"];
-            if ((string)details["estimatedCost"]["unit"] == "US Cents") 
+            if ((string)details["estimatedCost"]["unit"] == "US Cents")
             {
                 query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
             }
@@ -83,33 +78,22 @@ namespace MealFridge.Utils
             
             return query;
         }
-        
-        public List<Ingredient> SearchIngredientsApi(string query, string searchType)
-        {
-            if (Source != null)
-            {
-                var temp = new Query
-                {
-                    Url = Source,
-                    Credentials = Secret,
-                    QueryName = "query",
-                    QueryValue = query
-                };
-                _query = temp;
-            }
 
+        public List<Ingredient> SearchIngredients()
+        {
             var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
             //Test Start
             foreach (var i in ingredients["results"])
             {
-                var temp = new Ingredient();
-                temp.Id = (int)i["id"];
-                temp.Name = (string)i["name"];
-                temp.Image = "https://spoonacular.com/cdn/ingredients_250x250/" + i["image"];
+                var temp = new Ingredient
+                {
+                    Id = (int)i["id"],
+                    Name = (string)i["name"],
+                    Image = "https://spoonacular.com/cdn/ingredients_500x500/" + i["image"]
+                };
                 output.Add(temp);
-
             }
             //Test End
             return output.ToList();
