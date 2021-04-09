@@ -1,16 +1,16 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "noImplicitAny": false,
-    "noEmitOnError": true,
-    "removeComments": true,
-    "sourceMap": true,
+    "lib": [ "es2015.promise", "ES2015", "es6", "es2016", "es5", "dom" ],
+    "module": "ESNext",
     "moduleResolution": "Node",
-    "module": "None",
-    "target": "ES6",
-    "lib": [ "es2015.promise", "ES2015", "es2016", "es5", "dom" ],
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "outDir": "wwwroot/js",
+    "removeComments": true,
     "rootDir": "Scripts/",
-    "outDir": "wwwroot/js"
+    "sourceMap": true,
+    "target": "ESNext"
   },
   "include": [
     "Scripts/"

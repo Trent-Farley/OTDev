@@ -7,4 +7,5 @@ describe('Fridge Test Suite', function () {
     it("getAmountFromString_ParseStringWithoutNumber_ReturnNaN", function () {
         expect(getAmountFromString("A")).toBe(NaN);
     });
+
 });

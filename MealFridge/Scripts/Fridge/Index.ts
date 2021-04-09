@@ -1,4 +1,6 @@
-﻿function addIngredient(id: string, amount: string): void {
+﻿import { getAmountFromString } from './GetNumberFromString.js'
+
+function addIngredient(id: string, amount: string): void {
     let current = parseInt($("#current-card-" + id).text(), 10);
     $("#current-card-" + id).empty()
     $("#current-card-" + id).append((current + 1).toString());//Add one for updated value
@@ -8,7 +10,7 @@
         method: "POST",
         data: {
             id: id,
-            amount: parseInt(amount, 10)
+            amount: getAmountFromString(amount)
         },
         success: (data) => {
             $("#fridge-table-main").empty();
