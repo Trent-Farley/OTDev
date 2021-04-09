@@ -1,4 +1,5 @@
-﻿
+﻿import { getAmountFromString } from './GetNumberFromString.js'
+
 function addIngredient(id: string, amount: string): void {
     let current = parseInt($("#current-card-" + id).text(), 10);
     $("#current-card-" + id).empty()
@@ -9,7 +10,7 @@ function addIngredient(id: string, amount: string): void {
         method: "POST",
         data: {
             id: id,
-            amount: parseInt(amount, 10)
+            amount: getAmountFromString(amount)
         },
         success: (data) => {
             $("#fridge-table-main").empty();
@@ -19,6 +20,27 @@ function addIngredient(id: string, amount: string): void {
     })
 }
 
+function banIngred(id: string): void {
+    $.ajax({
+        url: "/Fridge/Restriction",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Banned"
+        }
+    });
+}
+
+function hideIngred(id: string): void {
+    $.ajax({
+        url: "/Fridge/Restriction",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Dislike"
+        }
+    });
+}
 function updateInventory(id: string, amount: string): void {
     $.ajax({
         url: "/Fridge/AddItem",

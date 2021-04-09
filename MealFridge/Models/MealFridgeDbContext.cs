@@ -291,6 +291,8 @@ namespace MealFridge.Models
 
                 entity.Property(e => e.IngredId).HasColumnName("ingred_id");
 
+                entity.Property(e => e.Banned).HasColumnName("banned");
+
                 entity.Property(e => e.Dislike).HasColumnName("dislike");
 
                 entity.HasOne(d => d.Ingred)
@@ -312,6 +314,8 @@ namespace MealFridge.Models
                     .HasColumnName("account_id");
 
                 entity.Property(e => e.RecipeId).HasColumnName("recipe_id");
+
+                entity.Property(e => e.Favorited).HasColumnName("favorited");
 
                 entity.Property(e => e.Shelved).HasColumnName("shelved");
 

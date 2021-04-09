@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-MealFridge-1F270BF3-7011-4AAD-BB53-8A4EB990EFD9</UserSecretsId>
+    <ApplicationIcon>fridgefonta_blue.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -46,22 +47,6 @@
     <Watch Include="**/*.ts" />
     <Watch Include="**/*.cshtml" />
     <Watch Include="**/*.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Views\Partials\**" />
-    <Content Remove="Views\Partials\**" />
-    <EmbeddedResource Remove="Views\Partials\**" />
-    <None Remove="Views\Partials\**" />
-    <TypeScriptCompile Remove="Views\Partials\**" />
-    <Watch Remove="Views\Partials\**" />
-  </ItemGroup>
-  <ItemGroup>
-    <Watch Remove="Views\Fridge\CurrentInventory.cshtml" />
-    <Watch Remove="Views\Fridge\IngredientCards.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Views\Fridge\CurrentInventory.cshtml" />
-    <None Include="Views\Fridge\IngredientCards.cshtml" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>
