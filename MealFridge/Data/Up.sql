@@ -3,10 +3,16 @@ CREATE TABLE [FRIDGE] (
   [id] int,
   [account_id] NVARCHAR(255),
   [ingred_id] int,
-  [quantity] int,
+  [quantity] float,
+  [shopping] bit,
+  [needed_amount] float,
   PRIMARY KEY ([account_id], [ingred_id])
 )
 
+CREATE TABLE [DIET] (
+  [account_id] NVARCHAR(255) PRIMARY KEY,
+  [diet] nvarchar(64)
+)
 
 CREATE TABLE [INGREDIENTS] (
   [id] int PRIMARY KEY,
@@ -55,7 +61,12 @@ CREATE TABLE [RECIPES] (
   [sugar] float,
   [cholesterol] float,
   [sodium] float,
-  [protein] float
+  [protein] float,
+  [breakfast] bit,
+  [lunch] bit,
+  [dinner] bit,
+  [dessert] bit,
+  [snack] bit
 )
 
 

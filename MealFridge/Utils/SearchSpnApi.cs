@@ -101,6 +101,7 @@ namespace MealFridge.Utils
             var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
+            //Test Start
             foreach (var i in ingredients["results"])
             {
                 var temp = new Ingredient();
@@ -110,6 +111,7 @@ namespace MealFridge.Utils
                 output.Add(temp);
 
             }
+            //Test End
             return output.ToList();
         }
         public List<Recipe> SearchAPI()
@@ -120,6 +122,7 @@ namespace MealFridge.Utils
             {
                 case "Recipe":
                     var recipes = JObject.Parse(jsonResponse);
+                    //Test Start
                     if ((int)recipes["number"] == 0)
                         return null;
 
@@ -130,11 +133,12 @@ namespace MealFridge.Utils
                             Title = (string)recipe["title"],
                             Image = "https://spoonacular.com/recipeImages/" + recipe["id"].ToString() + "-556x370." + recipe["imageType"].ToString()
                         });
+                    //Test End
                     break;
 
                 case "Ingredient":
                     JArray recipesByIngredients = JArray.Parse(jsonResponse);
-
+                    //Test Start
                     if (recipesByIngredients.Count <= 0)
                         return null;
                     for (var i = 0; i < recipesByIngredients.Count; ++i)
@@ -146,9 +150,11 @@ namespace MealFridge.Utils
                             Image = "https://spoonacular.com/recipeImages/" + (string)recipesByIngredients[i]["id"] + "-556x370." + (string)recipesByIngredients[i]["imageType"]
                         });
                     }
+                    //Test End
                     break;
                 case "Details":
                     var recipeDetails = JObject.Parse(jsonResponse);
+                    //Test Start
                     var detailedRecipe = new Recipe
                     {
                         Id = recipeDetails["id"].Value<int>(),
@@ -159,6 +165,7 @@ namespace MealFridge.Utils
 
                     };
                     output.Add(detailedRecipe);
+                    //Test End
                     break;
                 default:
                     Console.WriteLine("Never hit any case");
@@ -167,7 +174,7 @@ namespace MealFridge.Utils
             return output;
         }
 
-        private ICollection<Recipeingred> GetIngredients(JArray ingredients)
+        private ICollection<Recipeingred> GetIngredients(JArray ingredients) //Can Test whole function
         {
             var retingredients = new List<Recipeingred>();
             foreach (var ing in ingredients)
@@ -177,11 +184,14 @@ namespace MealFridge.Utils
                 retingredients.Add(new Recipeingred
                 {
                     //Or amount + unit to get each component i.e 1.0 tbsp butter
-                    Amount = ing["original"]?.Value<string>(),
+                    Amount = ing["measures"]["us"]["amount"]?.Value<double>(),
                     Ingred = new Ingredient
                     {
                         Name = ing["name"]?.Value<string>(),
-                        Id = ing["id"].Value<int>()
+                        Id = ing["id"].Value<int>(),
+                        Image = ing["image"].Value<string>(),
+                        Aisle = ing["aisle"].Value<string>(),
+
                     }
                 });
 

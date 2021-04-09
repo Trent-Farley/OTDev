@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MealFridge.Model
+namespace MealFridge.Models
 {
     public partial class Recipe
     {
@@ -33,6 +33,11 @@ namespace MealFridge.Model
         public double? Cholesterol { get; set; }
         public double? Sodium { get; set; }
         public double? Protein { get; set; }
+        public bool? Breakfast { get; set; }
+        public bool? Lunch { get; set; }
+        public bool? Dinner { get; set; }
+        public bool? Dessert { get; set; }
+        public bool? Snack { get; set; }
 
         public virtual ICollection<Meal> Meals { get; set; }
         public virtual ICollection<Recipeingred> Recipeingreds { get; set; }

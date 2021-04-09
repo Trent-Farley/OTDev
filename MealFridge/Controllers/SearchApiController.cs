@@ -173,10 +173,6 @@ namespace MealFridge.Controllers
             var querier = new SearchSpnApi(apiDetails);
             var results = querier.SearchAPI().OrderBy(r => r.Id).ToList();
             results.ForEach(r => Console.WriteLine("Recipe: " + r.Title));
-            foreach (var r in results)
-            {
-
-            }
             return Json(results);
         }
 
