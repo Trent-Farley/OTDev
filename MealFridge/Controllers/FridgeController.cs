@@ -83,6 +83,7 @@ namespace MealFridge.Controllers
         {
             var dbIngredients = _context.Ingredients
                 .Where(i => i.Name.Contains(query.QueryValue))
+                .Include(r => r.Restrictions)
                 .ToList();
             var possibleIngredients = new List<Ingredient>();
 
@@ -114,30 +115,8 @@ namespace MealFridge.Controllers
                 ingredient.Ingred = _context.Ingredients.Find(ingredient.IngredId);
 
             //Create a list of ingredients with their current inventory
-            var ingredientInventories = new List<IngredientInventory>();
-            foreach (var ingredient in possibleIngredients)
-            {
-                var ingredientInventory = new IngredientInventory()
-                {
-                    Name = ingredient.Name,
-                    Image = ingredient.Image,
-                    IngredientId = ingredient.Id
-                };
-                if (userInventory.Any(f => f.Ingred.Id == ingredient.Id))
-                {
-                    var fridgeCount = userInventory
-                        .Find(f => f.Ingred.Id == ingredient.Id)
-                        .Quantity;
-                    ingredientInventory.Quantity = fridgeCount ?? 0;
-                }
-                else
-                {
-                    ingredientInventory.Quantity = 0;
-                }
-                ingredientInventories.Add(ingredientInventory);
-            }
 
-            return await Task.FromResult(PartialView("IngredientCards", ingredientInventories));
+            return await Task.FromResult(PartialView("IngredientCards", possibleIngredients));
         }
 
         private void UpdateItem(int id, int amount)
@@ -174,6 +153,36 @@ namespace MealFridge.Controllers
                 _context.Remove(fridgeIngredient);
                 _context.SaveChanges();
             }
+        }
+
+        public void Restriction(int id, string other)
+        {
+            var userId = _user.GetUserId(User);
+            var badIngred = _context.Ingredients.Where(r => r.Id == id).FirstOrDefault();
+            var restrict = new Restriction 
+            {
+                Ingred = badIngred,
+                AccountId = userId.ToString(),
+
+        };
+            if(other == "Banned")
+            {
+                restrict.Banned = true;
+            }
+            if(other == "Dislike")
+            {
+                restrict.Dislike = true;
+            }
+            var temp = _context.Restrictions.ToList();
+            foreach (var i in temp)
+            {
+                if(i.IngredId == restrict.Ingred.Id)
+                {
+                    return;
+                }
+            }
+            _context.Restrictions.Add(restrict);
+            _context.SaveChanges();
         }
 
     }

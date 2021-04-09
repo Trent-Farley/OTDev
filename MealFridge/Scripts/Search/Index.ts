@@ -53,6 +53,27 @@ function searchByName(): void {
         }
     })
 }
+function addFavorite(id: string): void {
+    $.ajax({
+        url: "/Search/SavedRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Favorite"
+        }
+    });
+}
+
+function addShelf(id: string): void {
+    $.ajax({
+        url: "/Search/SavedRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Shelved"
+        }
+    });
+}
 
 const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
 inputSearch.addEventListener("keydown", (e) => {

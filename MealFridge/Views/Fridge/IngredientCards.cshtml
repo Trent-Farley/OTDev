@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IngredientInventory>
+﻿@model IEnumerable<Ingredient>
 
 @if (Model == null)
 {
@@ -12,18 +12,45 @@
 {
     @foreach (var ingredient in Model)
     {
+        var temp = ingredient.Restrictions.FirstOrDefault() ?? new Restriction()
+        {
+            Banned = false,
+            Dislike = false,
+        };
+        @if (temp.Banned ?? false)
+        {
+            continue;
+        }
         <div class="card">
+            <div class="card-header">
+
+                @if (temp.Dislike ?? false)
+                {
+                    <p class="text-right text-warning"> <i class="fa fa-flag"> </i> </p>
+                }
+
+            </div>
             <div class="card-body">
                 <img src="@ingredient.Image" alt="@ingredient.Name" class="card-img" />
             </div>
             <h6 class="card-title">@ingredient.Name</h6>
             <div class="card-footer">
                 <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-light disabled">
-                        Currently you have <p id="current-card-@ingredient.IngredientId">@ingredient.Quantity</p>
+                    <button type="button"
+                            class="btn btn-outline-danger btn-sm"
+                            style="display:inline-block"
+                            onclick="banIngred('@ingredient.Id')">
+                        Cannot Have
                     </button>
                     <button type="button"
-                            onclick="addIngredient('@ingredient.IngredientId', 1)"
+                            class="btn btn-outline-warning btn-sm"
+                            style="display:inline-block"
+                            onclick="hideIngred('@ingredient.Id')">
+                        Dislike
+                    </button>
+
+                    <button type="button"
+                            onclick="addIngredient('@ingredient.Id', 1)"
                             title="Add one"
                             class="btn btn-outline-success">
                         <i class="fa fa-plus"></i>

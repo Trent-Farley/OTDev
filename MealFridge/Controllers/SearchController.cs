@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MealFridge.Controllers
 {
@@ -49,6 +50,7 @@ namespace MealFridge.Controllers
         {
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
+                .Include(s => s.Savedrecipes)
                 .OrderBy(p => p.Id)
                 .Take(10)
                 .ToList();
@@ -57,9 +59,12 @@ namespace MealFridge.Controllers
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = _searchByNameEndpoint;
-                possibleRecipes = await SearchApiAsync(query);
+                foreach (var i in await SearchApiAsync(query))
+                {
+                    possibleRecipes.Add(i);
+                }
             }
-            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes));
+            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Take(10)));
         }
         [HttpPost]
         public async Task<IActionResult> SearchByIngredient(Query query)
@@ -71,7 +76,7 @@ namespace MealFridge.Controllers
             {
                 foreach (var recipeIngred in recipesWithIngredient)
                 {
-                    possibleRecipes.Add(_db.Recipes.Where(a => a.Id == recipeIngred.RecipeId).FirstOrDefault());
+                    possibleRecipes.Add(_db.Recipes.Where(a => a.Id == recipeIngred.RecipeId).Include(s => s.Savedrecipes).FirstOrDefault());
                 }
             }
             if (possibleRecipes.Count < 10)
@@ -80,9 +85,12 @@ namespace MealFridge.Controllers
                 query.Url = _searchByIngredientEndpoint;
                 query.Credentials = _config["SApiKey"];
                 query.SearchType = "Ingredient";
-                possibleRecipes = await SearchApiAsync(query);
+                foreach(var i in await SearchApiAsync(query))
+                {
+                    possibleRecipes.Add(i);
+                }
             }
-            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes));
+            return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Take(10)));
         }
 
         public async Task<IActionResult> RecipeDetails(Query query)
@@ -113,16 +121,45 @@ namespace MealFridge.Controllers
         {
             var apiQuerier = new SearchSpnApi(query);
             var possibleRecipes = apiQuerier.SearchAPI();
-            if(possibleRecipes != null)
+            if (possibleRecipes != null)
             {
                 foreach (var recipe in possibleRecipes)
                     if (!_db.Recipes.Any(t => t.Id == recipe.Id))
                         await _db.Recipes.AddAsync(recipe);
             }
-            
+
 
             await _db.SaveChangesAsync();
             return await Task.FromResult(possibleRecipes.OrderBy(r => r.Id).ToList());
+        }
+        public void SavedRecipe(int id, string other)
+        {
+            var userId = _user.GetUserId(User);
+            var tempRecipe = _db.Recipes.Where(r => r.Id == id).FirstOrDefault();
+            var savedRecipe = new Savedrecipe
+            {
+                Recipe = tempRecipe,
+                AccountId = userId.ToString(),
+
+            };
+            if (other == "Favorite")
+            {
+                savedRecipe.Favorited = true;
+            }
+            if (other == "Shelved")
+            {
+                savedRecipe.Shelved = true;
+            }
+            var temp = _db.Savedrecipes.ToList();
+           foreach(var i in temp)
+            {
+                if (i.RecipeId == savedRecipe.Recipe.Id)
+                {
+                    return;
+                }
+            }
+                _db.Savedrecipes.Add(savedRecipe);
+                _db.SaveChanges();
         }
     }
 }
