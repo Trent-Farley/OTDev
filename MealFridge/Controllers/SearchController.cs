@@ -64,6 +64,7 @@ namespace MealFridge.Controllers
                 query.Url = _searchByNameEndpoint;
                 foreach (var i in await SearchApiAsync(query))
                 {
+                    i.Savedrecipes = _db.Savedrecipes.ToList();
                     possibleRecipes.Add(i);
                 }
             }
@@ -100,6 +101,7 @@ namespace MealFridge.Controllers
                 query.SearchType = "Ingredient";
                 foreach (var i in await SearchApiAsync(query))
                 {
+                    i.Savedrecipes = _db.Savedrecipes.ToList();
                     possibleRecipes.Add(i);
                 }
             }
