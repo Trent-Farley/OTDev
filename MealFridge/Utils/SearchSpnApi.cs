@@ -31,6 +31,8 @@ namespace MealFridge.Utils
             {
                 query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
             }
+            var nutrients = details["nutrition"]["nutrients"].ToList();
+            JsonParser.ParseNutrition(nutrients, query);
             return query;
         }
 
@@ -39,6 +41,7 @@ namespace MealFridge.Utils
             var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
+            //Test Start
             foreach (var i in ingredients["results"])
             {
                 var temp = new Ingredient
@@ -49,6 +52,7 @@ namespace MealFridge.Utils
                 };
                 output.Add(temp);
             }
+            //Test End
             return output.ToList();
         }
         public List<Recipe> SearchAPI()
@@ -59,6 +63,7 @@ namespace MealFridge.Utils
             {
                 case "Recipe":
                     var recipes = JObject.Parse(jsonResponse);
+                    //Test Start
                     if ((int)recipes["number"] == 0)
                         return null;
 
@@ -69,6 +74,7 @@ namespace MealFridge.Utils
                             Title = (string)recipe["title"],
                             Image = "https://spoonacular.com/recipeImages/" + recipe["id"].ToString() + "-556x370." + recipe["imageType"].ToString()
                         });
+                    //Test End
                     break;
 
                 case "Ingredient":
@@ -95,19 +101,24 @@ namespace MealFridge.Utils
                             Image = "https://spoonacular.com/recipeImages/" + (string)recipesByIngredients[i]["id"] + "-556x370." + (string)recipesByIngredients[i]["imageType"]
                         });
                     }
+                    //Test End
                     break;
                 case "Details":
                     var recipeDetails = JObject.Parse(jsonResponse);
+                    //Test Start
+                    var list = JsonParser.IngredientList(recipeDetails["extendedIngredients"].Value<JArray>());
                     var detailedRecipe = new Recipe
                     {
                         Id = recipeDetails["id"].Value<int>(),
                         Title = recipeDetails["title"].Value<string>(),
                         Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>(),
                         Summery = recipeDetails["sourceUrl"].Value<string>(),
-                        Recipeingreds = GetIngredients(recipeDetails["extendedIngredients"].Value<JArray>())
-
+                        Recipeingreds = GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list)
                     };
+                    var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
+                    JsonParser.ParseNutrition(nutrients, detailedRecipe);
                     output.Add(detailedRecipe);
+                    //Test End
                     break;
                 default:
                     Console.WriteLine("Never hit any case");
@@ -116,24 +127,28 @@ namespace MealFridge.Utils
             return output;
         }
 
-        private ICollection<Recipeingred> GetIngredients(JArray ingredients)
+        private ICollection<Recipeingred> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
         {
             var retingredients = new List<Recipeingred>();
             foreach (var ing in ingredients)
             {
-                if (!int.TryParse(ing["id"].ToString(), out _))
+                int ingId;
+                if (!int.TryParse(ing["id"].ToString(), out ingId))
                     continue;
-                retingredients.Add(new Recipeingred
-                {
-                    //Or amount + unit to get each component i.e 1.0 tbsp butter
-                    Amount = ing["original"]?.Value<string>(),
-                    Ingred = new Ingredient
-                    {
-                        Name = ing["name"]?.Value<string>(),
-                        Id = ing["id"].Value<int>()
-                    }
-                });
-
+                if (retingredients.Any(i => i.IngredId == ingId)) 
+                { 
+                    retingredients.First(i => i.IngredId == ingId).Amount += ing["amount"]?.Value<double>();
+                    continue;
+                }
+                var newRI = new Recipeingred();
+                newRI.RecipeId = recipeId;
+                newRI.IngredId = ingId;
+                newRI.Amount = ing["amount"]?.Value<double>();
+                newRI.ServingUnit = ing["unit"]?.Value<string>();
+                newRI.Ingred = list.FirstOrDefault(i => i.Id == ingId);
+                var nutrients = ing["nutrients"].ToList();
+                JsonParser.ParseNutrition(nutrients, newRI);
+                retingredients.Add(newRI);
             }
             return retingredients;
         }

@@ -15,14 +15,14 @@
                     @if (Model != null)
                     {
                         <h4 class="card-title"> @Model.Title </h4>
-                        <img class="card-img-top" src="@Model.Image" alt="Recipe details image"></img>
+                        <img class="card-img-top" src="@Model.Image" alt="Recipe details image" />
                         <div class="card-body">
-                            <h7 class="card-subtitle">Required Ingredients and amounts </h7>
+                            <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
                             <ul class="list-group">
                                 @foreach (var ingredient in Model.Recipeingreds)
                                 {
                                     <li class="list-group-item-light">
-                                        @ingredient.Amount
+                                        @ingredient.Ingred.Name:  @ingredient.Amount @ingredient.ServingUnit
                                     </li>
                                 }
                             </ul>
