@@ -64,6 +64,7 @@ namespace MealFridge.Controllers
                 query.Url = _searchByNameEndpoint;
                 foreach (var i in await SearchApiAsync(query))
                 {
+                    i.Savedrecipes = _db.Savedrecipes.ToList();
                     possibleRecipes.Add(i);
                 }
             }
@@ -100,6 +101,7 @@ namespace MealFridge.Controllers
                 query.SearchType = "Ingredient";
                 foreach (var i in await SearchApiAsync(query))
                 {
+                    i.Savedrecipes = _db.Savedrecipes.ToList();
                     possibleRecipes.Add(i);
                 }
             }
@@ -121,6 +123,23 @@ namespace MealFridge.Controllers
                 query.SearchType = "Details";
                 var recipes = await SearchApiAsync(query);
                 recipe = recipes.FirstOrDefault();
+                if (!_db.Recipes.Any(t => t.Id == recipe.Id))
+                {
+                    await _db.Recipes.AddAsync(recipe);
+                }
+                foreach (var ingred in recipe.Recipeingreds)
+                {
+                    if (!_db.Recipeingreds.Any(r => (r.RecipeId == ingred.RecipeId) && (r.IngredId == ingred.IngredId)))
+                    {
+                        await _db.Recipeingreds.AddAsync(ingred);
+                    }
+                    if (!_db.Ingredients.Any(i => i.Id == ingred.IngredId))
+                    {
+                        await _db.Ingredients.AddAsync(ingred.Ingred);
+                    }
+                }
+                await _db.SaveChangesAsync();
+                _db.ChangeTracker.Clear();
             }
             return await Task.FromResult(PartialView("RecipeModal", recipe));
         }

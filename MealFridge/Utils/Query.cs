@@ -31,6 +31,9 @@ namespace MealFridge.Utils
                         u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&ignorePantry=" + Refine.ToString().ToLower()
                              + "&offset=" + (10 * PageNumber);
                         break;
+                    case "Details":
+                        u = Url + "?apiKey=" + Credentials + "&includeNutrition=true";
+                        break;
                     default:
                         u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber);
                         break;

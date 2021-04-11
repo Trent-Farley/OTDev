@@ -1,7 +1,7 @@
 ﻿@model Recipe
 
 <div class="modal show" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable w-75" role="document">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_title">Recipe Details</h5>
@@ -15,14 +15,14 @@
                     @if (Model != null)
                     {
                         <h4 class="card-title"> @Model.Title </h4>
-                        <img class="card-img-top" src="@Model.Image" alt="Recipe details image"></img>
+                        <img class="card-img-top" src="@Model.Image" alt="Recipe details image" />
                         <div class="card-body">
-                            <h7 class="card-subtitle">Required Ingredients and amounts </h7>
+                            <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
                             <ul class="list-group">
                                 @foreach (var ingredient in Model.Recipeingreds)
                                 {
                                     <li class="list-group-item-light">
-                                        @ingredient.Amount @ingredient.Ingred.Name
+                                        @ingredient.Ingred.Name:  @ingredient.Amount @ingredient.ServingUnit
                                     </li>
                                 }
                             </ul>
@@ -49,6 +49,7 @@
             <div class="modal-footer" id="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                 <button type="button" id="button-cart" class="btn btn-outline-success" data-dismiss="modal"><i class="fa fa-shopping-basket"></i></button>
+
             </div>
         </div>
     </div>
