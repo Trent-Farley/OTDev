@@ -1,6 +1,4 @@
-﻿import { getAmountFromString } from './GetNumberFromString.js'
-
-function addIngredient(id: string, amount: string): void {
+﻿function addIngredient(id: string, amount: string): void {
     let current = parseInt($("#current-card-" + id).text(), 10);
     $("#current-card-" + id).empty()
     $("#current-card-" + id).append((current + 1).toString());//Add one for updated value
@@ -10,7 +8,7 @@ function addIngredient(id: string, amount: string): void {
         method: "POST",
         data: {
             id: id,
-            amount: getAmountFromString(amount)
+            amount: parseInt(amount, 10)
         },
         success: (data) => {
             $("#fridge-table-main").empty();
@@ -57,12 +55,9 @@ function updateInventory(id: string, amount: string): void {
     })
 }
 
-
-
 function SearchByIngredientName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("ingredSearch");
     if (!search.value) {
-        alert("Search can not be empty!");
         return;
     }
     $.ajax({
