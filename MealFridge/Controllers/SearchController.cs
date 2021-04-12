@@ -50,9 +50,10 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchByName(Query query)
         {
+            var userId = _user.GetUserId(User);
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
-                .Include(s => s.Savedrecipes)
+                .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
                 .OrderBy(p => p.Id)
                 .Skip(10 * query.PageNumber)
                 .Take(10)
@@ -74,6 +75,7 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchByIngredient(Query query)
         {
+            var userId = _user.GetUserId(User);
             var ingredient = _db.Ingredients
                 .Where(a => a.Name.Contains(query.QueryValue))
                 .FirstOrDefault();//This will be a problem when we are searching for more then one ingredient
@@ -88,7 +90,7 @@ namespace MealFridge.Controllers
                 {
                     possibleRecipes.Add(_db.Recipes
                         .Where(a => a.Id == recipeIngred.RecipeId)
-                        .Include(s => s.Savedrecipes)
+                        .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
                         .FirstOrDefault()
                         );
                 }

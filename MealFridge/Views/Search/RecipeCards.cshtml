@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<Recipe>
-
+@* Change Model into IEnumerable<Tuple<Recipe, int>> to fix broken fav count *@
 @if (Model != null)
 {
     @foreach (var r in Model)
