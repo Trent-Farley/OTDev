@@ -28,16 +28,22 @@ namespace MealFridge.Models
             }
             try
             {
-                var ingredients = JsonParser.IngredientList(recipe["extendedIngredients"].Value<JArray>());
+                var ingredients = new List<Ingredient>();
+                try
+                {
+                    ingredients = JsonParser.IngredientList(recipe["extendedIngredients"].Value<JArray>());
+                }
+                catch { }
                 createdRecipe.Recipeingreds = Recipeingred.CreateRecipeIngred(recipe["nutrition"]["ingredients"].Value<JArray>(), recipe["id"].Value<int>(), ingredients);
                 createdRecipe.Summery = recipe["sourceUrl"].Value<string>();
 
                 var nutrients = recipe["nutrition"]["nutrients"].ToList();
                 JsonParser.GetNutrition(createdRecipe, nutrients);
             }
-            catch
+            catch (Exception e)
             {
                 Console.WriteLine($"Recipe {createdRecipe.Title} had no nutrition or ingredients");
+                Console.WriteLine("````````````\n" + recipe.ToString() + "\n````````````````\n ");
             }
             return createdRecipe;
         }

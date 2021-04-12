@@ -131,15 +131,16 @@ namespace MealFridge.Controllers
                 {
                     if (!_db.Recipeingreds.Any(r => (r.RecipeId == ingred.RecipeId) && (r.IngredId == ingred.IngredId)))
                     {
+                        if (_db.Ingredients.Any(i => i.Id == ingred.IngredId))
+                        {
+                            ingred.Ingred = _db.Ingredients.FirstOrDefault(i => i.Id == ingred.IngredId);
+                        }
+
                         await _db.Recipeingreds.AddAsync(ingred);
-                    }
-                    if (!_db.Ingredients.Any(i => i.Id == ingred.IngredId))
-                    {
-                        await _db.Ingredients.AddAsync(ingred.Ingred);
+                        await _db.SaveChangesAsync();
+                        _db.ChangeTracker.Clear();
                     }
                 }
-                await _db.SaveChangesAsync();
-                _db.ChangeTracker.Clear();
             }
             return await Task.FromResult(PartialView("RecipeModal", recipe));
         }

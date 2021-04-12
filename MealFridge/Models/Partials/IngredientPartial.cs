@@ -11,8 +11,6 @@ namespace MealFridge.Models
     {
         public static Ingredient CreateIngredient(JToken ingredient)
         {
-            Console.WriteLine(ingredient.ToString());
-
             var createdIng = new Ingredient();
             try
             {
@@ -34,6 +32,7 @@ namespace MealFridge.Models
             }
             catch
             {
+                Console.Clear();
                 Console.WriteLine("Ingredient had no nutrients or aisle");
             }
             return createdIng;
