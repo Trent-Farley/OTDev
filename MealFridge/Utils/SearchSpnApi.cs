@@ -14,26 +14,17 @@ namespace MealFridge.Utils
     public class SearchSpnApi
     {
         private Query _query;
-        public string Source { get; set; }
-        private string Secret { get; set; }
 
         public SearchSpnApi(Query query)
         {
             _query = query;
         }
-        public Ingredient IngredientDetails(Ingredient query, string searchType)
+
+        public Ingredient IngredientDetails()
         {
-            var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
+            var jsonResponse = SendRequest();
             var details = JObject.Parse(jsonResponse);
-            query.Aisle = (string)details["aisle"];
-            query.Cost = (decimal)details["estimatedCost"]["value"];
-            if ((string)details["estimatedCost"]["unit"] == "US Cents")
-            {
-                query.Cost *= 10; //To show price in dollars, might want to track the Cost unit type though.
-            }
-            var nutrients = details["nutrition"]["nutrients"].ToList();
-            JsonParser.ParseNutrition(nutrients, query);
-            return query;
+            return Ingredient.CreateIngredient(details);
         }
 
         public List<Ingredient> SearchIngredients()
@@ -44,17 +35,14 @@ namespace MealFridge.Utils
             //Test Start
             foreach (var i in ingredients["results"])
             {
-                var temp = new Ingredient
-                {
-                    Id = (int)i["id"],
-                    Name = (string)i["name"],
-                    Image = "https://spoonacular.com/cdn/ingredients_500x500/" + i["image"]
-                };
-                output.Add(temp);
+                var temp = Ingredient.CreateIngredient(i);
+                if (temp != null)
+                    output.Add(temp);
             }
             //Test End
             return output.ToList();
         }
+
         public List<Recipe> SearchAPI()
         {
             var jsonResponse = SendRequest();
@@ -68,17 +56,16 @@ namespace MealFridge.Utils
                         return null;
 
                     foreach (var recipe in recipes["results"])
-                        output.Add(new Recipe
-                        {
-                            Id = (int)recipe["id"],
-                            Title = (string)recipe["title"],
-                            Image = "https://spoonacular.com/recipeImages/" + recipe["id"].ToString() + "-556x370." + recipe["imageType"].ToString()
-                        });
+                    {
+                        var temp = Recipe.CreateRecipe(recipe);
+                        if (temp != null)
+                            output.Add(temp);
+                    }
                     //Test End
                     break;
 
                 case "Ingredient":
-                    JArray recipesByIngredients = new JArray();
+                    var recipesByIngredients = new JArray();
                     if (jsonResponse[0] == '{')
                     {
                         var res = JObject.Parse(jsonResponse);
@@ -92,34 +79,22 @@ namespace MealFridge.Utils
 
                     if (recipesByIngredients.Count <= 0)
                         return null;
-                    for (var i = 0; i < recipesByIngredients.Count; ++i)
+                    foreach (var recipe in recipesByIngredients)
                     {
-                        output.Add(new Recipe
-                        {
-                            Id = (int)recipesByIngredients[i]["id"],
-                            Title = (string)recipesByIngredients[i]["title"],
-                            Image = "https://spoonacular.com/recipeImages/" + (string)recipesByIngredients[i]["id"] + "-556x370." + (string)recipesByIngredients[i]["imageType"]
-                        });
+                        var temp = Recipe.CreateRecipe(recipe);
+                        if (temp != null)
+                            output.Add(temp);
                     }
                     //Test End
                     break;
+
                 case "Details":
                     var recipeDetails = JObject.Parse(jsonResponse);
-                    //Test Start
-                    var list = JsonParser.IngredientList(recipeDetails["extendedIngredients"].Value<JArray>());
-                    var detailedRecipe = new Recipe
-                    {
-                        Id = recipeDetails["id"].Value<int>(),
-                        Title = recipeDetails["title"].Value<string>(),
-                        Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>(),
-                        Summery = recipeDetails["sourceUrl"].Value<string>(),
-                        Recipeingreds = GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list)
-                    };
-                    var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
-                    JsonParser.ParseNutrition(nutrients, detailedRecipe);
+                    var detailedRecipe = Recipe.CreateRecipe(recipeDetails);
                     output.Add(detailedRecipe);
                     //Test End
                     break;
+
                 default:
                     Console.WriteLine("Never hit any case");
                     break;
@@ -127,31 +102,6 @@ namespace MealFridge.Utils
             return output;
         }
 
-        private ICollection<Recipeingred> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
-        {
-            var retingredients = new List<Recipeingred>();
-            foreach (var ing in ingredients)
-            {
-                int ingId;
-                if (!int.TryParse(ing["id"].ToString(), out ingId))
-                    continue;
-                if (retingredients.Any(i => i.IngredId == ingId)) 
-                { 
-                    retingredients.First(i => i.IngredId == ingId).Amount += ing["amount"]?.Value<double>();
-                    continue;
-                }
-                var newRI = new Recipeingred();
-                newRI.RecipeId = recipeId;
-                newRI.IngredId = ingId;
-                newRI.Amount = ing["amount"]?.Value<double>();
-                newRI.ServingUnit = ing["unit"]?.Value<string>();
-                newRI.Ingred = list.FirstOrDefault(i => i.Id == ingId);
-                var nutrients = ing["nutrients"].ToList();
-                JsonParser.ParseNutrition(nutrients, newRI);
-                retingredients.Add(newRI);
-            }
-            return retingredients;
-        }
         private string SendRequest()
         {
             try
@@ -175,37 +125,5 @@ namespace MealFridge.Utils
                 return null;
             }
         }
-        private static string SendRequest(string url, string credentials, string query, string searchType)
-        {
-            //number selects the number of results to return from API (FOR FUTURE REFERENCE)
-            HttpWebRequest request;
-            switch (searchType)
-            {
-                case "Recipe":
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
-                    break;
-                case "Ingredient":
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10" + "&ignorePantry=");
-                    break;
-                case "IngredientDetails":
-                    request = (HttpWebRequest)WebRequest.Create(url + query + "/information?apiKey=" + credentials + "&amount=1&unit=serving");
-                    break;
-                default:
-                    request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
-                    break;
-            }
-            request.Accept = "application/json";
-            string jsonString = null;
-            using (WebResponse response = request.GetResponse())
-            {
-                Stream stream = response.GetResponseStream();
-                StreamReader reader = new StreamReader(stream);
-                jsonString = reader.ReadToEnd();
-                reader.Close();
-                stream.Close();
-            }
-            return jsonString;
-        }
-
     }
 }
