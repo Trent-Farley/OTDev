@@ -55,12 +55,9 @@ function updateInventory(id: string, amount: string): void {
     })
 }
 
-
-
 function SearchByIngredientName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("ingredSearch");
     if (!search.value) {
-        alert("Search can not be empty!");
         return;
     }
     $.ajax({

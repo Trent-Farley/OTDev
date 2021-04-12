@@ -3,54 +3,60 @@
 @{ ViewBag.Title = "Search"; }
 <div class="container">
     <h3 class="text-center">Search by Recipe Name or Ingredient!</h3>
-    <div class="jumbotron p-0 h-25  shadow-lg">
-        <div class="collapse" id="shoppingList" style="background-color:whitesmoke">
-            <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
-            <div id="innerShopping">
-                <h3 id="shoppingListTitle" class="text-center">Shopping List</h3>
-                <table id="shoppingListTable" class="table table-responsive-sm">
-                </table>
-            </div>
+    <div class="collapse" id="shoppingList" style="background-color:whitesmoke">
+        <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
+        <div id="innerShopping">
+            <h3 id="shoppingListTitle" class="text-center">Shopping List</h3>
+            <table id="shoppingListTable" class="table table-responsive-sm">
+            </table>
         </div>
+    </div>
+    <div class="jumbotron-fluid h-25 shadow-lg border border-dark p-0 bg-light rounded-pill sticky-top mb-lg-4" style="z-index:0">
+
         <div class="input-group">
 
             <div class="input-group-prepend">
-                <button class="float-left btn btn-outline-success " type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList" title="Open or close the shopping list">
+                <button class="float-left btn text-success border-0" type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList" title="Open or close the shopping list">
                     <i class="fa fa-shopping-cart"></i>
                 </button>
-                
+
                 @if (signInManager.IsSignedIn(User))
-                 {
+                {
                     <div class="dropdown">
-                        <button id="SearchInventory" class="float-right btn btn-outline-success" type="button" title="Find recipes based on ingredients in your fridge"  onclick="inventorySearch()">
+                        <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
                             <i class="fas fa-box"></i>
                         </button>
-                        <div class="dropdown-content" id="pantryTool">
+                        <div class="dropdown-content bg-dark text-light" id="pantryTool">
                             <label class="switch" id="pSlider" title="Ignore common food items such as salt and water to improve search results when searching by ingredients in your inventory.">
-                                    <input type="checkbox" id="panCheck">
-                                    <span class="slider"><p id="pToolLabel">Refine</p></span>
+                                <input type="checkbox" id="panCheck">
+                                <span class="slider"><label id="pToolLabel">Refine</label></span>
                             </label>
                         </div>
                     </div>
-                 }
+                }
                 <input id="inventorySearch" value="@Model" hidden />
-                <select id="searchType" class=" w-auto custom-select bg-primary text-light">
-                    <option value="Recipe">Recipe Name</option>
-                    <option value="Ingredient">Ingredient</option>
+                <select id="searchType" class="w-auto custom-select border-0 text-dark">
+                    <option class="bg-dark text-light" value="Recipe">Recipe Name</option>
+                    <option class="bg-dark text-light" value="Ingredient">Ingredient</option>
                 </select>
             </div>
-            <input id="sbn" type="text" required class="w-auto form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
+            <input id="sbn" type="text" required class="w-auto border-0 form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="input-group-append">
-                <button class="btn btn-success" title="search for recipes" onclick="searchByName()" type="button">
+                <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName()" type="button">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
     </div>
-    <div id="spinner"></div>
+    <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
     <div id="main" class="card-columns"></div>
-    <div id="modal-container"></div>
+    <div id="search-button" class="d-flex justify-content-center">
+        <button type="button" class="btn btn-primary  d-none w-50 mt-4 mb-5" id="morebutton" onclick="searchByName()">
+            Get more recipes!
+        </button>
+    </div>
 
+    <div id="modal-container"></div>
 </div>
 @section Scripts{
     <script src="~/js/Search/Index.js"></script>
