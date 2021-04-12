@@ -21,7 +21,7 @@ namespace MealFridge.Utils
         {
             _query = query;
         }
-        public Ingredient IngredientDetails(Ingredient query, string searchType)
+        public Ingredient IngredientDetails(Ingredient query, string searchType) //Not currently called
         {
             var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
             var details = JObject.Parse(jsonResponse);
@@ -111,10 +111,14 @@ namespace MealFridge.Utils
                     {
                         Id = recipeDetails["id"].Value<int>(),
                         Title = recipeDetails["title"].Value<string>(),
+                        Cost = recipeDetails["pricePerServing"].Value<decimal>(),
+                        Minutes = recipeDetails["readyInMinutes"].Value<int>(),
                         Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>(),
                         Summery = recipeDetails["sourceUrl"].Value<string>(),
+                        Servings = recipeDetails["servings"].Value<int>(),
                         Recipeingreds = GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list)
                     };
+                    JsonParser.ParseDishType(recipeDetails["dishTypes"].ToList(), detailedRecipe);
                     var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
                     JsonParser.ParseNutrition(nutrients, detailedRecipe);
                     output.Add(detailedRecipe);

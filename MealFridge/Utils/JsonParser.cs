@@ -149,6 +149,29 @@ namespace MealFridge.Utils
                 }
             }
         }
+
+        public static void ParseDishType(List<JToken> list, Recipe detailedRecipe)
+        {
+            List<string> types = new List<string>();
+            list.ForEach(t => types.Add(t.Value<string>()));
+            detailedRecipe.Breakfast = false;
+            detailedRecipe.Lunch = false;
+            detailedRecipe.Dinner = false;
+            detailedRecipe.Dessert = false;
+            detailedRecipe.Snack = false;
+
+            if (types.Contains("breakfast"))
+                detailedRecipe.Breakfast = true;
+            if (types.Contains("lunch"))
+                detailedRecipe.Lunch = true;
+            if (types.Contains("dinner") || types.Contains("supper"))
+                detailedRecipe.Dinner = true;
+            if (types.Contains("dessert"))
+                detailedRecipe.Dessert = true;
+            if (types.Contains("snack"))
+                detailedRecipe.Snack = true;
+        }
+
         public static List<Ingredient> IngredientList(JArray ingredients)
         {
             var result = new List<Ingredient>();
