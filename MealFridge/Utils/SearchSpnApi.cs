@@ -137,7 +137,7 @@ namespace MealFridge.Utils
                         Recipeingreds = GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list)
                     };
 
-                    JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JObject>>(), detailedRecipe);
+                    JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JToken>>(), detailedRecipe);
                     var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
                     JsonParser.ParseNutrition(nutrients, detailedRecipe);
                     output.Add(detailedRecipe);
