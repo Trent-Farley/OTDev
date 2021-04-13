@@ -1,4 +1,4 @@
-﻿using System.Data.Common;
+using System.Data.Common;
 using MealFridge.Models;
 using MealFridge.Utils;
 using Microsoft.AspNetCore.Http;
