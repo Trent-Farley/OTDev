@@ -130,7 +130,7 @@ namespace MealFridge.Utils
             }
             return output;
         }
-
+        //Put into json parser later
         private ICollection<Recipeingred> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
         {
             var retingredients = new List<Recipeingred>();
