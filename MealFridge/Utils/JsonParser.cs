@@ -103,46 +103,45 @@ namespace MealFridge.Utils
                 }
             }
         }
-
-        public static void ParseNutrition(List<JToken> nutrition, Recipeingred ingredient)
+        public static void ParseNutrition(List<JToken> nutrition, Recipeingred recipeIngredient)
         {
             foreach (var n in nutrition)
             {
                 if (n["name"].ToString() == "Calories")
                 {
-                    ingredient.Calories = (float)n["amount"];
+                    recipeIngredient.Calories = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Saturated Fat")
                 {
-                    ingredient.SatFat = (float)n["amount"];
+                    recipeIngredient.SatFat = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Fat")
                 {
-                    ingredient.TotalFat = (float)n["amount"];
+                    recipeIngredient.TotalFat = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Net Carbohydrates")
                 {
-                    ingredient.NetCarbs = (float)n["amount"];
+                    recipeIngredient.NetCarbs = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Carbohydrates")
                 {
-                    ingredient.Carbs = (float)n["amount"];
+                    recipeIngredient.Carbs = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Cholesterol")
                 {
-                    ingredient.Cholesterol = (float)n["amount"];
+                    recipeIngredient.Cholesterol = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Sodium")
                 {
-                    ingredient.Sodium = (float)n["amount"];
+                    recipeIngredient.Sodium = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Protein")
                 {
-                    ingredient.Protein = (float)n["amount"];
+                    recipeIngredient.Protein = (float)n["amount"];
                 }
                 else if (n["name"].ToString() == "Sugar")
                 {
-                    ingredient.Sugar = (float)n["amount"];
+                    recipeIngredient.Sugar = (float)n["amount"];
                 }
                 else
                 {

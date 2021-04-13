@@ -7,9 +7,6 @@ window.onload = () => {
         searchByName()
     }
 };
-
-let pageNumber: number = 0;
-let searchparam: string = "";
 function inventorySearch(): void {
     let search = $("#inventorySearch");
     let refine: HTMLInputElement = <HTMLInputElement>document.getElementById("panCheck");
@@ -24,25 +21,12 @@ function inventorySearch(): void {
         data: {
             QueryValue: search.val(),
             SearchType: "Ingredient",
-            Refine: refine.checked,
-            PageNumber: pageNumber
+            Refine: refine.checked
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
-            $("#morebutton").removeClass("d-none");
-            if (search.val().toString() != searchparam) {
-                pageNumber = 0;
-                searchparam = search.val().toString();
-            }
-            if (pageNumber < 1) {
-                $("#main").empty();
-                $("#main").html(recipeCards);
-                ++pageNumber;
-            }
-            else {
-                $("#main").append(recipeCards);
-                ++pageNumber;
-            }
+            $("#main").empty();
+            $("#main").html(recipeCards);
         }
     })
 }
@@ -60,26 +44,12 @@ function searchByName(): void {
         type: "POST",
         data: {
             QueryValue: search.value,
-            SearchType: type.value,
-            PageNumber: pageNumber
+            SearchType: type.value
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
-            $("#morebutton").removeClass("d-none");
-
-            if (search.value.toString() != searchparam) {
-                pageNumber = 0;
-                searchparam = search.value.toString();
-            }
-            if (pageNumber < 1) {
-                $("#main").empty();
-                $("#main").html(recipeCards);
-                ++pageNumber;
-            }
-            else {
-                $("#main").append(recipeCards);
-                ++pageNumber;
-            }
+            $("#main").empty();
+            $("#main").html(recipeCards);
         }
     })
 }
@@ -90,28 +60,6 @@ function addFavorite(id: string): void {
         data: {
             id: parseInt(id, 10),
             other: "Favorite"
-        },
-        success: _ => {
-            $("#alert").empty();
-            $("#alert").html(`
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <strong>Added</strong> Recipe has been added to your favorites
-                </div>
-            `);
-        },
-        error: _ => {
-            $("#alert").empty();
-            $("#alert").html(`
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <strong>Error</strong> Something went wrong, maybe this recipe has been favorited already?
-                </div>
-            `);
         }
     });
 }
@@ -123,28 +71,6 @@ function addShelf(id: string): void {
         data: {
             id: parseInt(id, 10),
             other: "Shelved"
-        },
-        success: _ => {
-            $("#alert").empty();
-            $("#alert").html(`
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <strong>Removed</strong> Recipe will not be shown again
-                </div>
-            `);
-        },
-        error: _ => {
-            $("#alert").empty();
-            $("#alert").html(`
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <strong>Error</strong> Something went wrong, maybe this recipe has been removed already?
-                </div>
-            `);
         }
     });
 }
