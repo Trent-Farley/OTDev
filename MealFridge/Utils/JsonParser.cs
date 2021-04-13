@@ -10,7 +10,7 @@ namespace MealFridge.Utils
 {
     public static class JsonParser
     {
-        public static void ParseNutrition (List<JToken> nutrition, Ingredient ingredient)
+        public static void ParseNutrition(List<JToken> nutrition, Ingredient ingredient)
         {
             foreach (var n in nutrition)
             {
@@ -103,6 +103,7 @@ namespace MealFridge.Utils
                 }
             }
         }
+
         public static void ParseNutrition(List<JToken> nutrition, Recipeingred ingredient)
         {
             foreach (var n in nutrition)
@@ -150,8 +151,12 @@ namespace MealFridge.Utils
             }
         }
 
-        public static void ParseDishType(List<JToken> list, Recipe detailedRecipe)
+        public static void ParseDishType(List<JObject> list, Recipe detailedRecipe)
         {
+            if (list == null)
+                return;
+            if (detailedRecipe == null)
+                return;
             List<string> types = new List<string>();
             list.ForEach(t => types.Add(t.Value<string>()));
             detailedRecipe.Breakfast = false;
