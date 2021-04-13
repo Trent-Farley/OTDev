@@ -21,6 +21,7 @@ namespace MealFridge.Utils
         {
             _query = query;
         }
+
         public Ingredient IngredientDetails(Ingredient query, string searchType) //Not currently called
         {
             var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
@@ -42,19 +43,35 @@ namespace MealFridge.Utils
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
             //Test Start
-            foreach (var i in ingredients["results"])
+            foreach (var ingredient in ingredients["results"])
             {
-                var temp = new Ingredient
-                {
-                    Id = (int)i["id"],
-                    Name = (string)i["name"],
-                    Image = "https://spoonacular.com/cdn/ingredients_500x500/" + i["image"]
-                };
-                output.Add(temp);
+                var temp = ParseIngredient(ingredient as JObject);
+                if (temp != null)
+                    output.Add(temp);
             }
             //Test End
             return output.ToList();
         }
+
+        public static Ingredient ParseIngredient(JObject ingredient)
+        {
+            if (ingredient == null)
+                return null;
+            try
+            {
+                return new Ingredient
+                {
+                    Id = (int)ingredient["id"],
+                    Name = (string)ingredient["name"],
+                    Image = "https://spoonacular.com/cdn/ingredients_500x500/" + ingredient["image"]
+                };
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public List<Recipe> SearchAPI()
         {
             var jsonResponse = SendRequest();
@@ -103,6 +120,7 @@ namespace MealFridge.Utils
                     }
                     //Test End
                     break;
+
                 case "Details":
                     var recipeDetails = JObject.Parse(jsonResponse);
                     //Test Start
@@ -118,12 +136,14 @@ namespace MealFridge.Utils
                         Servings = recipeDetails["servings"].Value<int>(),
                         Recipeingreds = GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list)
                     };
-                    JsonParser.ParseDishType(recipeDetails["dishTypes"].ToList(), detailedRecipe);
+
+                    JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JObject>>(), detailedRecipe);
                     var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
                     JsonParser.ParseNutrition(nutrients, detailedRecipe);
                     output.Add(detailedRecipe);
                     //Test End
                     break;
+
                 default:
                     Console.WriteLine("Never hit any case");
                     break;
@@ -139,8 +159,8 @@ namespace MealFridge.Utils
                 int ingId;
                 if (!int.TryParse(ing["id"].ToString(), out ingId))
                     continue;
-                if (retingredients.Any(i => i.IngredId == ingId)) 
-                { 
+                if (retingredients.Any(i => i.IngredId == ingId))
+                {
                     retingredients.First(i => i.IngredId == ingId).Amount += ing["amount"]?.Value<double>();
                     continue;
                 }
@@ -156,6 +176,7 @@ namespace MealFridge.Utils
             }
             return retingredients;
         }
+
         private string SendRequest()
         {
             try
@@ -179,6 +200,7 @@ namespace MealFridge.Utils
                 return null;
             }
         }
+
         private static string SendRequest(string url, string credentials, string query, string searchType)
         {
             //number selects the number of results to return from API (FOR FUTURE REFERENCE)
@@ -188,12 +210,15 @@ namespace MealFridge.Utils
                 case "Recipe":
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
                     break;
+
                 case "Ingredient":
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&ingredients=" + query + "&number=10" + "&ignorePantry=");
                     break;
+
                 case "IngredientDetails":
                     request = (HttpWebRequest)WebRequest.Create(url + query + "/information?apiKey=" + credentials + "&amount=1&unit=serving");
                     break;
+
                 default:
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
                     break;
@@ -210,6 +235,5 @@ namespace MealFridge.Utils
             }
             return jsonString;
         }
-
     }
 }
