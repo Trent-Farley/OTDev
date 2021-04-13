@@ -133,7 +133,8 @@ namespace MealFridge.Controllers
                 {
                     if (!_db.Recipeingreds.Any(r => (r.RecipeId == ingred.RecipeId) && (r.IngredId == ingred.IngredId)))
                     {
-                        if (_db.Ingredients.Any(i => i.Id == ingred.IngredId))
+                        if(_db.Ingredients.Any(i => i.Id == ingred.IngredId))
+
                         {
                             ingred.Ingred = _db.Ingredients.FirstOrDefault(i => i.Id == ingred.IngredId);
                         }
