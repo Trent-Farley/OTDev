@@ -81,3 +81,4 @@ inputSearchFridge.addEventListener("keydown", (e) => {
         SearchByIngredientName();
     }
 });
+

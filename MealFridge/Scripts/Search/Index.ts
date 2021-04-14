@@ -29,11 +29,13 @@ function inventorySearch(): void {
             $("#main").html(recipeCards);
         }
     })
+
 }
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
     if (!search.value) {
+
         $("#warning-toast-body").empty();
         $("#warning-toast-body").append("Search can not be empty!");
         $(".toast").toast('show');

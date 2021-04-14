@@ -21,7 +21,6 @@ namespace MealFridge.Utils
         {
             _query = query;
         }
-
         public Ingredient IngredientDetails(Ingredient query, string searchType) //Not currently called
         {
             var jsonResponse = SendRequest(Source, Secret, query.Id.ToString(), searchType);
@@ -81,6 +80,7 @@ namespace MealFridge.Utils
                 case "Recipe":
                     var recipes = JObject.Parse(jsonResponse);
                     //Test Start
+
                     if ((int)recipes["number"] == 0)
                         return null;
 
@@ -106,7 +106,6 @@ namespace MealFridge.Utils
                         var res = JArray.Parse(jsonResponse);
                         recipesByIngredients = res;
                     }
-
                     if (recipesByIngredients.Count <= 0)
                         return null;
                     for (var i = 0; i < recipesByIngredients.Count; ++i)
@@ -125,6 +124,7 @@ namespace MealFridge.Utils
                     var recipeDetails = JObject.Parse(jsonResponse);
                     //Test Start
                     var list = JsonParser.IngredientList(recipeDetails["extendedIngredients"].Value<JArray>());
+
                     var detailedRecipe = new Recipe
                     {
                         Id = recipeDetails["id"].Value<int>(),
@@ -202,6 +202,7 @@ namespace MealFridge.Utils
 
         private static string SendRequest(string url, string credentials, string query, string searchType)
         {
+
             //number selects the number of results to return from API (FOR FUTURE REFERENCE)
             HttpWebRequest request;
             switch (searchType)
@@ -217,6 +218,7 @@ namespace MealFridge.Utils
                 case "IngredientDetails":
                     request = (HttpWebRequest)WebRequest.Create(url + query + "/information?apiKey=" + credentials + "&amount=1&unit=serving");
                     break;
+
 
                 default:
                     request = (HttpWebRequest)WebRequest.Create(url + "?apiKey=" + credentials + "&query=" + query + "&number=10");
@@ -234,5 +236,6 @@ namespace MealFridge.Utils
             }
             return jsonString;
         }
+
     }
 }

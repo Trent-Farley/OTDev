@@ -3,6 +3,7 @@
 })
 const ingredients = [];
 
+
 function addToShoppingList(ingreds: Array<string>) {
     document.getElementById("shoppingListTable").innerHTML += `
     ${ingreds.map(i => {
@@ -38,7 +39,5 @@ function getDetails(id: string): void {
         error: (err) => { console.log(err); }
     });
 }
-
-
 
 
