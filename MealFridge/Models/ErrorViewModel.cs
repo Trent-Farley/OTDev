@@ -1,6 +1,4 @@
-using System;
-
-namespace MealFridge.Models
+﻿namespace MealFridge.Models
 {
     public class ErrorViewModel
     {

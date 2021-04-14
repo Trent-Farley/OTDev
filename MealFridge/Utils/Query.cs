@@ -12,7 +12,11 @@ namespace MealFridge.Utils
         public string QueryValue { get; set; }
         public string Credentials { get; set; }
         public string SearchType { get; set; }
+        public bool Refine { get; set; }
+        public int PageNumber { get; set; } = 0;
+
         private readonly string Number = "10";
+
         public string GetUrl
         {
             get
@@ -23,8 +27,15 @@ namespace MealFridge.Utils
                     case "IngredientDetails":
                         u = Url + QueryValue + "/information?apikey=" + Credentials + "&amount=1&unit=serving";
                         break;
+                    case "Ingredient":
+                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&ignorePantry=" + Refine.ToString().ToLower()
+                             + "&offset=" + (10 * PageNumber);
+                        break;
+                    case "Details":
+                        u = Url + "?apiKey=" + Credentials + "&includeNutrition=true";
+                        break;
                     default:
-                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number;
+                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber);
                         break;
                 }
                 return u;

@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-MealFridge-1F270BF3-7011-4AAD-BB53-8A4EB990EFD9</UserSecretsId>
+    <ApplicationIcon>fridgefonta_blue.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>

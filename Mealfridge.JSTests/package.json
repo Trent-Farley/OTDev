@@ -1,0 +1,26 @@
+{
+  "name": "mealfridge.jstests",
+  "version": "0.0.0",
+  "description": "Mealfridge.JSTests",
+  "main": "app.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.13.12",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.7",
+    "babel-jest": "^26.6.3",
+    "jest": "^26.6.3",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "jest-editor-support": "^28.2.0",
+    "ts-jest": "^26.5.4"
+  }
+}

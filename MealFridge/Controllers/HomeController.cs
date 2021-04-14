@@ -1,5 +1,7 @@
 ﻿using MealFridge.Models;
+using MealFridge.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,14 +21,18 @@ namespace MealFridge.Controllers
             _db = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var randomRecipes = _db.Recipes
+                .OrderBy(r => Guid.NewGuid())
+                .Take(6)
+                .ToList();
+            return await Task.FromResult(View("Index", randomRecipes));
         }
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        [HttpPost]
+        public async Task<IActionResult> RecipeDetails(Query query)
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { QueryValue = query.QueryValue }));
         }
     }
 }
