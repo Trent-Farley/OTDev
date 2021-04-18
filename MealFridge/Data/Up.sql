@@ -10,6 +10,10 @@ CREATE TABLE [FRIDGE] (
 
 CREATE TABLE [DIET] (
   [account_id] NVARCHAR(255) PRIMARY KEY,
+  [diet] nvarchar(64)
+
+CREATE TABLE [DIET] (
+  [account_id] NVARCHAR(255) PRIMARY KEY,
   [vegetarian] bit,
   [vegen] bit,
   [gluten_free] bit,
