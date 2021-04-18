@@ -8,14 +8,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using MealFridge.Models.Interfaces;
 
 namespace MealFridge.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly MealFridgeDbContext _db;
-        public HomeController(ILogger<HomeController> logger, MealFridgeDbContext context)
+        //private readonly MealFridgeDbContext _db;
+        private readonly IRecipeRepo _db;
+        public HomeController(ILogger<HomeController> logger, IRecipeRepo context)
         {
             _logger = logger;
             _db = context;
@@ -23,10 +25,7 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var randomRecipes = _db.Recipes
-                .OrderBy(r => Guid.NewGuid())
-                .Take(6)
-                .ToList();
+            var randomRecipes = _db.getRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
         }
         [HttpPost]

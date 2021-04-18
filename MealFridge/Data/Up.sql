@@ -12,6 +12,19 @@ CREATE TABLE [DIET] (
   [account_id] NVARCHAR(255) PRIMARY KEY,
   [diet] nvarchar(64)
 
+CREATE TABLE [DIET] (
+  [account_id] NVARCHAR(255) PRIMARY KEY,
+  [vegetarian] bit,
+  [vegen] bit,
+  [gluten_free] bit,
+  [dairy_free] bit,
+  [keto] bit,
+  [lacto-veg] bit,
+  [ovo-veg] bit,
+  [pescetarian] bit,
+  [paleo] bit,
+  [primal] bit,
+  [whole30] bit
 )
 
 CREATE TABLE [INGREDIENTS] (
@@ -67,7 +80,20 @@ CREATE TABLE [RECIPES] (
   [lunch] bit,
   [dinner] bit,
   [dessert] bit,
-  [snack] bit
+  [snack] bit,
+  [very_healthy] bit,
+  [cheap] bit,
+  [vegetarian] bit,
+  [vegen] bit,
+  [gluten_free] bit,
+  [dairy_free] bit,
+  [keto] bit,
+  [lacto-veg] bit,
+  [ovo-veg] bit,
+  [pescetarian] bit,
+  [paleo] bit,
+  [primal] bit,
+  [whole30] bit
 )
 
 
