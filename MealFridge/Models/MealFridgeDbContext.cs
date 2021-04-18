@@ -165,7 +165,7 @@ namespace MealFridge.Models
                     .HasColumnType("datetime")
                     .HasColumnName("day");
 
-                entity.Property(e => e.Meal1)
+                entity.Property(e => e.MealString)
                     .HasMaxLength(255)
                     .HasColumnName("meal");
 
