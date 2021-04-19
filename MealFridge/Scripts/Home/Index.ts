@@ -1,4 +1,5 @@
-﻿const search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
+﻿
+const search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
 search.addEventListener("keydown", (e) => {
     //checks whether the pressed key is "Enter"
     if (e.keyCode === 13) {
@@ -28,4 +29,6 @@ function getHomeDetails(id: string): void {
         },
         error: (err) => { console.log(err); }
     });
+
 }
+

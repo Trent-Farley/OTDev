@@ -18,6 +18,7 @@ namespace MealFridge.Controllers
 {
     public class FridgeController : Controller
     {
+
         private readonly IConfiguration _configuration;
         private readonly MealFridgeDbContext _context;
         private readonly UserManager<IdentityUser> _user;
@@ -186,5 +187,4 @@ namespace MealFridge.Controllers
         }
 
     }
-
 }

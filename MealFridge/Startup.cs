@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MealFridge.Models.Interfaces;
+using MealFridge.Models.Repositories;
 
 namespace MealFridge
 {
@@ -33,13 +35,13 @@ namespace MealFridge
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<MealFridgeDbContext>(opts =>
             {
-                opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"]);
+                opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"] + ";MultipleActiveResultSets=true");
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-          
+            services.AddScoped<IRecipeRepo, RecipeRepo>();
             services.AddAuthentication()/*.AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
