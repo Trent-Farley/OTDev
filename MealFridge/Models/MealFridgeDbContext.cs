@@ -67,22 +67,6 @@ namespace MealFridge.Models
             modelBuilder.Entity<Fridge>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.IngredId })
-                    .HasName("PK__FRIDGE__9100B6D18DFF6661");
-
-                entity.ToTable("DIET");
-
-                entity.Property(e => e.AccountId)
-                    .HasMaxLength(255)
-                    .HasColumnName("account_id");
-
-                entity.Property(e => e.Diet1)
-                    .HasMaxLength(64)
-                    .HasColumnName("diet");
-            });
-
-            modelBuilder.Entity<Fridge>(entity =>
-            {
-                entity.HasKey(e => new { e.AccountId, e.IngredId })
                     .HasName("PK__FRIDGE__9100B6D119A3D9F6");
                 entity.ToTable("FRIDGE");
                 entity.Property(e => e.AccountId)
