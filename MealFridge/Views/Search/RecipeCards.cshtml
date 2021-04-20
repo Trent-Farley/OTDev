@@ -13,37 +13,44 @@
         {
             continue;
         }
-       
-<div class="card shadow-lg">
-    <button class="btn" type="button" onClick="getDetails(@r.Id.ToString())">
-        <img class="card-img-top" src="@r.Image" alt="Recipe Image">
-        <div class="card-body">
-            <h4 class="card-title"> @r.Title </h4>
-        </div>
-    </button>
-    
-    <button type="button"
-            class="btn btn-outline-success btn-sm"
-            style="display:inline-block"
-            onclick="addFavorite('@r.Id')">
-        Favorite
-    </button>
-   
-    <button type="button"
-            class="btn btn-outline-danger btn-sm"
-            style="display:inline-block"
-            onclick="addShelf('@r.Id')">
-        Shelf it
-    </button>
-    @if (temp.Favorited ?? false)
-    {
-        <p style="display:inline-block"
-           class="text-md-right text-danger"> <i class="fa fa-heart"> </i> </p>
-    }
-</div>
-    }
+  <div class="card shadow-lg">
+            <img class="card-img-top" src="@r.Image" alt="Recipe Image">
+                @if (temp.Favorited ?? false)
+                 {
+                    <div class="card-img-overlay">
+                        <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
+                            <i class="fa fa-heart"> </i> 
+                        </h3>
+                    </div>
+                 }
+                 <div class="card-body">
+                     <h4 class="card-title"> @r.Title </h4>
+                 </div>
+                 <div class="card-footer">
+                     <div class="btn-group btn-group-lg w-100">
+                         <button type="button"
+                                 id="favButton"
+                                 class="btn btn-outline-success"
+                                 style="display:inline-block"
+                                 onclick="addFavorite('@r.Id')" title="Favorite recipe">
+                             <i class="fa fa-heart"> @r.Savedrecipes.Where(f => f.RecipeId == r.Id && f.Favorited != false).Count()</i>
+                         </button>
+
+                         <button type="button"
+                                 class="btn btn-outline-danger"
+                                 style="display:inline-block"
+                                 onclick="addShelf('@r.Id')" title="Shelf recipe">
+                             <i class="fa fa-stop"></i>
+                         </button>
+                         <button class="btn btn-outline-primary" onclick="getDetails('@r.Id')" type="button" title="Get information">
+                             <i class="fa fa-info"> </i>
+                         </button>
+                     </div>
+                 </div>
+                 </div>
+        }
 }
+
 @if (Model == null)
 {
-    <p>No results found!</p>
-}
+<p>No results found!</p>}
