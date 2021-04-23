@@ -48,6 +48,15 @@
     <Watch Include="**/*.cshtml" />
     <Watch Include="**/*.css" />
   </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Remove="Scripts\Preferences\Index.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Watch Remove="Scripts\Preferences\Index.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\Preferences\Index.ts" />
+  </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>

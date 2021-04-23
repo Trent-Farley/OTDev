@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
 using MealFridge.Utils;
+using MealFridge.Models.Interfaces;
 
 namespace MealFridge.Controllers
 {
@@ -20,23 +21,34 @@ namespace MealFridge.Controllers
     {
 
         private readonly IConfiguration _configuration;
-        private readonly MealFridgeDbContext _context;
+        private readonly IFridgeRepo fridgeRepo;
+        private readonly IIngredientRepo ingredientRepo;
+        private readonly IRestrictionRepo restrictionRepo;
         private readonly UserManager<IdentityUser> _user;
         private readonly string _ingredientSearchEndpoint = "https://api.spoonacular.com/food/ingredients/search";
-        public FridgeController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
+        public FridgeController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRestrictionRepo resRepo, UserManager<IdentityUser> user)
         {
             _configuration = config;
-            _context = context;
+            fridgeRepo = fridge;
+            ingredientRepo = ingRepo;
+            restrictionRepo = resRepo;
             _user = user;
         }
+
+        /// <summary>
+        /// Main entry into the Fridge View
+        /// </summary>
+        /// <returns>
+        /// If the user is logged in returns their Fridge View, elsewise returns the user to the homepage.
+        /// </returns>
         public async Task<IActionResult> Index()
         {
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var userInventory = _context.Fridges.Where(f => f.AccountId == userId).ToList();
+                var userInventory = fridgeRepo.FindByAccount(userId);
                 foreach (var ingredient in userInventory)
-                    ingredient.Ingred = _context.Ingredients.Find(ingredient.IngredId);
+                    ingredient.Ingred = await ingredientRepo.FindByIdAsync(ingredient.IngredId);
                 return await Task.FromResult(View("Index", userInventory.ToList()));
             }
             else
@@ -45,7 +57,7 @@ namespace MealFridge.Controllers
 
 
         /// <summary>
-        /// Main entry point to add an item. This will either udate or add an item to the db
+        /// Main entry point to add an item. This will either update or add an item to the db
         /// </summary>
         /// <param name="id">Id of the ingredient to be added/updated</param>
         /// <param name="amount">Amount of the ingredient to be added or updated</param>
@@ -55,26 +67,23 @@ namespace MealFridge.Controllers
         {
             //Find the current fridge and user 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var fridgeIngredient = _context.Fridges.Where(f => f.Id == id).FirstOrDefault() ?? new Fridge()
+            var fridgeIngredient = await fridgeRepo.FindByIdAsync(userId, id) ?? new Fridge()
             {
-                AccountId = User.FindFirstValue(ClaimTypes.NameIdentifier),
-                IngredId = id
+                AccountId = userId,
+                IngredId = id,
             };
-            fridgeIngredient.Quantity = amount;
-            //If this is new, add it to the db
-            if (!_context.Fridges.Any(item => item.AccountId == fridgeIngredient.AccountId && item.IngredId == fridgeIngredient.IngredId))
-            {
-                await _context.Fridges.AddAsync(fridgeIngredient);
-                await _context.SaveChangesAsync();
-            }
-            //else update the fridge with the new amount (Typically +- 1)
-            //This may remove the item if there is >1 in the current inventory
-            else
-                UpdateItem(id, amount);
+            fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
+            fridgeIngredient.Quantity += amount;
+            if (fridgeIngredient.Quantity < 1 && fridgeIngredient.NeededAmount < 1)
+                RemoveItemAsync(fridgeIngredient);
+            //Add it to the db or update it
+            await fridgeRepo.AddAsync(fridgeIngredient);
             //Get the current inventory as it stands with the update/added/removed item
-            var userInventory = _context.Fridges.Where(f => f.AccountId == userId)
-                .Include(i => i.Ingred)
-                .ToList();
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
             //Return the current inventory
             return PartialView("CurrentInventory", userInventory);
         }
@@ -82,10 +91,8 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> SearchIngredients(Query query)
         {
-            var dbIngredients = _context.Ingredients
-                .Where(i => i.Name.Contains(query.QueryValue))
-                .Include(r => r.Restrictions)
-                .ToList();
+            var dbIngredients = ingredientRepo.SearchName(query.QueryValue);
+                
             var possibleIngredients = new List<Ingredient>();
 
             if (dbIngredients != null)
@@ -93,8 +100,10 @@ namespace MealFridge.Controllers
 
             //We don't need 10 ingredients, 1 is fine. aka, if we type milk, 
             //any milk is fine. If they want to specify 2% milk, then they can search again
+            bool newIngred = false;
             if (possibleIngredients.Count < 1)
             {
+                newIngred = true;
                 query.QueryName = "query";
                 query.Url = _ingredientSearchEndpoint;
                 query.Credentials = _configuration["SApiKey"];
@@ -102,40 +111,25 @@ namespace MealFridge.Controllers
                 possibleIngredients = apiCall.SearchIngredients();
             }
             //Save the ingredients into the db
-            foreach (var ingredient in possibleIngredients)
-                if (!_context.Ingredients.Any(t => t.Id == ingredient.Id))
-                    await _context.AddAsync(ingredient);
-
-            await _context.SaveChangesAsync();
-
-
+            if (newIngred)
+            {
+                foreach (var ingredient in possibleIngredients)
+                    if (!await ingredientRepo.ExistsAsync(ingredient.Id))
+                        await ingredientRepo.AddIngredAsync(ingredient);
+            }
             //Get user inventory to see if they have any of these ingredients
-            var userId = _user.GetUserId(User);
-            var userInventory = _context.Fridges.Where(f => f.AccountId == userId).ToList();
-            foreach (var ingredient in userInventory)
-                ingredient.Ingred = _context.Ingredients.Find(ingredient.IngredId);
-
+            else
+            {
+                possibleIngredients.RemoveAll(i => restrictionRepo.GetAll().Any(r => r.IngredId == i.Id));
+                //await restrictionRepo.RemoveRestrictions(possibleIngredients);
+                var userId = _user.GetUserId(User);
+                var userInventory = fridgeRepo.FindByAccount(userId);
+                foreach (var ingredient in userInventory)
+                    ingredient.Ingred = await ingredientRepo.FindByIdAsync(ingredient.IngredId);
+            }
             //Create a list of ingredients with their current inventory
 
             return await Task.FromResult(PartialView("IngredientCards", possibleIngredients));
-        }
-
-        private void UpdateItem(int id, int amount)
-        {
-            //Find the ingredient to update, that way not another Fridge is being tracked
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var fridgeIngredient = _context.Fridges.Where(f => f.AccountId == userId && f.IngredId == id).FirstOrDefault();
-            //set the quantity
-            fridgeIngredient.Quantity = amount + (fridgeIngredient.Quantity ?? 0);
-            //IF the quantity is 0, remove it
-            if (fridgeIngredient.Quantity < 1)
-                RemoveItemAsync(id);
-            //else update
-            else
-            {
-                _context.Fridges.Update(fridgeIngredient);
-                _context.SaveChanges();
-            }
         }
 
         /// <summary>
@@ -143,29 +137,24 @@ namespace MealFridge.Controllers
         /// </summary>
         /// <param name="id">The id of an ingredient.</param>
         /// <returns>Void, just removes an item from a db</returns>
-        private void RemoveItemAsync(int id)
+        private async void RemoveItemAsync(Fridge fridge)
         {
-            //Find the ingredients and corret fridge
-            var userId = _user.GetUserId(User);
-            var fridgeIngredient = _context.Fridges.Where(f => f.AccountId == userId && f.IngredId == id).FirstOrDefault();
-            //IF its there, remove it
-            if (_context.Fridges.Any(item => item == fridgeIngredient))
+            if (await fridgeRepo.ExistsAsync(fridge.AccountId, fridge.IngredId))
             {
-                _context.Remove(fridgeIngredient);
-                _context.SaveChanges();
+                await fridgeRepo.DeleteAsync(fridge);
             }
         }
 
-        public void Restriction(int id, string other)
+        public async void Restriction(int id, string other)
         {
             var userId = _user.GetUserId(User);
-            var badIngred = _context.Ingredients.Where(r => r.Id == id).FirstOrDefault();
+            var badIngred = await ingredientRepo.FindByIdAsync(id);
             var restrict = new Restriction 
             {
                 Ingred = badIngred,
                 AccountId = userId.ToString(),
 
-        };
+            };
             if(other == "Banned")
             {
                 restrict.Banned = true;
@@ -174,16 +163,7 @@ namespace MealFridge.Controllers
             {
                 restrict.Dislike = true;
             }
-            var temp = _context.Restrictions.ToList();
-            foreach (var i in temp)
-            {
-                if(i.IngredId == restrict.Ingred.Id)
-                {
-                    return;
-                }
-            }
-            _context.Restrictions.Add(restrict);
-            _context.SaveChanges();
+            await restrictionRepo.AddOrUpdateAsync(restrict);
         }
 
     }

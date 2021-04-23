@@ -25,6 +25,7 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
+            //Seed recipes with https://spoonacular.com/food-api/docs#Get-Random-Recipes
             var randomRecipes = _db.getRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
         }
