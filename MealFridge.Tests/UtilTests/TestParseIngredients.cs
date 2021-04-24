@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MealFridge.Utils;
+using MealFridge.Models.Repositories;
 
 namespace MealFridge.Tests
 {

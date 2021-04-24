@@ -8,3 +8,6 @@ describe('Fridge Test Suite', function () {
         expect(getAmountFromString("A")).toBe(NaN);
     });
 });     */
+describe('Fridge Test Suite', () => {
+    it('True', () => { expect(true).toBe(true) })
+})

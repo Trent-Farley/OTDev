@@ -8,5 +8,6 @@ namespace MealFridge.Models.ViewModels
         public List<Meal> Lunch { get; set; }
         public List<Meal> Dinner { get; set; }
         public List<string> Days { get; set; }
+        public int DaysCount { get; set; }
     }
 }

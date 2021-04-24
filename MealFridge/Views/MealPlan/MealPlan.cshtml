@@ -1,10 +1,10 @@
 ﻿@model MealFridge.Models.ViewModels.Meals
 
-@if (Model.Breakfast.Count < 1 || Model.Lunch.Count < 1 || Model.Dinner.Count < 1)
+@if (Model.Breakfast.Count < Model.DaysCount || Model.Lunch.Count < Model.DaysCount || Model.Dinner.Count < Model.DaysCount)
 {
     <p>Unable to generate a meal plan at this time</p>
 }
-@if (Model.Breakfast.Count > 3 || Model.Lunch.Count > 3 || Model.Dinner.Count > 3)
+else
 {
     <div class="row m-lg-2 mb-lg-4 shadow-lg bg-secondary">
         <div class="col-sm-3 bg-primary">
