@@ -42,6 +42,7 @@ namespace MealFridge
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<IRecipeRepo, RecipeRepo>();
+            services.AddScoped<ISavedrecipeRepo, SavedrecipeRepo>();
             services.AddScoped<IFridgeRepo, FridgeRepo>();
             services.AddScoped<IRestrictionRepo, RestrictionRepo>();
             services.AddScoped<IIngredientRepo, IngredientRepo>();
