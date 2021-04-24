@@ -23,7 +23,7 @@ namespace MealFridge.Models.Repositories
     {
         public SavedrecipeRepo(MealFridgeDbContext ctx) : base(ctx) { }
 
-      public List<Savedrecipe> FindAccount(string userId)
+        public List<Savedrecipe> FindAccount(string userId)
         {
             var temp = _dbSet.Where(a => a.AccountId == userId).ToList();
             return temp;
@@ -49,11 +49,13 @@ namespace MealFridge.Models.Repositories
             IQueryable<Savedrecipe> temp = GetAll();
             return temp.Where(a => a.AccountId == userId && a.Favorited == true).Include(r => r.Recipe).ToList();
         }
-        //public List<Recipe> GetRecipes(int recipeId)
-        //{
-        //    IQueryable<Recipe> temp = (IQueryable<Recipe>)GetAll();
-        //    return temp.ToList();
-        //}
+
+        public List<Savedrecipe> GetAllRecipes(string userId)
+        {
+            IQueryable<Savedrecipe> temp = GetAll();
+            return temp.Where(a => a.AccountId == userId).Include(r => r.Recipe).ToList();
+        }
+       
     }
 }
 

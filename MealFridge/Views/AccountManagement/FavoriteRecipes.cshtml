@@ -17,30 +17,81 @@
         </ul>
     </div>
 </div>
-<h1> Favorite Recipes To Be Implemented</h1>
-@if (Model != null){
-<table class="table" id="favrecipes">
-    <thead>
-        <tr>
-            <th> Recipe Name </th>
-        </tr>
-    </thead>
-    @foreach (var i in Model)
-    {
-        @if (i.Favorited == true)
+<center> <h1> Saved Recipes</h1> </center>
+<div class="container" style="border:solid; background-color:white">
+    <div class="row">
+        @if (Model != null)
         {
-            <tbody>
-                <tr>
-                    <td> @i.Recipe.Title </td>
-                    <td>  @Html.ActionLink("Delete", "DeleteRecipe", new { account_id = i.AccountId, recipe_id = i.RecipeId, })</td>
-                </tr>
-            </tbody>
-        }
-        else 
-        {
-            continue;
+            if (Model.Count() > 0)
+            {
+                <div class="col">
+                    <center> <h1> Favorited </h1> </center>
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th> Recipe Name </th>
+
+                            </tr>
+                        </thead>
+
+                        @foreach (var i in Model)
+                        {
+                            <tbody>
+                                @if (i.Favorited == true)
+                                {
+                                    <tr>
+                                        <td> @i.Recipe.Title </td>
+                                        <td style="text-align:center">  @Html.ActionLink("", "DeleteRecipe", new { recipe_id = i.RecipeId }, new { @class = "btn btn-danger fa fa-ban" })</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                <div class="col">
+                    <center> <h1> Shelved </h1> </center>
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th> Recipe Name</th>
+
+                            </tr>
+                        </thead>
+
+                        @foreach (var i in Model)
+                        {
+
+                            <tbody>
+                                @if (i.Shelved == true)
+                                {
+                                    <tr>
+                                        <td> @i.Recipe.Title </td>
+                                        <td style="text-align:center"> @Html.ActionLink("", "DeleteRecipe", new { recipe_id = i.RecipeId }, new { @class = "btn btn-danger fa fa-ban" })</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            }
+                else
+                {
+                   <div class="container" style="border:solid"> 
+                        <center> <p> You have no saved recipes :( </p> </center> 
+                   </div> 
+
+                }
         }
 
-    }
-</table>
-}
+    </div>
+</div>
+
+
