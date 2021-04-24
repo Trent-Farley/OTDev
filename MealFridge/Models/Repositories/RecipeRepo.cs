@@ -4,14 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using MealFridge.Models;
 using MealFridge.Models.Interfaces;
+using MealFridge.Models.ViewModels;
 
 namespace MealFridge.Models.Repositories
 {
     public class RecipeRepo : Repository<Recipe>, IRecipeRepo
     {
-        public RecipeRepo(MealFridgeDbContext ctx) : base(ctx){}
+        public RecipeRepo(MealFridgeDbContext ctx) : base(ctx)
+        {
+        }
 
-        public virtual List<Recipe> getRandomSix()
+        public virtual List<Recipe> GetRandomSix()
         {
             IQueryable<Recipe> recipes = GetAll();
             return recipes

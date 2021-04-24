@@ -9,7 +9,6 @@ namespace MealFridge.Models.Repositories
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()
     {
-
         protected readonly DbContext _context;
         protected readonly DbSet<TEntity> _dbSet;
 
@@ -18,15 +17,26 @@ namespace MealFridge.Models.Repositories
             _context = ctx;
             _dbSet = _context.Set<TEntity>();
         }
+
         public virtual async Task<TEntity> AddOrUpdateAsync(TEntity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException("Entity must not be null to add or update");
             }
-            _context.Update(entity);
-            await _context.SaveChangesAsync();
+            if (_dbSet.Any(e => e.Equals(entity)))
+                await UpdateAsync(entity);
+            _context.Add(entity);
+            await _context.SaveChangesAsync(); //Breaking here
             return entity;
+        }
+
+        public virtual async Task UpdateAsync(TEntity entity)
+        {
+            if (entity == null)
+                return;
+            _dbSet.Update(entity);
+            await _context.SaveChangesAsync();
         }
 
         public virtual async Task DeleteAsync(TEntity entity)

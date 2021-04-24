@@ -1,82 +1,79 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MealFridge.Models;
+using MealFridge.Models.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using MealFridge.Models;
-using MealFridge.Models.Interfaces;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Web;
-using MealFridge.Utils;
-
-
 
 namespace MealFridge.Controllers
 {
     public class AccountManagementController : Controller
     {
         private readonly IConfiguration _configuration;
-        //private readonly IFridgeRepo fridgeRepo;
-        //private readonly IIngredientRepo ingredientRepo;
-        //private readonly IRecipeIngredRepo recipeRepo;
-        private readonly ISavedrecipeRepo savedrecipeRepo;
+        private readonly IRestrictionRepo _restrictionContext;
+        private readonly IIngredientRepo _ingredientContext;
         private readonly UserManager<IdentityUser> _user;
-        private readonly MealFridgeDbContext _db;
 
-        public AccountManagementController(IConfiguration config, UserManager<IdentityUser> user, ISavedrecipeRepo other)
+        public AccountManagementController(IConfiguration config, IRestrictionRepo restrictionContext, IIngredientRepo ingredientContext, UserManager<IdentityUser> user)
         {
             _configuration = config;
-           
-            //fridgeRepo = fridge;
-            //ingredientRepo = ingRepo;
-            //recipeRepo = resRepo;
-            savedrecipeRepo = other;
+            _restrictionContext = restrictionContext;
+            _ingredientContext = ingredientContext;
             _user = user;
         }
-
-        public ActionResult  Index()
+        public ActionResult Index()
         {
             return View();
         }
-        public ActionResult DietaryRestrictions()
-        {
-            return View();
-        }
-        public ActionResult FoodPreferences()
-        {
-            return View();
-        }
-        public async Task<ActionResult> FavoriteRecipes()
+        public async Task<IActionResult> RemoveRestrictedIngredient(int id)
         {
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-               // var userSavedRecipes = _db.Savedrecipes.Where(f => f.AccountId == userId).Include(r => r.Recipe).ToList();
-                var userSavedRecipes = savedrecipeRepo.FindAccount(userId);
-                return await Task.FromResult(View("FavoriteRecipes", userSavedRecipes.ToList()));
-            }
-            return await Task.FromResult(RedirectToAction("Index", "Home"));
-        }
-
-       public async Task<ActionResult> DeleteRecipe(int recipe_id)
-        {
-            var userId = _user.GetUserId(User);
-            var temp = savedrecipeRepo.FindAccount(userId);
-            foreach(var i in temp)
-            {
-                if (i.RecipeId == recipe_id)
+                var temp = _restrictionContext.Restriction(userId, id);
+                if (temp != null)
                 {
-                    savedrecipeRepo.RemoveSavedRecipe(i);
+                    _restrictionContext.RemoveRestriction(temp);
                 }
             }
-          
-            return await Task.FromResult(RedirectToAction("FavoriteRecipes"));
+            return await Task.FromResult(RedirectToAction("DietaryRestrictions"));
         }
-   }
+        public async Task<IActionResult> DietaryRestrictions()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = _user.GetUserId(User);
+                var userRestrictions = _restrictionContext.GetUserRestrictedIngred(userId);
+                foreach (var restriction in userRestrictions)
+                {
+                    restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
+                }
+                return await Task.FromResult(View("DietaryRestrictions", userRestrictions));
+            }
+            else
+                return await Task.FromResult(RedirectToAction("Index", "Home"));
+        }
+        public async Task<IActionResult> FoodPreferences()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = _user.GetUserId(User);
+                var userRestrictions = _restrictionContext.GetUserDislikedIngred(userId);
+                foreach (var restriction in userRestrictions)
+                {
+                    restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
+                }
+                return await Task.FromResult(View("FoodPreferences", userRestrictions));
+            }
+            else
+                return await Task.FromResult(RedirectToAction("Index", "Home"));
+        }
+        public ActionResult FavoriteRecipes()
+        {
+            return View();
+        }
+    }
 }

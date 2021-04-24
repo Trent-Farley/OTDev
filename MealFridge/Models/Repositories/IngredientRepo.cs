@@ -24,10 +24,5 @@ namespace MealFridge.Models.Repositories
         {
             return _dbSet.Where(i => i.Name.Contains(queryValue)).ToList();
         }
-
-        public Ingredient Ingredient(int id)
-        {
-            return _dbSet.Where(i => i.Id == id).FirstOrDefault();
-        }
     }
 }

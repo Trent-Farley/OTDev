@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using MealFridge.Models.Interfaces;
 
 namespace MealFridge.Controllers
 {
@@ -19,15 +20,14 @@ namespace MealFridge.Controllers
         private readonly IConfiguration _config;
         private readonly UserManager<IdentityUser> _user;
         private readonly MealFridgeDbContext _db;
-        private readonly string _searchByNameEndpoint = "https://api.spoonacular.com/recipes/complexSearch";
-        private readonly string _searchByIngredientEndpoint = "https://api.spoonacular.com/recipes/findByIngredients";
-        private readonly string _searchByRecipeEndpoint = "https://api.spoonacular.com/recipes/{id}/information";
+        private readonly ISpnApiService _spnApi;
 
-        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user)
+        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service)
         {
             _db = context;
             _config = config;
             _user = user;
+            _spnApi = service;
         }
 
         public async Task<IActionResult> Index()
@@ -62,7 +62,7 @@ namespace MealFridge.Controllers
             {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
-                query.Url = _searchByNameEndpoint;
+                query.Url = ApiConstants.SearchByNameEndpoint;
                 foreach (var i in await SearchApiAsync(query))
                 {
                     i.Savedrecipes = _db.Savedrecipes.ToList();
@@ -98,7 +98,7 @@ namespace MealFridge.Controllers
             if (possibleRecipes.Count < 10)
             {
                 query.QueryName = "ingredients";
-                query.Url = _searchByIngredientEndpoint;
+                query.Url = ApiConstants.SearchByIngredientEndpoint;
                 query.Credentials = _config["SApiKey"];
                 query.SearchType = "Ingredient";
                 foreach (var i in await SearchApiAsync(query))
@@ -121,7 +121,7 @@ namespace MealFridge.Controllers
             {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "id";
-                query.Url = _searchByRecipeEndpoint.Replace("{id}", id.ToString());
+                query.Url = ApiConstants.SearchByRecipeEndpoint.Replace("{id}", id.ToString());
                 query.SearchType = "Details";
                 var recipes = await SearchApiAsync(query);
                 recipe.UpdateRecipe(recipes.FirstOrDefault());
@@ -133,8 +133,7 @@ namespace MealFridge.Controllers
                 {
                     if (!_db.Recipeingreds.Any(r => (r.RecipeId == ingred.RecipeId) && (r.IngredId == ingred.IngredId)))
                     {
-                        if(_db.Ingredients.Any(i => i.Id == ingred.IngredId))
-
+                        if (_db.Ingredients.Any(i => i.Id == ingred.IngredId))
                         {
                             ingred.Ingred = _db.Ingredients.FirstOrDefault(i => i.Id == ingred.IngredId);
                         }
@@ -159,14 +158,11 @@ namespace MealFridge.Controllers
         /// <returns>A list of recipes that have been saved to the db</returns>
         private async Task<List<Recipe>> SearchApiAsync(Query query)
         {
-            var apiQuerier = new SearchSpnApi(query);
-            var possibleRecipes = apiQuerier.SearchAPI();
+            var possibleRecipes = _spnApi.SearchApi(query);
             if (possibleRecipes != null)
-            {
                 foreach (var recipe in possibleRecipes)
                     if (!_db.Recipes.Any(t => t.Id == recipe.Id))
                         await _db.Recipes.AddAsync(recipe);
-            }
 
             await _db.SaveChangesAsync();
             return await Task.FromResult(possibleRecipes.OrderBy(r => r.Id).Distinct().ToList());
