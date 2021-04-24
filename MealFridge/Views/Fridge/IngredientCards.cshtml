@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Ingredient>
 
-@if (Model == null)
+@if (Model.Count() == 0)
 {
     <div class="card">
         <div class="card-body">

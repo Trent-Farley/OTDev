@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using MealFridge.Models;
 using MealFridge.Utils;
+using MealFridge.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using Moq;
 
 namespace MealFridge.Tests.Models
 {
@@ -100,5 +102,6 @@ namespace MealFridge.Tests.Models
             temp.IngredId = 78;
             Assert.IsTrue(temp.IngredId != 77 && temp.IngredId == 78);
         }
+
     }
 }

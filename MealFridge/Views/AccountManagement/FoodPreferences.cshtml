@@ -1,7 +1,6 @@
 ﻿
-@{
-    ViewBag.Title = "FoodPreferences";
-}
+@{ ViewBag.Title = "FoodPreferences"; }
+@model List<Restriction>
 <div class="navbar">
     <div class="container">
         <ul class="nav nav-tabs">
@@ -14,7 +13,27 @@
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
             </li>
-        </ul>>
+        </ul>
     </div>
 </div>
-<h1> Food Preferences To Be Implemented</h1>
+<div id="cnhIngredList">
+    <h1>Disliked Ingredients</h1>
+    @if (Model.Count() > 0) 
+    {
+        <ul>
+        @foreach (var i in Model)
+        {
+            <li id="cnhIngredItem">
+            <label>@i.Ingred.Name</label>
+            <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
+                <i class="far fa-times-circle"></i>
+            </button>
+            </li>
+        }
+        </ul>
+     }
+     @if (Model.Count()<1) { <p>--Nothing to show--</p>}
+</div>
+@section Scripts{
+    <script src="~/js/Preferences/Index.js"></script>
+}

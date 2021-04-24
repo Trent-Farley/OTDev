@@ -1,5 +1,4 @@
 CREATE TABLE [FRIDGE] (
-  [id] int,
   [account_id] NVARCHAR(255),
   [ingred_id] int,
   [quantity] float,
