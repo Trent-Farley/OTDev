@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Savedrecipe>
 @{
     ViewBag.Title = "FavoriteRecipes";
 }
@@ -18,3 +18,29 @@
     </div>
 </div>
 <h1> Favorite Recipes To Be Implemented</h1>
+@if (Model != null){
+<table class="table" id="favrecipes">
+    <thead>
+        <tr>
+            <th> Recipe Name </th>
+        </tr>
+    </thead>
+    @foreach (var i in Model)
+    {
+        @if (i.Favorited == true)
+        {
+            <tbody>
+                <tr>
+                    <td> @i.Recipe.Title </td>
+                    <td>  @Html.ActionLink("Delete", "DeleteRecipe", new { account_id = i.AccountId, recipe_id = i.RecipeId, })</td>
+                </tr>
+            </tbody>
+        }
+        else 
+        {
+            continue;
+        }
+
+    }
+</table>
+}
