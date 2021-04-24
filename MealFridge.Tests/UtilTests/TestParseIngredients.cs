@@ -20,7 +20,7 @@ namespace MealFridge.Tests
         [Test]
         public void ParseIngredientEmptyList_Should_ReturnEmptyList()
         {
-            var result = SearchSpnApi.ParseIngredient(null);
+            var result = SpnApiService.ParseIngredient(null);
             Assert.That(result, Is.Null);
         }
 
@@ -33,7 +33,7 @@ namespace MealFridge.Tests
                 { "name", "Test Ingredient" },
                 { "image", "apple.jpg" }
             };
-            var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
+            var result = SpnApiService.ParseIngredient(ingredientAsJson);
 
             Assert.That(result.Id, Is.Not.Null);
             Assert.That(result.Id, Is.EqualTo(1002));
@@ -48,7 +48,7 @@ namespace MealFridge.Tests
                 { "name", "Test Ingredient" },
                 { "image", "apple.jpg" }
             };
-            var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
+            var result = SpnApiService.ParseIngredient(ingredientAsJson);
 
             Assert.That(result.Name, Is.Not.Null);
             Assert.That(result.Name, Is.EqualTo("Test Ingredient"));
@@ -63,7 +63,7 @@ namespace MealFridge.Tests
                 { "name", "Test Ingredient" },
                 { "image", "apple.jpg" }
             };
-            var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
+            var result = SpnApiService.ParseIngredient(ingredientAsJson);
 
             Assert.That(result.Image, Is.Not.Null);
             Assert.That(result.Image, Is.EqualTo("https://spoonacular.com/cdn/ingredients_500x500/" + "apple.jpg"));
@@ -78,7 +78,7 @@ namespace MealFridge.Tests
                 { "nameee", "Test Ingredient" },
                 { "imageee", "apple.jpg" }
             };
-            var result = SearchSpnApi.ParseIngredient(ingredientAsJson);
+            var result = SpnApiService.ParseIngredient(ingredientAsJson);
             Assert.That(result, Is.Null);
         }
     }

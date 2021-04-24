@@ -47,7 +47,12 @@
                             onclick="hideIngred('@ingredient.Id')">
                         Dislike
                     </button>
-
+                    <button type="button"
+                            id="button-cart"
+                            class="btn btn-outline-success"
+                            onclick="addShopping('@ingredient.Id', 1)">
+                        <i class="fa fa-shopping-basket"></i>
+                    </button>
                     <button type="button"
                             onclick="addIngredient('@ingredient.Id', 1)"
                             title="Add one"

@@ -1,4 +1,5 @@
-﻿using MealFridge.Models.Interfaces;
+﻿using MealFridge.Models;
+using MealFridge.Models.Interfaces;
 using MealFridge.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace MealFridge.Controllers
@@ -41,6 +43,32 @@ namespace MealFridge.Controllers
         }
 
         [HttpPost]
+        public async Task AddItem(int id, int amount)
+        {
+            //Find the current fridge and user 
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var fridgeIngredient = await fridgeRepo.FindByIdAsync(userId, id) ?? new Fridge()
+            {
+                AccountId = userId,
+                IngredId = id,
+                NeededAmount = 0,
+                Quantity = 0,
+                Shopping = false
+            };
+            fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
+            fridgeIngredient.NeededAmount += amount;
+            //If you need more, add to shopping list
+            if (fridgeIngredient.NeededAmount > fridgeIngredient.Quantity)
+                fridgeIngredient.Shopping = true;
+            else
+                fridgeIngredient.Shopping = false;
+            //If you have none, and don't need any, remove the item.
+            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
+                await fridgeRepo.DeleteAsync(fridgeIngredient);
+            //Add it to the db or update it
+            await fridgeRepo.AddAsync(fridgeIngredient);
+        }
+        [HttpPost]
         public async Task<IActionResult> AddRecipeIngredients(string id)
         {
             if (!int.TryParse(id, out var recipeId) || !User.Identity.IsAuthenticated)
@@ -62,6 +90,7 @@ namespace MealFridge.Controllers
                     {
                         AccountId = userId,
                         IngredId = r.IngredId,
+                        Quantity = 0,
                         NeededAmount = r.Amount,
                         Shopping = true
                     });

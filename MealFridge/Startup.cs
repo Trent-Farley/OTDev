@@ -46,6 +46,7 @@ namespace MealFridge
             services.AddScoped<IRestrictionRepo, RestrictionRepo>();
             services.AddScoped<IIngredientRepo, IngredientRepo>();
             services.AddScoped<IRecipeIngredRepo, RecipeIngredRepo>();
+            services.AddScoped<ISpnApiService, SpnApiService>();
             services.AddAuthentication()/*.AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
@@ -58,7 +59,6 @@ namespace MealFridge
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

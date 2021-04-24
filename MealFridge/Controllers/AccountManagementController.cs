@@ -49,7 +49,7 @@ namespace MealFridge.Controllers
                 var userRestrictions = _restrictionContext.GetUserRestrictedIngred(userId);
                 foreach (var restriction in userRestrictions)
                 {
-                    restriction.Ingred = _ingredientContext.Ingredient(restriction.IngredId);
+                    restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
                 }
                 return await Task.FromResult(View("DietaryRestrictions", userRestrictions));
             }
@@ -64,7 +64,7 @@ namespace MealFridge.Controllers
                 var userRestrictions = _restrictionContext.GetUserDislikedIngred(userId);
                 foreach (var restriction in userRestrictions)
                 {
-                    restriction.Ingred = _ingredientContext.Ingredient(restriction.IngredId);
+                    restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
                 }
                 return await Task.FromResult(View("FoodPreferences", userRestrictions));
             }

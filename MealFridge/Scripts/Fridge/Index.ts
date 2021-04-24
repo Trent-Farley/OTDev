@@ -18,6 +18,21 @@
     })
 }
 
+function addShopping(id: string, amount: string): void {
+    $.ajax({
+        url: "/Shopping/AddItem",
+        method: "POST",
+        data: {
+            id: id,
+            amount: parseInt(amount, 10)
+        },
+        success: (data) => {
+            alert("Added item to shopping list.")
+        },
+        error: (err) => { console.log(err); }
+    })
+}
+
 function banIngred(id: string): void {
     $.ajax({
         url: "/Fridge/Restriction",

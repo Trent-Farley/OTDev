@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Meal Plan";
+}
+<div class="container">
+    <button class="w-100 btn btn-outline-dark rounded-pill shadow-lg" onclick="getMealPlan()">Generate meal plan</button>
+    <div class="meal-plan-main"></div>
+
+    <div class="m-lg-3" id="meals"></div>
+</div>
+
+@section Scripts {
+    <script src="~/js/MealPlan/Index.js"></script>
+}

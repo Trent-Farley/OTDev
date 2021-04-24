@@ -30,12 +30,12 @@
                             <div class="card-footer">
                                 Please check out the recipe <a href="@Model.Summery" target="_blank"> here </a> for full instructions
                             </div>
-                            <ul class="d-none" id="hidden-ingredients">
+                            @*<ul class="d-none" id="hidden-ingredients">
                                 @foreach (var ingredient in Model.Recipeingreds)
                                 {
                                     <li> <p> @ingredient.Ingred.Name </p> </li>
-                                }
-                            </ul>
+                                } No longer needed?
+                            </ul>*@
                         </div>
                     }
                     @if (Model == null)
@@ -50,7 +50,6 @@
             <div class="modal-footer" id="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
                 <button type="button" id="button-cart" class="btn btn-outline-success" data-dismiss="modal"><i class="fa fa-shopping-basket"></i></button>
-
             </div>
         </div>
     </div>

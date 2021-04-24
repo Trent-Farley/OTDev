@@ -19,20 +19,22 @@ namespace MealFridge.Controllers
 {
     public class FridgeController : Controller
     {
-
         private readonly IConfiguration _configuration;
         private readonly IFridgeRepo fridgeRepo;
         private readonly IIngredientRepo ingredientRepo;
         private readonly IRestrictionRepo restrictionRepo;
+        private readonly ISpnApiService _spnApi;
         private readonly UserManager<IdentityUser> _user;
         private readonly string _ingredientSearchEndpoint = "https://api.spoonacular.com/food/ingredients/search";
-        public FridgeController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRestrictionRepo resRepo, UserManager<IdentityUser> user)
+
+        public FridgeController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRestrictionRepo resRepo, UserManager<IdentityUser> user, ISpnApiService service)
         {
             _configuration = config;
             fridgeRepo = fridge;
             ingredientRepo = ingRepo;
             restrictionRepo = resRepo;
             _user = user;
+            _spnApi = service;
         }
 
         /// <summary>
@@ -55,7 +57,6 @@ namespace MealFridge.Controllers
                 return await Task.FromResult(RedirectToAction("Index", "Home"));
         }
 
-
         /// <summary>
         /// Main entry point to add an item. This will either update or add an item to the db
         /// </summary>
@@ -65,17 +66,24 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> AddItem(int id, int amount)
         {
-            //Find the current fridge and user 
+            //Find the current fridge and user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var fridgeIngredient = await fridgeRepo.FindByIdAsync(userId, id) ?? new Fridge()
             {
                 AccountId = userId,
                 IngredId = id,
+                NeededAmount = 0,
+                Quantity = 0,
+                Shopping = false
             };
             fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
             fridgeIngredient.Quantity += amount;
-            if (fridgeIngredient.Quantity < 1 && fridgeIngredient.NeededAmount < 1)
+            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
                 RemoveItemAsync(fridgeIngredient);
+            if (fridgeIngredient.Quantity < fridgeIngredient.NeededAmount)
+                fridgeIngredient.Shopping = true;
+            else
+                fridgeIngredient.Shopping = false;
             //Add it to the db or update it
             await fridgeRepo.AddAsync(fridgeIngredient);
             //Get the current inventory as it stands with the update/added/removed item
@@ -92,23 +100,22 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> SearchIngredients(Query query)
         {
             var dbIngredients = ingredientRepo.SearchName(query.QueryValue);
-                
+
             var possibleIngredients = new List<Ingredient>();
 
             if (dbIngredients != null)
                 possibleIngredients = dbIngredients;
 
-            //We don't need 10 ingredients, 1 is fine. aka, if we type milk, 
+            //We don't need 10 ingredients, 5 is fine. aka, if we type milk,
             //any milk is fine. If they want to specify 2% milk, then they can search again
             bool newIngred = false;
-            if (possibleIngredients.Count < 1)
+            if (possibleIngredients.Count < 5)
             {
                 newIngred = true;
                 query.QueryName = "query";
                 query.Url = _ingredientSearchEndpoint;
                 query.Credentials = _configuration["SApiKey"];
-                var apiCall = new SearchSpnApi(query);
-                possibleIngredients = apiCall.SearchIngredients();
+                possibleIngredients = _spnApi.SearchIngredients(query);
             }
             //Save the ingredients into the db
             if (newIngred)
@@ -133,7 +140,7 @@ namespace MealFridge.Controllers
         }
 
         /// <summary>
-        /// Remove a fridge from the database. 
+        /// Remove a fridge from the database.
         /// </summary>
         /// <param name="id">The id of an ingredient.</param>
         /// <returns>Void, just removes an item from a db</returns>
@@ -149,22 +156,20 @@ namespace MealFridge.Controllers
         {
             var userId = _user.GetUserId(User);
             var badIngred = await ingredientRepo.FindByIdAsync(id);
-            var restrict = new Restriction 
+            var restrict = new Restriction
             {
                 Ingred = badIngred,
                 AccountId = userId.ToString(),
-
             };
-            if(other == "Banned")
+            if (other == "Banned")
             {
                 restrict.Banned = true;
             }
-            if(other == "Dislike")
+            if (other == "Dislike")
             {
                 restrict.Dislike = true;
             }
             await restrictionRepo.AddOrUpdateAsync(restrict);
         }
-
     }
 }

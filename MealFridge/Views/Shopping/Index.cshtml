@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Fridge>
 @{
     ViewBag.Title = "Shopping List";
- }
+}
 <div class="container">
     <div id="shoppingList" style="background-color:whitesmoke">
         <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
@@ -30,8 +30,28 @@
                         {
                             <tr id="@i.IngredId">
                                 <td class="w-25"> @i.Ingred.Name </td>
-                                <td class="w-25"> @i.Quantity </td>
-                                <td class="w-25"> @i.NeededAmount</td>
+                                <td class="w-25">
+                                    <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
+                                            onclick="updateQuant('@i.Ingred.Id', -1)">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-light disabled">@i.Quantity</button>
+                                    <button type="button" title="Add one" class="btn btn-outline-success"
+                                            onclick="updateQuant('@i.Ingred.Id', 1)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </td>
+                                <td class="w-25">
+                                    <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
+                                            onclick="updateNeeded('@i.Ingred.Id', -1)">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-light disabled">@i.NeededAmount</button>
+                                    <button type="button" title="Add one" class="btn btn-outline-success"
+                                            onclick="updateNeeded('@i.Ingred.Id', 1)">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </td>
                                 <td class="w-25"> <input type="checkbox" /></td>
                             </tr>
                         }
@@ -41,3 +61,6 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script src="~/js/Shopping/Index.js"></script>
+}
