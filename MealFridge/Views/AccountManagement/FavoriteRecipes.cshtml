@@ -32,7 +32,7 @@
             <tbody>
                 <tr>
                     <td> @i.Recipe.Title </td>
-                    <td>  @Html.ActionLink("Delete", "Delete", new { account_id = i.AccountId, recipe_id = i.RecipeId, })</td>
+                    <td>  @Html.ActionLink("Delete", "DeleteRecipe", new { account_id = i.AccountId, recipe_id = i.RecipeId, })</td>
                 </tr>
             </tbody>
         }

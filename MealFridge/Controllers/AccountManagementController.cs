@@ -53,7 +53,7 @@ namespace MealFridge.Controllers
             return await Task.FromResult(RedirectToAction("Index", "Home"));
         }
 
-        public async Task<ActionResult> Delete(string account_id, int recipe_id)
+        public async Task<ActionResult> DeleteRecipe(string account_id, int recipe_id)
         {
             var temp = _context.Savedrecipes.Where(a => a.AccountId == account_id).ToList();
             foreach(var i in temp)
