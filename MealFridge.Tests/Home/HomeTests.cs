@@ -17,7 +17,7 @@ namespace MealFridge.Tests.Home
     /// I should probably test it too.
     /// </summary>
     [TestFixture]
-    public class TestIndex
+    public class HomeTests
     {
         [Test]
         public async Task TestIndexWithEnoughRecipes_Should_ReturnPopulatedEnumerable()

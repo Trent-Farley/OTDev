@@ -15,11 +15,13 @@ namespace MealFridge.Controllers
     {
         private IRecipeRepo _recipeDb;
         private UserManager<IdentityUser> _user;
+        private ISavedrecipeRepo _savedDb;
 
-        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user)
+        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe)
         {
             _recipeDb = ctx;
             _user = user;
+            _savedDb = savedrecipe;
         }
 
         public async Task<IActionResult> Index() =>
@@ -50,9 +52,12 @@ namespace MealFridge.Controllers
             return await Task.FromResult(PartialView("MealPlan", meals));
         }
 
-        public async Task<IActionResult> GetFavorties()
+        [HttpPost]
+        public async Task<IActionResult> GetFavoritses()
         {
-            return await Task.FromResult(PartialView("SavedRecipes"));
+            var user = _user.GetUserId(User);
+
+            return await Task.FromResult(PartialView("SavedRecipesModal", _savedDb.GetFavoritedRecipe(user)));
         }
     }
 }
