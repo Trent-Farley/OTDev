@@ -17,7 +17,8 @@ namespace MealFridge.Models.Repositories
 
         public async Task<Fridge> FindByIdAsync(string UserId, int ingredId)
         {
-            return await _dbSet.FindAsync(UserId, ingredId);
+            var r = await _dbSet.FindAsync(UserId, ingredId);
+            return r;
         }
 
         public List<Fridge> FindByAccount(string userId)
@@ -36,16 +37,24 @@ namespace MealFridge.Models.Repositories
             return ingreds;
         }
 
-        public async Task AddAsync(Fridge fridgeIngredient)
+        public async Task AddFridgeAsync(Fridge fridgeIngredient)
         {
             if (fridgeIngredient == null)
             {
                 throw new ArgumentNullException("Entity must not be null to add or update");
             }
-            if (_dbSet.Any(i => i.AccountId == fridgeIngredient.AccountId && i.IngredId == fridgeIngredient.IngredId))
-                _context.Update(fridgeIngredient);
+            //If you need more, add to shopping list
+            if (fridgeIngredient.NeededAmount > fridgeIngredient.Quantity)
+                fridgeIngredient.Shopping = true;
             else
-                await _context.AddAsync(fridgeIngredient);
+                fridgeIngredient.Shopping = false;
+            //If you have none, and don't need any, remove the item.
+            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
+                await DeleteAsync(fridgeIngredient);
+            else if (_dbSet.Any(i => i.AccountId == fridgeIngredient.AccountId && i.IngredId == fridgeIngredient.IngredId))
+                _dbSet.Update(fridgeIngredient);
+            else
+                _dbSet.Add(fridgeIngredient);
             await _context.SaveChangesAsync();
         }
     }

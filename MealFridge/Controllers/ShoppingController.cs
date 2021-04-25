@@ -43,7 +43,37 @@ namespace MealFridge.Controllers
         }
 
         [HttpPost]
-        public async Task AddItem(int id, int amount)
+        public async Task<IActionResult> AddFridgeItem(int id, int amount)
+        {
+            //Find the current fridge and user
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var fridgeIngredient = await fridgeRepo.FindByIdAsync(userId, id) ?? new Fridge()
+            {
+                AccountId = userId,
+                IngredId = id,
+                NeededAmount = 0,
+                Quantity = 0,
+                Shopping = false
+            };
+            fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
+            fridgeIngredient.Quantity += amount;
+            if (fridgeIngredient.Quantity < fridgeIngredient.NeededAmount)
+                fridgeIngredient.Shopping = true;
+            else
+                fridgeIngredient.Shopping = false;
+            //Add it to the db or update it
+            await fridgeRepo.AddFridgeAsync(fridgeIngredient);
+            //Get the current inventory as it stands with the update/added/removed item
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
+            //Return the current inventory
+            return PartialView("ShoppingList", userInventory);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AddItem(int id, int amount)
         {
             //Find the current fridge and user 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -57,16 +87,16 @@ namespace MealFridge.Controllers
             };
             fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
             fridgeIngredient.NeededAmount += amount;
-            //If you need more, add to shopping list
-            if (fridgeIngredient.NeededAmount > fridgeIngredient.Quantity)
-                fridgeIngredient.Shopping = true;
-            else
-                fridgeIngredient.Shopping = false;
-            //If you have none, and don't need any, remove the item.
-            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
-                await fridgeRepo.DeleteAsync(fridgeIngredient);
-            //Add it to the db or update it
-            await fridgeRepo.AddAsync(fridgeIngredient);
+            //Interact with the repo
+            await fridgeRepo.AddFridgeAsync(fridgeIngredient);
+            //Get updated inventory
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
+            //Return the updated inventory
+            return PartialView("ShoppingList", userInventory);
         }
         [HttpPost]
         public async Task<IActionResult> AddRecipeIngredients(string id)
@@ -86,7 +116,7 @@ namespace MealFridge.Controllers
                 }
                 else
                 {
-                    await fridgeRepo.AddAsync(new Models.Fridge
+                    await fridgeRepo.AddFridgeAsync(new Models.Fridge
                     {
                         AccountId = userId,
                         IngredId = r.IngredId,

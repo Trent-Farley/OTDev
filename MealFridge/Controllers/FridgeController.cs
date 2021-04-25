@@ -85,7 +85,7 @@ namespace MealFridge.Controllers
             else
                 fridgeIngredient.Shopping = false;
             //Add it to the db or update it
-            await fridgeRepo.AddAsync(fridgeIngredient);
+            await fridgeRepo.AddFridgeAsync(fridgeIngredient);
             //Get the current inventory as it stands with the update/added/removed item
             var userInventory = fridgeRepo.FindByAccount(userId);
             foreach (var i in userInventory)
