@@ -34,23 +34,41 @@ function addShopping(id: string, amount: string): void {
 }
 
 function banIngred(id: string): void {
+    let search: HTMLInputElement = <HTMLInputElement>document.getElementById("ingredSearch");
+    if (!search.value) {
+        search.value = "";
+    }
     $.ajax({
         url: "/Fridge/Restriction",
         method: "POST",
         data: {
             id: parseInt(id, 10),
-            other: "Banned"
+            other: "Banned",
+            QueryValue: search.value
+        },
+        success: (data) => {
+            $("#fridge_main").empty();
+            $("#fridge_main").html(data);
         }
     });
 }
 
 function hideIngred(id: string): void {
+    let search: HTMLInputElement = <HTMLInputElement>document.getElementById("ingredSearch");
+    if (!search.value) {
+        search.value = "";
+    }
     $.ajax({
         url: "/Fridge/Restriction",
         method: "POST",
         data: {
             id: parseInt(id, 10),
-            other: "Dislike"
+            other: "Dislike",
+            QueryValue: search.value
+        },
+        success: (data) => {
+            $("#fridge_main").empty();
+            $("#fridge_main").html(data);
         }
     });
 }

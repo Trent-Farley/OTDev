@@ -152,7 +152,7 @@ namespace MealFridge.Controllers
             }
         }
 
-        public async void Restriction(int id, string other)
+        public async Task<IActionResult> Restriction(int id, string other, Query query)
         {
             var userId = _user.GetUserId(User);
             var badIngred = await ingredientRepo.FindByIdAsync(id);
@@ -170,6 +170,7 @@ namespace MealFridge.Controllers
                 restrict.Dislike = true;
             }
             await restrictionRepo.AddOrUpdateAsync(restrict);
+            return await SearchIngredients(query);
         }
     }
 }
