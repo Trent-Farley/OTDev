@@ -26,7 +26,8 @@ namespace MealFridge.Models.Repositories
             }
             if (_dbSet.Any(e => e.Equals(entity)))
                 await UpdateAsync(entity);
-            _context.Add(entity);
+            else
+                _dbSet.Add(entity);
             await _context.SaveChangesAsync(); //Breaking here
             return entity;
         }
