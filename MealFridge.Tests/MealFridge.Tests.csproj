@@ -16,12 +16,10 @@
 
   <ItemGroup>
     <Folder Include="Fridge\" />
-    <Folder Include="MealPlan\" />
     <Folder Include="Search\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MealFridge\MealFridge.csproj" />
   </ItemGroup>
-
 </Project>

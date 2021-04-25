@@ -26,6 +26,7 @@ namespace MealFridge.Tests.Utils
             mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(() => entities.GetEnumerator());
             return mockSet;
         }
+
         private static Recipe[] CreateRecipes(int count)
         {
             var recipes = new Recipe[count];
@@ -102,6 +103,28 @@ namespace MealFridge.Tests.Utils
                 .AddInMemoryCollection(memSettings)
                 .Build();
             return config;
+        }
+
+        public static Savedrecipe[] CreateSavedRecipes(int count)
+        {
+            var svRecipes = new Savedrecipe[count];
+            for (var i = 0; i < count; ++i)
+            {
+                svRecipes[i] = new Savedrecipe
+                {
+                    AccountId = "1",
+                    Recipe = new Recipe { Id = i },
+                    Favorited = true
+                };
+            }
+            return svRecipes;
+        }
+
+        public static Mock<ISavedrecipeRepo> CreateSavedRecipeMock(int count)
+        {
+            var saved = new Mock<ISavedrecipeRepo>();
+            saved.Setup(s => s.GetFavoritedRecipe(It.IsAny<string>())).Returns(CreateSavedRecipes(count).ToList());
+            return saved;
         }
     }
 }
