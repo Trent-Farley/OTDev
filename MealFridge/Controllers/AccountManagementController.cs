@@ -35,10 +35,10 @@ namespace MealFridge.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var temp = _restrictionContext.Restriction(userId, id);
+                var temp = _restrictionContext.Restriction(_restrictionContext.GetAll(), userId, id);
                 if (temp != null)
                 {
-                    _restrictionContext.RemoveRestriction(temp);
+                   await _restrictionContext.DeleteAsync(temp);
                 }
             }
             return await Task.FromResult(RedirectToAction("DietaryRestrictions"));
@@ -48,7 +48,7 @@ namespace MealFridge.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var userRestrictions = _restrictionContext.GetUserRestrictedIngred(userId);
+                var userRestrictions = _restrictionContext.GetUserRestrictedIngred(_restrictionContext.GetAll(),userId);
                 foreach (var restriction in userRestrictions)
                 {
                     restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
@@ -63,7 +63,7 @@ namespace MealFridge.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var userRestrictions = _restrictionContext.GetUserDislikedIngred(userId);
+                var userRestrictions = _restrictionContext.GetUserDislikedIngred(_restrictionContext.GetAll(),userId);
                 foreach (var restriction in userRestrictions)
                 {
                     restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
