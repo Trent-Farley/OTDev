@@ -15,13 +15,15 @@ namespace MealFridge.Controllers
         private readonly IConfiguration _configuration;
         private readonly IRestrictionRepo _restrictionContext;
         private readonly IIngredientRepo _ingredientContext;
+        private readonly ISavedrecipeRepo _savedRecipeContext;
         private readonly UserManager<IdentityUser> _user;
 
-        public AccountManagementController(IConfiguration config, IRestrictionRepo restrictionContext, IIngredientRepo ingredientContext, UserManager<IdentityUser> user)
+        public AccountManagementController(IConfiguration config, IRestrictionRepo restrictionContext, IIngredientRepo ingredientContext, ISavedrecipeRepo savedRecipeContext, UserManager<IdentityUser> user)
         {
             _configuration = config;
             _restrictionContext = restrictionContext;
             _ingredientContext = ingredientContext;
+            _savedRecipeContext = savedRecipeContext;
             _user = user;
         }
         public ActionResult Index()
@@ -71,9 +73,35 @@ namespace MealFridge.Controllers
             else
                 return await Task.FromResult(RedirectToAction("Index", "Home"));
         }
-        public ActionResult FavoriteRecipes()
+        public async Task<ActionResult> FavoriteRecipes()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = _user.GetUserId(User);
+                var userSavedRecipes = _savedRecipeContext.GetAllRecipes(userId);
+                return await Task.FromResult(View("FavoriteRecipes", userSavedRecipes));
+            }
+            else
+                return await Task.FromResult(RedirectToAction("Index", "Home"));
+        }
+
+        public async Task<ActionResult> DeleteRecipe(int recipe_id)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userId = _user.GetUserId(User);
+                var temp = _savedRecipeContext.Savedrecipe(userId, recipe_id);
+                if(temp != null)
+                {
+                    _savedRecipeContext.RemoveSavedRecipe(temp);
+                }
+                
+            }
+            return await Task.FromResult(RedirectToAction("FavoriteRecipes"));
         }
     }
+
+
 }
+
+    

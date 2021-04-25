@@ -12,6 +12,7 @@ namespace MealFridge.Models.Interfaces
         Savedrecipe Savedrecipe(string userId, int recipeid);
         List<Savedrecipe> GetShelvedRecipe(string userId);
         List<Savedrecipe> GetFavoritedRecipe(string userId);
-       
+
+        List<Savedrecipe> GetAllRecipes(string userId);
     }
 }
