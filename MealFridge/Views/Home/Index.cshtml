@@ -2,8 +2,6 @@
 @{
     ViewBag.Title = "Home";
 }
-
-
 <div class="container">
     <div id="main" class="card-columns"></div>
     <div class="jumbotron shadow-lg">
@@ -43,7 +41,7 @@
                                     <div class="card">
                                         <img src="@Model[i].Image" alt="Recipe image" class="card-img-top" />
                                         <h5 class="card-title">@Model[i].Title</h5>
-                                        <p class="card-text">@Model[i].Summery</p>
+                                       
                                         <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model[i].Id')">Details</button>
                                     </div>
                                 </div>

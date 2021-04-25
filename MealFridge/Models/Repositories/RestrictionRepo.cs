@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MealFridge.Models.Repositories
 {
@@ -30,6 +32,16 @@ namespace MealFridge.Models.Repositories
         public virtual List<Restriction> GetUserDislikedIngred(IQueryable<Restriction> restrictedIngreds, string userId)
         {
             return restrictedIngreds.Where(u => u.AccountId == userId && u.Dislike == true).ToList();
+        }
+
+        public List<Restriction> GetUserRestrictedIngredWithIngredName(IQueryable<Restriction> restrictedIngreds, string userId)
+        {
+            return restrictedIngreds.Where(u => u.AccountId == userId && u.Banned == true).Include(i => i.Ingred).ToList();
+        }
+
+        public virtual List<Restriction> GetUserDislikedIngredWithIngredName(IQueryable<Restriction> restrictedIngreds, string userId)
+        {
+            return restrictedIngreds.Where(u => u.AccountId == userId && u.Dislike == true).Include(i => i.Ingred).ToList();
         }
         public Restriction Restriction(IQueryable<Restriction> restrictedIngreds, string userId, int ingredId)
         {

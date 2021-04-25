@@ -8,5 +8,6 @@ namespace MealFridge.Models
 {
     public partial class Recipe : IFoodItem
     {
+       
     }
 }

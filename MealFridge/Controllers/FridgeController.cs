@@ -152,7 +152,7 @@ namespace MealFridge.Controllers
             }
         }
 
-        public async void Restriction(int id, string other)
+        public async Task Restriction(int id, string other)
         {
             var userId = _user.GetUserId(User);
             var badIngred = await ingredientRepo.FindByIdAsync(id);
