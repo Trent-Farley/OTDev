@@ -1,4 +1,5 @@
-﻿using System;
+﻿//This test was created by Christian and these tests cover the #177688829 and #177688997 user stories
+using System;
 using System.Collections.Generic;
 using System.Text;
 using MealFridge.Models;
