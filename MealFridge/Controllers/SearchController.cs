@@ -90,7 +90,7 @@ namespace MealFridge.Controllers
                         i.Banned = true;
                     }
                    if (dislikes.Contains(temp)){
-                            i.Dislike = true;
+                        i.Dislike = true;
                     }
                        
                 }

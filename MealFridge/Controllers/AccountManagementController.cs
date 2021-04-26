@@ -78,7 +78,8 @@ namespace MealFridge.Controllers
             if (User.Identity.IsAuthenticated)
             {
                 var userId = _user.GetUserId(User);
-                var userSavedRecipes = _savedRecipeContext.GetAllRecipes(userId);
+              
+                var userSavedRecipes = _savedRecipeContext.GetAllRecipes(userId, _savedRecipeContext.GetAll());
                 return await Task.FromResult(View("FavoriteRecipes", userSavedRecipes));
             }
             else
