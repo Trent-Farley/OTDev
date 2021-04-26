@@ -161,24 +161,22 @@ namespace MealFridge.Models.Repositories
             var request = (HttpWebRequest)WebRequest.Create(_query.GetUrl);
             request.Accept = "application/json";
             string jsonString = null;
-            using (WebResponse response = request.GetResponse())
+            try
             {
-                var stream = response.GetResponseStream();
-                var reader = new StreamReader(stream);
-                jsonString = reader.ReadToEnd();
-                reader.Close();
-                stream.Close();
+                using (WebResponse response = request.GetResponse())
+                {
+                    var stream = response.GetResponseStream();
+                    var reader = new StreamReader(stream);
+                    jsonString = reader.ReadToEnd();
+                    reader.Close();
+                    stream.Close();
+                }
+                return jsonString;
             }
-            return jsonString;
-
-            //try
-            //{
-                
-            //}
-            //catch
-            //{
-            //    return null;
-            //}
+            catch
+            {
+                return null;
+            }
         }
     }
 }

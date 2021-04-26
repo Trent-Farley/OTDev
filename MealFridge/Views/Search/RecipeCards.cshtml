@@ -15,7 +15,8 @@
         }
 <div class="card shadow-lg">
     <img class="card-img-top" src="@r.Image" alt="Recipe Image">
-    @* THERE IS A BUG DO NOT TOUCH UNLESS YOU ARE SMARTER THAN CHRISTIAN @if (temp.Favorited)
+     
+    @*@if (temp.Favorited ?? false)
     {
         <div class="card-img-overlay">
             <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
@@ -23,6 +24,7 @@
             </h3>
         </div>
     }*@
+
     @if(r.Dislike)
                     {
 <div class="card-img-overlay">
