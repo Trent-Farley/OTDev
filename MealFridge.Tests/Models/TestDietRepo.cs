@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Tests created by Chris Edwards covering User Story 177688839
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using MealFridge.Models;
@@ -43,6 +45,7 @@ namespace MealFridge.Tests.Models
 
             Assert.That(dietRepo.Diet(diets.AsQueryable(), "Chris") == null);
         }
+        [Test]
         public void Diet_LookupDietForUserWhoDoesExist()
         {
             List<Diet> diets = new List<Diet>
