@@ -48,6 +48,7 @@ namespace MealFridge
             services.AddScoped<IIngredientRepo, IngredientRepo>();
             services.AddScoped<IRecipeIngredRepo, RecipeIngredRepo>();
             services.AddScoped<ISpnApiService, SpnApiService>();
+            services.AddScoped<IDietRepo, DietRepo>();
             services.AddAuthentication()/*.AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
