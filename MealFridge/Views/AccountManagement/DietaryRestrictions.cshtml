@@ -1,13 +1,13 @@
 ﻿
 @{ ViewBag.Title = "DietaryRestriction"; }
-@model List<Restriction>
-    <div class="navbar navbar-expand-md d-flex" style="background-color:azure">
-        <ul class="nav nav-tabs justify-content-center">
+@model MealFridge.Models.ViewModels.DietaryRestrictions
+    <div class="navbar navbar-light bg-info navbar-expand-md">
+        <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a class="active nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorited/Shelved Recipes</a>
+                <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorite Recipes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
@@ -16,12 +16,63 @@
     </div>
 <p> </p>
 <div id="cnhIngredList">
+    <h1>Diet Settings</h1>
+    <ul>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Whole30.Value" id="Whole30">
+            <label> Whole30 </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.DairyFree.Value" id="DairyFree">
+            <label> DairyFree </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.GlutenFree.Value" id="GlutenFree">
+            <label> Gluten Free </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Keto.Value" id="Keto">
+            <label> Keto </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Vegen.Value" id="Vegen">
+            <label> Vegen </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Vegetarian.Value" id="Vegetarian">
+            <label> Vegetarian </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.LactoVeg.Value" id="LactoVeg">
+            <label> Lacto Vegetarian </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.OvoVeg.Value" id="OvoVeg">
+            <label> Ovo Vegetarian </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Paleo.Value" id="Paleo">
+            <label> Paleo </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Pescetarian.Value" id="Pescetarian">
+            <label> Pescetarian </label>
+        </li>
+        <li>
+            <input type="checkbox" checked="@Model.Diet.Primal.Value" id="Primal">
+            <label> Primal </label>
+        </li>
+    </ul>
+    <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
+</div>
+
+<div id="cnhIngredList">
     <h1>Restricted Ingredients</h1>
     <p>Ingredients Flagged as "Cannot Have"</p>
-    @if (Model.Count() > 0) 
+    @if (Model.userRestrictions.Count() > 0) 
     {
         <ul>
-        @foreach (var i in Model)
+        @foreach (var i in Model.userRestrictions)
         {
             <li id="cnhIngredItem">
             <label>@i.Ingred.Name</label>
@@ -32,8 +83,9 @@
         }
         </ul>
      }
-     @if (Model.Count()<1) { <p>--Nothing to show--</p>}
+     @if (Model.userRestrictions.Count()<1) { <p>--Nothing to show--</p>}
 </div>
+<div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
 @section Scripts{
     <script src="~/js/Preferences/Index.js"></script>
 }
