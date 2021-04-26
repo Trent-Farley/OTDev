@@ -82,17 +82,19 @@ namespace MealFridge.Controllers
             foreach (var i in possibleRecipes)
             {
                 var other = _recipeIngredContext.GetIngredients(i.Id);
-                i.Savedrecipes = _db.Savedrecipes.ToList();
+               // i.Savedrecipes = _db.Savedrecipes.ToList();
                 foreach (var j in other)
                 {
                     var temp = _restrictContext.Restriction(_restrictContext.GetAll(), userId, j.IngredId);
-                   if (banned.Contains(temp)){
+                    if (banned.Contains(temp))
+                    {
                         i.Banned = true;
                     }
-                   if (dislikes.Contains(temp)){
+                    if (dislikes.Contains(temp))
+                    {
                         i.Dislike = true;
                     }
-                       
+                    //possibleRecipes.Add(i);
                 }
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));

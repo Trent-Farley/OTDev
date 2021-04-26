@@ -9,21 +9,23 @@
             Shelved = false,
             Favorited = false,
         };
+
         @if (temp.Shelved ?? false || r.Banned)
         {
             continue;
         }
+       
 <div class="card shadow-lg">
     <img class="card-img-top" src="@r.Image" alt="Recipe Image">
      
-    @*@if (temp.Favorited ?? false)
+    @if (temp.Favorited ?? false)
     {
         <div class="card-img-overlay">
             <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
                 <i class="fa fa-heart"> </i>
             </h3>
         </div>
-    }*@
+    }
 
     @if(r.Dislike)
                     {
