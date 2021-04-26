@@ -9,27 +9,27 @@
             Shelved = false,
             Favorited = false,
         };
-        @if (temp.Shelved ?? false)
+        @if (temp.Shelved ?? false || r.Banned)
         {
             continue;
         }
 <div class="card shadow-lg">
     <img class="card-img-top" src="@r.Image" alt="Recipe Image">
-    @if (temp.Favorited ?? false)
+    @* THERE IS A BUG DO NOT TOUCH UNLESS YOU ARE SMARTER THAN CHRISTIAN @if (temp.Favorited)
     {
         <div class="card-img-overlay">
             <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
                 <i class="fa fa-heart"> </i>
             </h3>
         </div>
-    }
-    @if(r.Dessert ?? false)
+    }*@
+    @if(r.Dislike)
                     {
-         <div class="card-img-overlay">
-            <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
-                <i class="fa fa-flag-usa"> </i>
-            </h3>
-        </div>
+<div class="card-img-overlay">
+    <h3 class="text-md-right p-1 text-warning bg-dark d-inline shadow-lg">
+        <i class="fa fa-flag-usa"> </i>
+    </h3>
+</div>
                     }
     <div class="card-body">
         <h4 class="card-title"> @r.Title </h4>

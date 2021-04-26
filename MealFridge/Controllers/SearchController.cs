@@ -67,31 +67,32 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
+           
+           
             if (possibleRecipes.Count < 10)
-            {
+            {               
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
-                foreach (var i in await SearchApiAsync(query))
+               foreach(var i in await SearchApiAsync(query))
                 {
-                    var other = _recipeIngredContext.GetIngredients(i.Id);
-                    i.Savedrecipes = _db.Savedrecipes.ToList();
-                    foreach (var j in other)
-                    {
-                        var temp = _restrictContext.Restriction(_restrictContext.GetAll(), userId , j.IngredId);
-
-                        if (!banned.Contains(temp)){
-                            if (!dislikes.Contains(temp))
-                            {
-                                possibleRecipes.Add(i);
-                            }
-                            else
-                            {
-                                i.Dessert = true;
-                                possibleRecipes.Add(i);
-                            }
-                        }
+                    possibleRecipes.Add(i);
+                }
+            }
+            foreach (var i in possibleRecipes)
+            {
+                var other = _recipeIngredContext.GetIngredients(i.Id);
+                i.Savedrecipes = _db.Savedrecipes.ToList();
+                foreach (var j in other)
+                {
+                    var temp = _restrictContext.Restriction(_restrictContext.GetAll(), userId, j.IngredId);
+                   if (banned.Contains(temp)){
+                        i.Banned = true;
                     }
+                   if (dislikes.Contains(temp)){
+                            i.Dislike = true;
+                    }
+                       
                 }
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
