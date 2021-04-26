@@ -21,13 +21,19 @@ namespace MealFridge.Controllers
         private readonly UserManager<IdentityUser> _user;
         private readonly MealFridgeDbContext _db;
         private readonly ISpnApiService _spnApi;
+        private readonly IRestrictionRepo _restrictContext;
+        private readonly IRecipeIngredRepo _recipeIngredContext;
+        private readonly IFridgeRepo _fridgeContext;
 
-        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service)
+        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext)
         {
             _db = context;
             _config = config;
             _user = user;
             _spnApi = service;
+            _restrictContext = restrictContext;
+            _recipeIngredContext = recipeIngredContext;
+            _fridgeContext = fridgeContext;
         }
 
         public async Task<IActionResult> Index()
@@ -51,6 +57,9 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> SearchByName(Query query)
         {
             var userId = _user.GetUserId(User);
+            var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
+            var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
+
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
@@ -58,15 +67,32 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
+           
+           
             if (possibleRecipes.Count < 10)
-            {
+            {               
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
-                foreach (var i in await SearchApiAsync(query))
+               foreach(var i in await SearchApiAsync(query))
                 {
-                    i.Savedrecipes = _db.Savedrecipes.ToList();
                     possibleRecipes.Add(i);
+                }
+            }
+            foreach (var i in possibleRecipes)
+            {
+                var other = _recipeIngredContext.GetIngredients(i.Id);
+                i.Savedrecipes = _db.Savedrecipes.ToList();
+                foreach (var j in other)
+                {
+                    var temp = _restrictContext.Restriction(_restrictContext.GetAll(), userId, j.IngredId);
+                   if (banned.Contains(temp)){
+                        i.Banned = true;
+                    }
+                   if (dislikes.Contains(temp)){
+                        i.Dislike = true;
+                    }
+                       
                 }
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
@@ -126,7 +152,6 @@ namespace MealFridge.Controllers
                 var recipes = await SearchApiAsync(query);
                 recipe.UpdateRecipe(recipes.FirstOrDefault());
                 _db.Recipes.Update(recipe);
-                _db.SaveChanges();
                 _db.ChangeTracker.Clear();
                 recipe.Recipeingreds = recipes.FirstOrDefault().Recipeingreds;
                 foreach (var ingred in recipe.Recipeingreds)

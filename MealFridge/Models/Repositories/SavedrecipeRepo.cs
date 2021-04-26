@@ -23,9 +23,9 @@ namespace MealFridge.Models.Repositories
     {
         public SavedrecipeRepo(MealFridgeDbContext ctx) : base(ctx) { }
 
-        public List<Savedrecipe> FindAccount(string userId)
+        public List<Savedrecipe> FindAccount(string userId, IQueryable<Savedrecipe> other)
         {
-            var temp = _dbSet.Where(a => a.AccountId == userId).ToList();
+            var temp = other.Where(a => a.AccountId == userId).ToList();
             return temp;
         }
         
@@ -39,21 +39,25 @@ namespace MealFridge.Models.Repositories
         {
             return _dbSet.Where(r => r.AccountId == userId && r.RecipeId == recipeId).FirstOrDefault();
         }
-        public List<Savedrecipe> GetShelvedRecipe(string userId)
+        public List<Savedrecipe> GetShelvedRecipe(string userId, IQueryable<Savedrecipe> other)
         {
-            IQueryable<Savedrecipe> temp = GetAll();
-            return temp.Where(a => a.AccountId == userId && a.Shelved == true).ToList();
+            return other.Where(a => a.AccountId == userId && a.Shelved == true).ToList();
         }
+       
+        //Should not touch/refactor this one for testing, it is being used for other things 
         public List<Savedrecipe> GetFavoritedRecipe(string userId)
         {
-            IQueryable<Savedrecipe> temp = GetAll();
-            return temp.Where(a => a.AccountId == userId && a.Favorited == true).Include(r => r.Recipe).ToList();
+            IQueryable<Savedrecipe> other = GetAll();
+            return other.Where(a => a.AccountId == userId && a.Favorited == true).Include(r => r.Recipe).ToList();
         }
 
-        public List<Savedrecipe> GetAllRecipes(string userId)
+        public List<Savedrecipe> GetFavoritedRecipeWithIQueryable(string userId, IQueryable<Savedrecipe> other)
         {
-            IQueryable<Savedrecipe> temp = GetAll();
-            return temp.Where(a => a.AccountId == userId).Include(r => r.Recipe).ToList();
+            return other.Where(a => a.AccountId == userId && a.Favorited == true).ToList();
+        }
+        public List<Savedrecipe> GetAllRecipes(string userId, IQueryable<Savedrecipe> other)
+        {
+            return other.Where(a => a.AccountId == userId).Include(r => r.Recipe).ToList();
         }
        
     }

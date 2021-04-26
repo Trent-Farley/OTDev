@@ -1,13 +1,13 @@
 ﻿
 @{ ViewBag.Title = "DietaryRestriction"; }
 @model MealFridge.Models.ViewModels.DietaryRestrictions
-    <div class="navbar navbar-light bg-info navbar-expand-md">
-        <ul class="nav nav-tabs">
+    <div class="navbar navbar-expand-md d-flex" style="background-color:azure">
+        <ul class="nav nav-tabs justify-content-center">
             <li class="nav-item">
                 <a class="active nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorite Recipes</a>
+                <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorited/Shelved Recipes</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>

@@ -158,11 +158,11 @@ namespace MealFridge.Models.Repositories
 
         private string SendRequest()
         {
+            var request = (HttpWebRequest)WebRequest.Create(_query.GetUrl);
+            request.Accept = "application/json";
+            string jsonString = null;
             try
             {
-                var request = (HttpWebRequest)WebRequest.Create(_query.GetUrl);
-                request.Accept = "application/json";
-                string jsonString = null;
                 using (WebResponse response = request.GetResponse())
                 {
                     var stream = response.GetResponseStream();

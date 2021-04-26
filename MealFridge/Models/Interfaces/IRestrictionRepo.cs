@@ -11,5 +11,7 @@ namespace MealFridge.Models.Interfaces
         Restriction Restriction(IQueryable<Restriction> restrictedIngreds, string userId, int ingredId);
         List<Restriction> GetUserRestrictedIngred(IQueryable<Restriction> restrictedIngreds, string userId);
         List<Restriction> GetUserDislikedIngred(IQueryable<Restriction> restrictedIngreds, string userId);
+        List<Restriction> GetUserRestrictedIngredWithIngredName(IQueryable<Restriction> restrictedIngreds, string userId);
+        List<Restriction> GetUserDislikedIngredWithIngredName(IQueryable<Restriction> restrictedIngreds, string userId);
     }
 }
