@@ -331,7 +331,7 @@ input:checked + .slider:before {
         }
 .active, .nav-link:hover {
     background-color:aliceblue;
-    color:white ;
+    color:black;
 }
 .li, .ul{
     display:inline-block;
