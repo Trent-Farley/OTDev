@@ -7,7 +7,6 @@ namespace MealFridge.Models
 {
     public partial class Fridge
     {
-        public int? Id { get; set; }
         public string AccountId { get; set; }
         public int IngredId { get; set; }
         public double? Quantity { get; set; }
