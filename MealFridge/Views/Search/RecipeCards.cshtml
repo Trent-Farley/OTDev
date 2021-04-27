@@ -16,7 +16,7 @@
         }
 
         <div class="card shadow-lg">
-            <img class="card-img-top" src="https://spoonacular.com/recipeImages/@r.Image" alt="Recipe Image">
+            <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + r.Image)" alt="Recipe Image">
 
             @if (temp.Favorited ?? false)
             {
