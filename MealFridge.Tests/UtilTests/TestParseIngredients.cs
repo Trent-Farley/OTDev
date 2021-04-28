@@ -67,7 +67,7 @@ namespace MealFridge.Tests
             var result = SpnApiService.ParseIngredient(ingredientAsJson);
 
             Assert.That(result.Image, Is.Not.Null);
-            Assert.That(result.Image, Is.EqualTo("https://spoonacular.com/cdn/ingredients_500x500/" + "apple.jpg"));
+            Assert.That(result.Image, Is.EqualTo("apple.jpg"));
         }
 
         [Test]
