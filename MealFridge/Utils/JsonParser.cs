@@ -4,150 +4,86 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using MealFridge.Models;
+using MealFridge.Models.Interfaces;
 using Newtonsoft.Json.Linq;
 
 namespace MealFridge.Utils
 {
     public static class JsonParser
     {
-        public static void ParseNutrition(List<JToken> nutrition, Ingredient ingredient)
+        public static void ParseNutrition(List<JToken> nutrition, IFoodItem ingredient)
         {
             foreach (var n in nutrition)
             {
-                if (n["name"].ToString() == "Calories")
+                switch (n["name"].ToString())
                 {
-                    ingredient.Calories = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Saturated Fat")
-                {
-                    ingredient.SatFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Fat")
-                {
-                    ingredient.TotalFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Net Carbohydrates")
-                {
-                    ingredient.NetCarbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Carbohydrates")
-                {
-                    ingredient.Carbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Cholesterol")
-                {
-                    ingredient.Cholesterol = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sodium")
-                {
-                    ingredient.Sodium = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Protein")
-                {
-                    ingredient.Protein = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sugar")
-                {
-                    ingredient.Sugar = (float)n["amount"];
-                }
-                else
-                {
-                    Console.WriteLine("Skipped: " + (string)n["name"]);
+                    case "Calories":
+                        ingredient.Calories = (float)n["amount"];
+                        break;
+
+                    case "Saturated Fat":
+                        ingredient.SatFat = (float)n["amount"];
+                        break;
+
+                    case "Fat":
+                        ingredient.TotalFat = (float)n["amount"];
+                        break;
+
+                    case "Net Carbohydrates":
+                        ingredient.NetCarbs = (float)n["amount"];
+                        break;
+
+                    case "Carbohydrates":
+                        ingredient.Carbs = (float)n["amount"];
+                        break;
+
+                    case "Cholesterol":
+                        ingredient.Cholesterol = (float)n["amount"];
+                        break;
+
+                    case "Sodium":
+                        ingredient.Sodium = (float)n["amount"];
+                        break;
+
+                    case "Protein":
+                        ingredient.Protein = (float)n["amount"];
+                        break;
+
+                    case "Sugar":
+                        ingredient.Sugar = (float)n["amount"];
+                        break;
+
+                    default:
+                        break;
                 }
             }
         }
 
-        public static void ParseNutrition(List<JToken> nutrition, Recipe recipe)
+        public static ICollection<Recipeingred> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
         {
-            foreach (var n in nutrition)
+            var retingredients = new List<Recipeingred>();
+            foreach (var ing in ingredients)
             {
-                if (n["name"].ToString() == "Calories")
+                if (!int.TryParse(ing["id"].ToString(), out int ingId))
+                    continue;
+                if (retingredients.Any(i => i.IngredId == ingId))
                 {
-                    recipe.Calories = (float)n["amount"];
+                    retingredients.First(i => i.IngredId == ingId).Amount += ing["amount"]?.Value<double>();
+                    continue;
                 }
-                else if (n["name"].ToString() == "Saturated Fat")
+                var newRI = new Recipeingred
                 {
-                    recipe.SatFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Fat")
-                {
-                    recipe.TotalFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Net Carbohydrates")
-                {
-                    recipe.NetCarbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Carbohydrates")
-                {
-                    recipe.Carbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Cholesterol")
-                {
-                    recipe.Cholesterol = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sodium")
-                {
-                    recipe.Sodium = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Protein")
-                {
-                    recipe.Protein = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sugar")
-                {
-                    recipe.Sugar = (float)n["amount"];
-                }
-                else
-                {
-                    Console.WriteLine("Skipped: " + (string)n["name"]);
-                }
+                    RecipeId = recipeId,
+                    IngredId = ingId,
+                    Amount = ing["amount"]?.Value<double>(),
+                    ServingUnit = ing["unit"]?.Value<string>(),
+                    Ingred = list.FirstOrDefault(i => i.Id == ingId)
+                };
+                var nutrients = ing["nutrients"].ToList();
+                JsonParser.ParseNutrition(nutrients, newRI);
+                retingredients.Add(newRI);
             }
-        }
-        public static void ParseNutrition(List<JToken> nutrition, Recipeingred recipeIngredient)
-        {
-            foreach (var n in nutrition)
-            {
-                if (n["name"].ToString() == "Calories")
-                {
-                    recipeIngredient.Calories = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Saturated Fat")
-                {
-                    recipeIngredient.SatFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Fat")
-                {
-                    recipeIngredient.TotalFat = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Net Carbohydrates")
-                {
-                    recipeIngredient.NetCarbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Carbohydrates")
-                {
-                    recipeIngredient.Carbs = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Cholesterol")
-                {
-                    recipeIngredient.Cholesterol = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sodium")
-                {
-                    recipeIngredient.Sodium = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Protein")
-                {
-                    recipeIngredient.Protein = (float)n["amount"];
-                }
-                else if (n["name"].ToString() == "Sugar")
-                {
-                    recipeIngredient.Sugar = (float)n["amount"];
-                }
-                else
-                {
-                    Console.WriteLine("Skipped: " + (string)n["name"]);
-                }
-            }
+            return retingredients;
         }
 
         public static void ParseDishType(List<JToken> list, Recipe detailedRecipe)

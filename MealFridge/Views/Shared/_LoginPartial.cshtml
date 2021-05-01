@@ -3,39 +3,38 @@
 @inject UserManager<IdentityUser> UserManager
 
 <ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li>
-        <div class="dropdown">
-            <a class="dropbtn">
-                <i class="fas fa-bars" id="dropdownicon"></i>
-            </a>
-            <div class="dropdown-content" style="color:black;">
-                <a class="nav-link" asp-area="" asp-controller="Search" asp-action="Index"><i class="fas fa-search"></i> Search</a>
-                <a class="nav-link" asp-area="" asp-controller="Fridge" asp-action="Index"><i class="fas fa-box"></i> Inventory</a>
-                <a class="nav-link" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions"><i class="fas fa-utensils"></i> Preferences</a>
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" ><i class="fas fa-user"></i> Manage Account</a>
-                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button type="submit" class="nav-link btn btn-link"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                </form>
-            </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+<li>
+    <div class="dropdown">
+        <a class="dropbtn">
+            <i class="fas fa-bars" id="dropdownicon"></i>
+        </a>
+        <div class="dropdown-content" style="color:black;">
+            <a class="nav-link" asp-area="" asp-controller="Search" asp-action="Index"><i class="fas fa-search"></i> Search</a>
+            <a class="nav-link" asp-area="" asp-controller="Fridge" asp-action="Index"><i class="fas fa-box"></i> Inventory</a>
+            <a class="nav-link" asp-area="" asp-controller="Shopping" asp-action="Index"><i class="fas fa-shopping-cart"></i> Shopping List</a>
+            <a class="nav-link" asp-area="" asp-controller="MealPlan" asp-action="Index"><i class="fas fa-bacon"></i>Meal Planning</a>
+            <a class="nav-link" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions"><i class="fas fa-utensils"></i> Preferences</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index"><i class="fas fa-user"></i> Manage Account</a>
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link"><i class="fas fa-sign-out-alt"></i> Logout</button>
+            </form>
         </div>
-    </li>
-
-}
-else
-{
-    <li>
-        <div class="dropdown">
-            <a class="dropbtn">
-                <i class="fas fa-bars" id="dropdownicon"></i>
-            </a>
-            <div class="dropdown-content">
-                <a class="nav-link" asp-area="" asp-controller="Search" asp-action="Index"><i class="fas fa-search"></i> Search</a>
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-user-plus"></i> Register</a>
-                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
-            </div>
+    </div>
+</li> }
+            else
+            {
+<li>
+    <div class="dropdown">
+        <a class="dropbtn">
+            <i class="fas fa-bars" id="dropdownicon"></i>
+        </a>
+        <div class="dropdown-content">
+            <a class="nav-link" asp-area="" asp-controller="Search" asp-action="Index"><i class="fas fa-search"></i> Search</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register"><i class="fas fa-user-plus"></i> Register</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"><i class="fas fa-sign-in-alt"></i> Login</a>
         </div>
-    </li>
-}
+    </div>
+</li>}
 </ul>

@@ -13,6 +13,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MealFridge.Models.Interfaces;
+using MealFridge.Models.Repositories;
 
 namespace MealFridge
 {
@@ -35,16 +37,19 @@ namespace MealFridge
             {
                 opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"] + ";MultipleActiveResultSets=true");
             });
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
-          
-            services.AddAuthentication()/*.AddMicrosoftAccount(microsoftOptions =>
-            {
-                microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
-                microsoftOptions.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
-            })*/.AddGoogle(options =>
+            services.AddScoped<IRecipeRepo, RecipeRepo>();
+            services.AddScoped<ISavedrecipeRepo, SavedrecipeRepo>();
+            services.AddScoped<IFridgeRepo, FridgeRepo>();
+            services.AddScoped<IRestrictionRepo, RestrictionRepo>();
+            services.AddScoped<IIngredientRepo, IngredientRepo>();
+            services.AddScoped<IRecipeIngredRepo, RecipeIngredRepo>();
+            services.AddScoped<ISpnApiService, SpnApiService>();
+            services.AddScoped<IDietRepo, DietRepo>();
+            services.AddAuthentication().AddGoogle(options =>
             {
                 IConfigurationSection googleAuthNSection =
                     Configuration.GetSection("Authentication:Google");
@@ -52,7 +57,6 @@ namespace MealFridge
                 options.ClientId = googleAuthNSection["ClientId"];
                 options.ClientSecret = googleAuthNSection["ClientSecret"];
             });
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -49,7 +49,7 @@
     <Folder Include="tests\Search\" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="tests\Fridge\TestParseInput.ts">
+    <TypeScriptCompile Include="tests\Fridge\DepFridge.ts">
       <SubType>Code</SubType>
       <TestFramework>Jest</TestFramework>
     </TypeScriptCompile>

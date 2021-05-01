@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Savedrecipe>
+
+<div class="modal show" id="recipe-modal" tabindex="-1" role="document" aria-labelledby="modal_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable w-100" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">Saved recipes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-main" class="card">
+                    @if (Model.Count() > 0)
+                    {
+                        <ul class="list-group">
+
+                            @foreach (var sd in Model)
+                            {
+                                <li class="list-group-item d-flex">
+
+                                    <img class="img-thumbnail w-25 h-25" id="mimg-@sd.Recipe.Id" src="@("https://spoonacular.com/recipeImages/" + sd.Recipe.Image)" alt="@sd.Recipe.Title" />
+
+                                    <p id="mtitle-@sd.Recipe.Id" class="w-75 font-weight-bold">
+                                        @sd.Recipe.Title
+                                    </p>
+                                    <span class="badge badge-pill">
+                                        <button class="btn btn-outline-primary" title="Add to meal plan" onclick="swapOut('@sd.Recipe.Id')">
+                                            <i class="fa fa-plus"></i> Add
+                                        </button>
+                                    </span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p>There are no meals currently stored</p>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

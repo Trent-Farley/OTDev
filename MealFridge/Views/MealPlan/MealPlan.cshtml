@@ -1,0 +1,99 @@
+﻿@model MealFridge.Models.ViewModels.Meals
+
+@if (Model.Breakfast.Count < Model.DaysCount || Model.Lunch.Count < Model.DaysCount || Model.Dinner.Count < Model.DaysCount)
+{
+    <p>Unable to generate a meal plan at this time</p>
+}
+else
+{
+    <div class="row m-lg-2 mb-lg-4 shadow-lg bg-secondary">
+        <div class="col-sm-3 bg-secondary">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Day
+                </h3>
+            </div>
+        </div>
+        <div class="col-sm-3 bg-primary">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Breakfast
+                </h3>
+            </div>
+        </div>
+        <div class="col-sm-3 bg-success">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Lunch
+                </h3>
+            </div>
+        </div>
+        <div class="col-sm-3 bg-warning">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Dinner
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    @for (var i = 0; i < 7; ++i)
+    {
+
+        <div class="row m-lg-2 mb-lg-4">
+            <div class="col-sm-3 bg-secondary">
+                <div class="card shadow-lg rounded-lg">
+                    <h2 class="card-title text-center">
+                        @Model.Days[i]
+                    </h2>
+                </div>
+            </div>
+            <div class="col-sm-3 bg-primary" id="@Model.Breakfast[i].Recipe.Id">
+                <div class="card shadow-lg rounded-lg">
+                    <img src="https://spoonacular.com/recipeImages/@Model.Breakfast[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Breakfast[i].Recipe.Id" class="card-image" />
+                    <div class="card-body">
+                        <h4 class="card-title" id="title-@Model.Breakfast[i].Recipe.Id">
+                            @Model.Breakfast[i].Recipe.Title
+                        </h4>
+                        <div class="button-group w-100">
+                            <button class="btn btn-outline-primary" id="btn-@Model.Breakfast[i].Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Breakfast[i].Recipe.Id')">
+                                <i class="fas fa-heart"></i> Swap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 bg-success">
+                <div class="card shadow-lg rounded-lg">
+                    <img src="https://spoonacular.com/recipeImages/@Model.Lunch[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Lunch[i].Recipe.Id" class="card-image" />
+                    <div class="card-body">
+                        <h4 class="card-title" id="title-@Model.Lunch[i].Recipe.Id">
+                            @Model.Lunch[i].Recipe.Title
+                        </h4>
+                        <div class="button-group w-100">
+                            <button class="btn btn-outline-primary" id="btn-@Model.Lunch[i].Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Lunch[i].Recipe.Id')">
+                                <i class="fas fa-heart"></i> Swap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 bg-warning">
+                <div class="card shadow-lg rounded-lg">
+                    <img src="https://spoonacular.com/recipeImages/@Model.Dinner[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Dinner[i].Recipe.Id" class="card-image" />
+                    <div class="card-body">
+                        <h4 class="card-title" id="title-@Model.Dinner[i].Recipe.Id">
+                            @Model.Dinner[i].Recipe.Title
+                        </h4>
+                        <div class="button-group w-100">
+                            <button class="btn btn-outline-primary" type="button" id="btn-@Model.Dinner[i].Recipe.Id" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Dinner[i].Recipe.Id')">
+                                <i class="fas fa-heart"></i> Swap
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+}

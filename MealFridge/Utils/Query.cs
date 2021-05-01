@@ -27,13 +27,20 @@ namespace MealFridge.Utils
                     case "IngredientDetails":
                         u = Url + QueryValue + "/information?apikey=" + Credentials + "&amount=1&unit=serving";
                         break;
+
                     case "Ingredient":
                         u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&ignorePantry=" + Refine.ToString().ToLower()
                              + "&offset=" + (10 * PageNumber);
                         break;
+
                     case "Details":
                         u = Url + "?apiKey=" + Credentials + "&includeNutrition=true";
                         break;
+
+                    case "Random":
+                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + ApiConstants.RandomRecipeAmount;
+                        break;
+
                     default:
                         u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber);
                         break;

@@ -1,20 +1,95 @@
-﻿
+﻿@model IEnumerable<Savedrecipe>
 @{
-    ViewBag.Title = "FavoriteRecipes";
+    ViewBag.Title = "Favorite&ShelvedRecipes";
 }
-<div class="navbar">
-    <div class="container">
-        <ul class="nav nav-tabs">
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorite Recipes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-dark" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
-            </li>
-        </ul>
+<div class="navbar navbar-expand-md d-flex" style="background-color:azure">
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+            <a class=" nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
+        </li>
+        <li class="nav-item">
+            <a class="active nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorited/Shelved Recipes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
+        </li>
+    </ul>
+</div>
+<p> </p>
+<div class="container">
+    <div class="row">
+        @if (Model != null)
+        {
+            if (Model.Count() > 0)
+            {
+                <div class="col" style="box-shadow:10px 10px 5px grey">
+                    <center> <h1> Favorited Recipes</h1> </center>
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th> Recipe Name </th>
+
+                            </tr>
+                        </thead>
+
+                        @foreach (var i in Model)
+                        {
+                            <tbody>
+                                @if (i.Favorited == true)
+                                {
+                                    <tr>
+                                        <td> @i.Recipe.Title </td>
+                                        <td style="text-align:center">  @Html.ActionLink("", "DeleteRecipe", new { recipe_id = i.RecipeId }, new { @class = "btn btn-danger fa fa-ban" })</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+                <div class="col" style="box-shadow:10px 10px 5px grey">
+                    <center> <h1> Shelved Recipes </h1> </center>
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th> Recipe Name</th>
+
+                            </tr>
+                        </thead>
+
+                        @foreach (var i in Model)
+                        {
+
+                            <tbody>
+                                @if (i.Shelved == true)
+                                {
+                                    <tr>
+                                        <td> @i.Recipe.Title </td>
+                                        <td style="text-align:center"> @Html.ActionLink("", "DeleteRecipe", new { recipe_id = i.RecipeId }, new { @class = "btn btn-danger fa fa-ban" })</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+                            </tbody>
+                        }
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="container" style="border:solid">
+                    <center> <p> You have no saved recipes :( </p> </center>
+                </div>
+
+            }
+        }
+
     </div>
 </div>
-<h1> Favorite Recipes To Be Implemented</h1>
+
+

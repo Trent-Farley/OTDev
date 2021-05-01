@@ -1,0 +1,15 @@
+﻿@model IEnumerable<Fridge>
+@{
+    ViewBag.Title = "Shopping List";
+}
+<div class="container">
+    <div id="shoppingList" style="background-color:whitesmoke">
+        <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
+        <div id="innerShopping">
+            <partial name="ShoppingList" model="@Model" />
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/Shopping/Index.js"></script>
+}
