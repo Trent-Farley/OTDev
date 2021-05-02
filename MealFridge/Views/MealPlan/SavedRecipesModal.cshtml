@@ -19,7 +19,7 @@
                             {
                                 <li class="list-group-item d-flex">
 
-                                    <img class="img-thumbnail w-25 h-25" id="mimg-@sd.Recipe.Id" src="@sd.Recipe.Image" alt="@sd.Recipe.Title" />
+                                    <img class="img-thumbnail w-25 h-25" id="mimg-@sd.Recipe.Id" src="@("https://spoonacular.com/recipeImages/" + sd.Recipe.Image)" alt="@sd.Recipe.Title" />
 
                                     <p id="mtitle-@sd.Recipe.Id" class="w-75 font-weight-bold">
                                         @sd.Recipe.Title

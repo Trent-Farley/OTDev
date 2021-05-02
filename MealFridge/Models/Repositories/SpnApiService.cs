@@ -10,7 +10,7 @@ namespace MealFridge.Models.Repositories
 {
     public class SpnApiService : ISpnApiService
     {
-        private Query _query;
+        private static Query _query;
 
         public Ingredient IngredientDetails(Ingredient query, string searchType) //Not currently called
         {
@@ -35,14 +35,12 @@ namespace MealFridge.Models.Repositories
             var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
-            //Test Start
             foreach (var ingredient in ingredients["results"])
             {
                 var temp = ParseIngredient(ingredient as JObject);
                 if (temp != null)
                     output.Add(temp);
             }
-            //Test End
             return output.ToList();
         }
 
@@ -56,7 +54,7 @@ namespace MealFridge.Models.Repositories
                 {
                     Id = (int)ingredient["id"],
                     Name = (string)ingredient["name"],
-                    Image = ApiConstants.IngredientImageUrl + (string)ingredient["image"]
+                    Image = (string)ingredient["image"]
                 };
             }
             catch
@@ -82,7 +80,7 @@ namespace MealFridge.Models.Repositories
                         {
                             Id = (int)recipe["id"],
                             Title = (string)recipe["title"],
-                            Image = "https://spoonacular.com/recipeImages/" + recipe["id"].ToString() + "-556x370." + recipe["imageType"].ToString()
+                            Image = recipe["id"].ToString() + "-556x370." + recipe["imageType"].ToString()
                         });
                     break;
 
@@ -106,7 +104,7 @@ namespace MealFridge.Models.Repositories
                         {
                             Id = (int)recipesByIngredients[i]["id"],
                             Title = (string)recipesByIngredients[i]["title"],
-                            Image = "https://spoonacular.com/recipeImages/" + (string)recipesByIngredients[i]["id"] + "-556x370." + (string)recipesByIngredients[i]["imageType"]
+                            Image = (string)recipesByIngredients[i]["id"] + "-556x370." + (string)recipesByIngredients[i]["imageType"]
                         });
                     }
                     break;
@@ -119,7 +117,7 @@ namespace MealFridge.Models.Repositories
 
                 case "Random":
                     recipes = JObject.Parse(jsonResponse);
-                    foreach (JObject recipe in recipes["recipes"])
+                    foreach (JObject recipe in recipes["results"])
                     {
                         output.Add(GetDetailRecipe(recipe));
                     }
@@ -141,13 +139,15 @@ namespace MealFridge.Models.Repositories
                 detailedRecipe.Title = recipeDetails["title"].Value<string>();
                 detailedRecipe.Cost = recipeDetails["pricePerServing"].Value<decimal>();
                 detailedRecipe.Minutes = recipeDetails["readyInMinutes"].Value<int>();
-                detailedRecipe.Image = "https://spoonacular.com/recipeImages/" + recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>();
+                detailedRecipe.Image = recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>();
                 detailedRecipe.Summery = recipeDetails["sourceUrl"].Value<string>();
                 detailedRecipe.Servings = recipeDetails["servings"].Value<int>();
                 JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JToken>>(), detailedRecipe);
+
+                detailedRecipe.Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list);
+
                 var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
                 JsonParser.ParseNutrition(nutrients, detailedRecipe);
-                detailedRecipe.Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list);
             }
             catch
             {

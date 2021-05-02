@@ -15,6 +15,12 @@ using System.Threading.Tasks;
 
 namespace MealFridge.Tests.Shopping
 {
+
+    /// <summary>
+    /// Tester: Joshua Utter
+    /// User Story IDs: #177689580, #177688944
+    /// Background: Testing basic Shopping List functionality in relation to db calls.
+    /// </summary>
     class ShoppingTests
     {
 

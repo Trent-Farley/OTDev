@@ -48,6 +48,9 @@ namespace MealFridge.Models.Repositories
                 fridgeIngredient.Shopping = true;
             else
                 fridgeIngredient.Shopping = false;
+
+            if (fridgeIngredient.Quantity < 0)
+                fridgeIngredient.Quantity = 0;
             //If you have none, and don't need any, remove the item.
             if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
                 await DeleteAsync(fridgeIngredient);

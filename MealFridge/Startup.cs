@@ -37,7 +37,7 @@ namespace MealFridge
             {
                 opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"] + ";MultipleActiveResultSets=true");
             });
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
@@ -49,11 +49,7 @@ namespace MealFridge
             services.AddScoped<IRecipeIngredRepo, RecipeIngredRepo>();
             services.AddScoped<ISpnApiService, SpnApiService>();
             services.AddScoped<IDietRepo, DietRepo>();
-            services.AddAuthentication()/*.AddMicrosoftAccount(microsoftOptions =>
-            {
-                microsoftOptions.ClientId = Configuration["Authentication:Microsoft:ClientId"];
-                microsoftOptions.ClientSecret = Configuration["Authentication:Microsoft:ClientSecret"];
-            })*/.AddGoogle(options =>
+            services.AddAuthentication().AddGoogle(options =>
             {
                 IConfigurationSection googleAuthNSection =
                     Configuration.GetSection("Authentication:Google");

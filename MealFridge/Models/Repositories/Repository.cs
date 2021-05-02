@@ -28,7 +28,7 @@ namespace MealFridge.Models.Repositories
                 await UpdateAsync(entity);
             else
                 _dbSet.Add(entity);
-            await _context.SaveChangesAsync(); //Breaking here
+            await _context.SaveChangesAsync(); //Breaking here if composite key
             return entity;
         }
 

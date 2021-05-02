@@ -2,8 +2,8 @@
 @{
     ViewBag.Title = "Shopping List";
 }
-<div class="container">
-    <div id="shoppingList" style="background-color:whitesmoke">
+<div class="card shadow-lg">
+    <div id="shoppingList">
         <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
         <div id="innerShopping">
             <partial name="ShoppingList" model="@Model" />
