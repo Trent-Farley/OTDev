@@ -18,10 +18,10 @@ namespace MealFridge.Models.Repositories
 
         public Meal GetMeal(string type, string userId, List<Ingredient> bans, List<Ingredient> dislikes)
         {
-            var possibleMeals = _dbSet.Where(i => i.AccountId == type).ToList();
+            var possibleMeals = _dbSet.Where(i => i.Type == type).ToList();
             if (possibleMeals.Count < 5)
             {
-                var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0).ToList();
+                var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0).Include(ri => ri.Recipeingreds).ToList();
                 var recipe = new Recipe();
                 recipes = GetRelevantRecipes(type, recipes);
                 recipe = FindSafeRecipes(bans, dislikes, recipes)[0];
@@ -29,7 +29,8 @@ namespace MealFridge.Models.Repositories
                 {
                     Recipe = _recipeSet.FirstOrDefault(r => r.Id == recipe.Id),
                     RecipeId = recipe.Id,
-                    AccountId = userId
+                    AccountId = userId,
+                    Type = type
                 };
                 _dbSet.Add(m);
                 _context.SaveChanges();
