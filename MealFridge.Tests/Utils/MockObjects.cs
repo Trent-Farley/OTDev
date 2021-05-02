@@ -31,8 +31,8 @@ namespace MealFridge.Tests.Utils
         {
             var recipes = new Recipe[count];
             var titles = Enumerable.Range(0, count)
-                .Select(i => "Recipe{" + i + "}")
-                .ToList();
+               .Select(i => "Recipe{" + i + "}")
+               .ToList();
             for (var i = 0; i < count; ++i)
             {
                 recipes[i] = new Recipe
@@ -47,6 +47,62 @@ namespace MealFridge.Tests.Utils
             return recipes;
         }
 
+        public static List<Meal> CreateMeals(int days)
+        {
+            var meals = new List<Meal>();
+            var titles = Enumerable.Range(0, days)
+                .Select(i => "Meal{" + i + "}")
+                .ToList();
+            var recipes = CreateRecipes(days);
+            for (var i = 0; i < days; ++i)
+            {
+                meals.Add(new Meal
+                {
+                    MealString = titles[i],
+                    RecipeId = i,
+                    AccountId = "1",
+                    Recipe = recipes[i]
+                });
+            }
+            return meals;
+        }
+
+        public static List<Ingredient> CreateIngredients(int count)
+        {
+            var ingredients = new List<Ingredient>();
+
+            var titles = Enumerable.Range(0, count)
+               .Select(i => "Ingredient{" + i + "}")
+               .ToList();
+            for (var i = 0; i < count; ++i)
+            {
+                ingredients.Add(new Ingredient
+                {
+                    Id = i,
+                    Name = titles[i],
+                });
+            }
+            return ingredients;
+        }
+
+        public static List<Restriction> CreateRestrictions(int count)
+        {
+            var restrictions = new List<Restriction>();
+            var ingredients = CreateIngredients(count);
+            for (var i = 0; i < count; ++i)
+            {
+                restrictions.Add(new Restriction
+                {
+                    AccountId = "1",
+                    IngredId = i,
+                    Ingred = ingredients[i],
+                    Dislike = true,
+                    Banned = true
+                });
+            }
+            return restrictions;
+        }
+
         public static Mock<IRecipeRepo> CreateMockRecipeRepo(int count)
         {
             var mockRepo = new Mock<IRecipeRepo>();
@@ -57,6 +113,26 @@ namespace MealFridge.Tests.Utils
             mockRepo.Setup(a => a.AddOrUpdateAsync(It.IsAny<Recipe>()));
             mockRepo.Setup(a => a.SaveListOfRecipes(It.IsAny<List<Recipe>>()));
             return mockRepo;
+        }
+
+        public static Mock<IMealRepo> CreateMealRepo(int count)
+        {
+            var mealRepo = new Mock<IMealRepo>();
+            mealRepo.Setup(m => m.GetAll()).Returns(CreateMeals(count).AsQueryable());
+            mealRepo.Setup(m => m.GetMeals(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<int>())).Returns(CreateMeals(count));
+            mealRepo.Setup(m => m.GetMeals(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(CreateMeals(count));
+            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>())).Returns(CreateMeals(count)[0]);
+            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
+
+            return mealRepo;
+        }
+
+        public static Mock<IRestrictionRepo> CreateRestrictionsRepo(int count)
+        {
+            var resMock = new Mock<IRestrictionRepo>();
+            resMock.Setup(m => m.GetUserDislikedIngredWithIngredName(It.IsAny<IQueryable<Restriction>>(), It.IsAny<string>())).Returns(CreateRestrictions(count));
+            resMock.Setup(m => m.GetUserRestrictedIngredWithIngredName(It.IsAny<IQueryable<Restriction>>(), It.IsAny<string>())).Returns(CreateRestrictions(count));
+            return resMock;
         }
 
         public static Mock<UserManager<IdentityUser>> CreateUserMock()

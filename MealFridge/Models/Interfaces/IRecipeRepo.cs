@@ -10,10 +10,6 @@ namespace MealFridge.Models.Interfaces
     {
         public List<Recipe> GetRandomSix();
 
-<<<<<<< HEAD
-        public Task SaveDetails(Recipe recipe);
-=======
         public Task SaveListOfRecipes(List<Recipe> recipes);
->>>>>>> 9fb5dfd6960d1ac1ba9665637b470a895d1ef24b
     }
 }

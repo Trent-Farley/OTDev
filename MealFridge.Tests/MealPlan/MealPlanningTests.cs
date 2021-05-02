@@ -25,7 +25,7 @@ namespace MealFridge.Tests.MealPlan
         {
             //Arrange
             var userManagerFake = MockObjects.CreateUserMock();
-            var controller = new MealPlanController(null, userManagerFake.Object, null)
+            var controller = new MealPlanController(null, userManagerFake.Object, null, null, null)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -46,7 +46,9 @@ namespace MealFridge.Tests.MealPlan
             var savedRecipesFake = MockObjects.CreateSavedRecipeMock(10);
             var recipeRepoFake = MockObjects.CreateMockRecipeRepo(10);
             var userManagerFake = MockObjects.CreateUserMock();
-            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object)
+            var mealRepoFake = MockObjects.CreateMealRepo(10);
+            var resRepoFake = MockObjects.CreateRestrictionsRepo(10);
+            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object, mealRepoFake.Object, resRepoFake.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -70,7 +72,9 @@ namespace MealFridge.Tests.MealPlan
             var savedRecipesFake = MockObjects.CreateSavedRecipeMock(0);
             var recipeRepoFake = MockObjects.CreateMockRecipeRepo(0);
             var userManagerFake = MockObjects.CreateUserMock();
-            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object)
+            var mealRepoFake = MockObjects.CreateMealRepo(10);
+            var resRepoFake = MockObjects.CreateRestrictionsRepo(10);
+            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object, mealRepoFake.Object, resRepoFake.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -94,7 +98,9 @@ namespace MealFridge.Tests.MealPlan
             var savedRecipesFake = MockObjects.CreateSavedRecipeMock(10);
             var recipeRepoFake = MockObjects.CreateMockRecipeRepo(10);
             var userManagerFake = MockObjects.CreateUserMock();
-            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object)
+            var mealRepoFake = MockObjects.CreateMealRepo(10);
+            var resRepoFake = MockObjects.CreateRestrictionsRepo(10);
+            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object, mealRepoFake.Object, resRepoFake.Object)
             {
                 ControllerContext = new ControllerContext
                 {
@@ -116,7 +122,9 @@ namespace MealFridge.Tests.MealPlan
             var savedRecipesFake = MockObjects.CreateSavedRecipeMock(0);
             var recipeRepoFake = MockObjects.CreateMockRecipeRepo(0);
             var userManagerFake = MockObjects.CreateUserMock();
-            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object)
+            var mealRepoFake = MockObjects.CreateMealRepo(10);
+            var resRepoFake = MockObjects.CreateRestrictionsRepo(10);
+            var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object, mealRepoFake.Object, resRepoFake.Object)
             {
                 ControllerContext = new ControllerContext
                 {
