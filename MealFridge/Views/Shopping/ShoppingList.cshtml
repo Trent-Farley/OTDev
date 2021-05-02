@@ -1,54 +1,55 @@
 ﻿@model IEnumerable<Fridge>
 
-<h3 id="shoppingListTitle" class="text-center">Shopping List</h3>
+<h3 id="shoppingListTitle" class=" card-title text-center">Shopping List</h3>
 @if (Model.Where(x => x.Shopping == true).Count() < 1)
 {
-    <div class="card shadow-lg">
+    <div class="card-body">
         <h6 class="card-title">You don't have anything you need to purchase!</h6>
     </div>
 }
 @if (Model.Where(x => x.Shopping == true).Count() > 0)
 {
-
-    <table class="table" id="shopping-list">
-        <thead>
-            <tr>
-                <th class="w-25"> Name </th>
-                <th class="w-25"> Amount you have </th>
-                <th class="w-25"> Amount you need </th>
-                <th class="w-25"> Gotten </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var i in Model.Where(x => x.Shopping == true))
-            {
-                <tr id="@i.IngredId">
-                    <td class="w-25"> @i.Ingred.Name </td>
-                    <td class="w-25">
-                        <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
-                                onclick="updateQuant('@i.Ingred.Id', -1)">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-light disabled">@i.Quantity</button>
-                        <button type="button" title="Add one" class="btn btn-outline-success"
-                                onclick="updateQuant('@i.Ingred.Id', 1)">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </td>
-                    <td class="w-25">
-                        <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
-                                onclick="updateNeeded('@i.Ingred.Id', -1)">
-                            <i class="fa fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-light disabled">@i.NeededAmount</button>
-                        <button type="button" title="Add one" class="btn btn-outline-success"
-                                onclick="updateNeeded('@i.Ingred.Id', 1)">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                    </td>
-                    <td class="w-25"> <input type="checkbox" /></td>
+    <div class="card-body border border-dark rounded-lg">
+        <table class="table shadow-sm table-hover" id="shopping-list">
+            <thead>
+                <tr>
+                    <th class="w-25"> Name </th>
+                    <th class="w-25"> Amount you have </th>
+                    <th class="w-25"> Amount you need </th>
+                    <th class="w-25"> Obtained </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var i in Model.Where(x => x.Shopping == true))
+                {
+                    <tr id="@i.IngredId">
+                        <td class="w-25"> @i.Ingred.Name </td>
+                        <td class="w-25">
+                            <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
+                                    onclick="updateQuant('@i.Ingred.Id', -1)">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-light disabled">@i.Quantity</button>
+                            <button type="button" title="Add one" class="btn btn-outline-success"
+                                    onclick="updateQuant('@i.Ingred.Id', 1)">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </td>
+                        <td class="w-25">
+                            <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
+                                    onclick="updateNeeded('@i.Ingred.Id', -1)">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-light disabled">@i.NeededAmount</button>
+                            <button type="button" title="Add one" class="btn btn-outline-success"
+                                    onclick="updateNeeded('@i.Ingred.Id', 1)">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </td>
+                        <td class="w-25"> <input class="custom-checkbox bg-success" type="checkbox" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 }

@@ -55,7 +55,7 @@ namespace MealFridge.Tests.Utils
             mockRepo.Setup(r => r.GetRandomSix())
                 .Returns(CreateRecipes(count).AsQueryable().OrderBy(i => i.Id).Take(6).ToList());
             mockRepo.Setup(a => a.AddOrUpdateAsync(It.IsAny<Recipe>()));
-
+            mockRepo.Setup(a => a.SaveListOfRecipes(It.IsAny<List<Recipe>>()));
             return mockRepo;
         }
 

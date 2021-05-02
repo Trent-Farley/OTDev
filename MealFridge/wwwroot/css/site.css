@@ -73,48 +73,57 @@ body {
 .jumbotron {
     background-color: #FFF;
 }
+
 #cnhIngredList {
     list-style: none;
     background-color: #FFF;
     margin-right: 60%;
     margin-left: 2%;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,.75);
-    padding-bottom:1%;
+    padding-bottom: 1%;
 }
+
 #dietUpdateButton {
-    margin-left:9%;
-    margin-top:-6%;
+    margin-left: 9%;
+    margin-top: -6%;
 }
-#cnhIngredList ul{
-    list-style:none;
+
+#cnhIngredList ul {
+    list-style: none;
 }
-#cnhIngredList h1{
-    margin-left:1%;
+
+#cnhIngredList h1 {
+    margin-left: 1%;
 }
-#cnhIngredList p{
-    margin-left:2%;
-    margin-top:-2%;
+
+#cnhIngredList p {
+    margin-left: 2%;
+    margin-top: -2%;
 }
-.cnhIngredButton{
-    color:red;
-    float:right;
-    background:none;
-    outline:0;
-    font-size:100%;
-    margin-top:.5%;
-    border:none;
+
+.cnhIngredButton {
+    color: red;
+    float: right;
+    background: none;
+    outline: 0;
+    font-size: 100%;
+    margin-top: .5%;
+    border: none;
 }
+
     .cnhIngredButton:hover {
         filter: invert(25%);
     }
+
 #cnhIngredItem {
-    outline-color:black;
+    outline-color: black;
     outline-style: solid;
     outline-width: .1px;
     background-color: #f0f0f0;
-    margin-left:-7%;
-    margin-right:40%;
+    margin-left: -7%;
+    margin-right: 40%;
 }
+
 .card {
     background-color: #FFF;
 }
@@ -259,7 +268,6 @@ input:checked + .slider:before {
         border-radius: 50%;
     }
 
-
 @media print {
     body * {
         visibility: hidden;
@@ -275,64 +283,43 @@ input:checked + .slider:before {
         top: 0;
     }
 }
-/*Loading screen
-    Inspired by: https://codepen.io/tbrownvisuals/pen/ZpXEZw
-*/
-#loading-screen {
-    position: fixed;
-    z-index: 999;
-    height: 2em;
-    width: 2em;
-    overflow: show;
-    margin: auto;
+
+#loading {
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
     bottom: 0;
     right: 0;
+    position: fixed;
+    display: block;
+    opacity: 0.6;
+    background-color: #fff;
+    z-index: 99;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-    /* Transparent Overlay */
-    #loading-screen:before {
-        content: '';
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0, .8));
-        background: -webkit-radial-gradient(rgba(20, 20, 20,.8), rgba(0, 0, 0,.8));
-    }
+#loading-image {
+    position: absolute;
+    justify-content: center;
+    vertical-align: middle;
+    margin-left: auto;
+    margin-right: auto;
+    top: 30%;
+    right: 40%;
+    left: 40%;
+    bottom: 50%;
+    z-index: 100;
+}
 
-    /* :not(:required) hides these rules from IE9 and below */
-    #loading-screen:not(:required) {
-        /* hide "loading..." text */
-        font: 0/0 a;
-        color: transparent;
-        text-shadow: none;
-        background-color: transparent;
-        border: 0;
-    }
-
-        #loading-screen:not(:required):after {
-            content: '';
-            display: block;
-            font-size: 10px;
-            width: 1em;
-            height: 1em;
-            margin-top: -0.5em;
-            -webkit-animation: spinner 150ms infinite linear;
-            -moz-animation: spinner 150ms infinite linear;
-            -o-animation: spinner 150ms infinite linear;
-            animation: spinner 150ms infinite linear;
-            border-radius: 0.5em;
-            -webkit-box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-            box-shadow: rgba(255,255,255, 0.75) 1.5em 0 0 0, rgba(255,255,255, 0.75) 1.1em 1.1em 0 0, rgba(255,255,255, 0.75) 0 1.5em 0 0, rgba(255,255,255, 0.75) -1.1em 1.1em 0 0, rgba(255,255,255, 0.75) -1.5em 0 0 0, rgba(255,255,255, 0.75) -1.1em -1.1em 0 0, rgba(255,255,255, 0.75) 0 -1.5em 0 0, rgba(255,255,255, 0.75) 1.1em -1.1em 0 0;
-        }
 .active, .nav-link:hover {
-    background-color:aliceblue;
-    color:black;
+    background-color: aliceblue;
+    color: black;
 }
-.li, .ul{
-    display:inline-block;
+
+.li, .ul {
+    display: inline-block;
 }
