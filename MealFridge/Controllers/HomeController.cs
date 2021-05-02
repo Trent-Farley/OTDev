@@ -39,13 +39,13 @@ namespace MealFridge.Controllers
                 QueryValue = "breakfast",
                 Credentials = _config["SApiKey"]
             };
-            var possibleRecipes = _spnApi.SearchApi(query);
+            var seedRecipes = _spnApi.SearchApi(query);
             query.QueryValue = "lunch";
-            _spnApi.SearchApi(query).ForEach(i => possibleRecipes.Add(i));
+            _spnApi.SearchApi(query).ToList().ForEach(l => seedRecipes.Add(l));
             query.QueryValue = "dinner";
-            _spnApi.SearchApi(query).ForEach(i => possibleRecipes.Add(i));
-            if (possibleRecipes.Count > 0)
-                await _db.SaveListOfRecipes(possibleRecipes.Distinct().ToList());
+            _spnApi.SearchApi(query).ToList().ForEach(d => seedRecipes.Add(d));
+            if (seedRecipes.Count > 0)
+                await _db.SaveListOfRecipes(seedRecipes.Distinct().ToList());
         }
 
         [HttpPost]
