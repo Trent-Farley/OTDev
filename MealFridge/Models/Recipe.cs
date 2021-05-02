@@ -38,19 +38,6 @@ namespace MealFridge.Models
         public bool? Dinner { get; set; }
         public bool? Dessert { get; set; }
         public bool? Snack { get; set; }
-        public bool? VeryHealthy { get; set; }
-        public bool? Cheap { get; set; }
-        public bool? Vegetarian { get; set; }
-        public bool? Vegen { get; set; }
-        public bool? GlutenFree { get; set; }
-        public bool? DairyFree { get; set; }
-        public bool? Keto { get; set; }
-        public bool? LactoVeg { get; set; }
-        public bool? OvoVeg { get; set; }
-        public bool? Pescetarian { get; set; }
-        public bool? Paleo { get; set; }
-        public bool? Primal { get; set; }
-        public bool? Whole30 { get; set; }
 
         public virtual ICollection<Meal> Meals { get; set; }
         public virtual ICollection<Recipeingred> Recipeingreds { get; set; }
