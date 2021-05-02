@@ -1,19 +1,18 @@
-﻿
-@{ ViewBag.Title = "DietaryRestriction"; }
+﻿@{ ViewBag.Title = "DietaryRestriction"; }
 @model MealFridge.Models.ViewModels.DietaryRestrictions
-    <div class="navbar navbar-expand-md d-flex" style="background-color:azure">
-        <ul class="nav nav-tabs justify-content-center">
-            <li class="nav-item">
-                <a class="active nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorited/Shelved Recipes</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
-            </li>
-        </ul>
-    </div>
+<div class="navbar navbar-expand-md d-flex" style="background-color:azure">
+    <ul class="nav nav-tabs justify-content-center">
+        <li class="nav-item">
+            <a class="active nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="DietaryRestrictions">Dietary Restrictions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FavoriteRecipes">Favorited/Shelved Recipes</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" style="color:black" asp-area="" asp-controller="AccountManagement" asp-action="FoodPreferences">Food Preferences</a>
+        </li>
+    </ul>
+</div>
 <p> </p>
 <div id="cnhIngredList">
     <h1>Diet Settings</h1>
@@ -69,21 +68,20 @@
 <div id="cnhIngredList">
     <h1>Restricted Ingredients</h1>
     <p>Ingredients Flagged as "Cannot Have"</p>
-    @if (Model.userRestrictions.Count() > 0) 
+    @if (Model.userRestrictions.Count() > 0)
     {
-        <ul>
-        @foreach (var i in Model.userRestrictions)
-        {
-            <li id="cnhIngredItem">
-            <label>@i.Ingred.Name</label>
-            <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
-                <i class="far fa-times-circle"></i>
-            </button>
-            </li>
-        }
-        </ul>
-     }
-     @if (Model.userRestrictions.Count()<1) { <p>--Nothing to show--</p>}
+<ul>
+    @foreach (var i in Model.userRestrictions)
+    {
+<li id="cnhIngredItem">
+    <label>@i.Ingred.Name</label>
+    <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
+        <i class="far fa-times-circle"></i>
+    </button>
+</li>}
+</ul>}
+    @if (Model.userRestrictions.Count() < 1)
+    {<p>--Nothing to show--</p>}
 </div>
 <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
 @section Scripts{
