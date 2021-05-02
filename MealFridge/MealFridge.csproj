@@ -53,6 +53,8 @@
   </ItemGroup>
   <ItemGroup>
     <Watch Remove="Scripts\Preferences\Index.ts" />
+    <Watch Remove="Views\About\AboutUs.cshtml" />
+    <Watch Remove="Views\About\GetStarted.cshtml" />
     <Watch Remove="Views\Shopping\ShoppingList.cshtml" />
   </ItemGroup>
   <ItemGroup>

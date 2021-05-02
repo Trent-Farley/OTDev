@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+<div class="card shadow-lg">
+    <h1 class="text-center">Getting Started with MealFridge</h1>
+
+    <h2 class="text-center">Logging In</h2>
+    <div class="biographyCard">
+        <p>
+            The drop down menu located in the top right of the page (three vertical bars) contains all relevant links for navigating the website. <br>Click <b>Register</b> to create a new account or <b>Login</b> if you have already registered.
+        </p>
+        @if (!SignInManager.IsSignedIn(User))
+        {<p>Alternatively, you can click<a asp-area="Identity" asp-page="/Account/Register">here</a> to register an account.</p>}
+        <p>Once you've logged in, you have access to all MealFridge features.</p>
+    </div>
+    <h2 class="text-center">Browsing Recipes</h2>
+    <div class="biographyCard">
+        <p>Under the navbar located in the top right of the page, select <b>Search</b>. This will take you to the <b>Search</b> page where you can begin browsing recipes you might want to try.</p>
+        <p>The drop down menu next to the search input field selects how recipes will be searched. Either by an <b>Ingredient</b> or if you have a specific recipe in mind, you can select the <b>Recipe Name</b>.</p>
+        <p>Hit enter on your keyboard or select the magnfying glass located to the right of the search input field to search.</p>
+        <p>You will be returned a selection of <b>Recipe Cards</b>. If a recipe looks like something you might want to try, select the <b style="color:green">green heart</b> to save it to your favorited recipes. This will allow you to retrieve it when you're ready to create your <b>Meal Plan</b>.</p>
+        <p>The <b style="color:red">red sqaure</b> will allow you to shelve recipes you don't want to see and the <b style="color:blue">blue "i"</b> will give you further information on the recipe.</p>
+    </div>
+    <h2 class="text-center">Meal Planning</h2>
+    <div class="biographyCard">
+        <p>The <b>Meal Planning</b> page is where you will be able to plan a weeks worth of recipes.</p>
+        <p>Select <b>Generate meal plan</b> to generate a meal plan with random recipes.</p>
+        <p>If you don't like a recipe, <b style="color:blue;">Swap</b> it with something from your favorited recipes. Once your satisfied select <b>Generate Shopping List</b> and you'll be navigated to the <b>Shopping List</b> page.</p>
+    </div>
+    <h2 class="text-center">Shopping List</h2>
+    <div class="biographyCard">
+        <p>From the <b>Shopping List</b> page you will be able to see a generated shopping list of the ingredients you need to pick up to make the recipes for the week.</p>
+        <p>If you already have some of the ingredients, selecting the plus sign under the <b>Amount you have</b> column will allow you to set that. Ingredients you already have will be automatically removed from the shopping list.</p>
+        <p>If you've picked up ingredients you can indicate that with the gotten checkbox located under <b>Gotten</b>.</p>
+    </div>
+    <h2 class="text-center">Inventory</h2>
+    <div class="biographyCard" style="margin-bottom:20px;">
+        <p>The <b>Inventory</b> page is where you can track your current inventory of ingredients. </p>
+        <p>The <b>search bar</b> located on the left side of the screen allows you to look up ingredients and add them to your current inventory, as well as flag ingredients you may be alergic to or dislike. Ingredients that you alergic to can be set by selecting <b style="color:red">Cannot Have</b> under the ingredient image. Similarly, you can <b style="color:gold">dislike</b> ingredients with the <b style="color:gold">Dislike</b> button.</p>
+        <p>Recipes containing ingredients you set as <b style="color:red">Cannot Have</b> will not appear when searching recipes and recipes containing <b style="color:gold">disliked</b> ingredients will be flagged. </p>
+        <p>Selecting the <b style="color:green">Shopping Basket</b> will add the ingredient to your shopping list. And selecting the <b style="color:green">Plus Sign</b> will add the ingredient to your inventory.</p>
+    </div>
+    <p style="margin-left:5%;">For more information on this project click <a asp-controller="About" asp-action="AboutUs">here</a>.</p>
+</div>
