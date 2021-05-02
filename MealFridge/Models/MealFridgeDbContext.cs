@@ -73,8 +73,10 @@ namespace MealFridge.Models
                     .HasMaxLength(255)
                     .HasColumnName("account_id");
                 entity.Property(e => e.IngredId).HasColumnName("ingred_id");
-                
-                entity.Property(e => e.NeededAmount).HasColumnName("needed_amount");
+
+                entity.Property(e => e.UnitType)
+                                    .HasMaxLength(255)
+                                    .HasColumnName("unit_type");
 
                 entity.Property(e => e.NeededAmount).HasColumnName("needed_amount");
 

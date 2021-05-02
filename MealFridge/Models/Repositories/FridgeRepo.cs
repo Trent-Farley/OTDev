@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UnitsNet; 
 
 namespace MealFridge.Models.Repositories
 {
@@ -59,6 +60,42 @@ namespace MealFridge.Models.Repositories
             else
                 _dbSet.Add(fridgeIngredient);
             await _context.SaveChangesAsync();
+        }
+        //Fix plurals and TryParse Skipping
+        public async Task AddRecipeIngred(string userId, Recipeingred r)
+        {
+            if (await ExistsAsync(userId, r.IngredId))
+            {
+                var item = await FindByIdAsync(userId, r.IngredId);
+                var tempAmount = 0.0;
+                if (Volume.TryParseUnit(item.UnitType, out var itemUnit) && Volume.TryParseUnit(r.ServingUnit, out var rUnit))
+                {
+                    tempAmount = UnitConverter.Convert((QuantityValue)r.Amount, rUnit, itemUnit);
+                }
+                else if (Mass.TryParseUnit(item.UnitType, out var iUnit) && Mass.TryParseUnit(r.ServingUnit, out var reUnit))
+                {
+                    tempAmount = UnitConverter.Convert((QuantityValue)r.Amount, reUnit, iUnit);
+                }
+                else if (item.UnitType == r.ServingUnit)
+                    tempAmount = (double)r.Amount;
+                else
+                    return; //Oops
+                item.NeededAmount += tempAmount;
+                if (item.NeededAmount > item.Quantity)
+                    item.Shopping = true;
+            }
+            else
+            {
+                await AddFridgeAsync(new Models.Fridge
+                {
+                    AccountId = userId,
+                    IngredId = r.IngredId,
+                    Quantity = 0,
+                    NeededAmount = r.Amount,
+                    UnitType = r.ServingUnit,
+                    Shopping = true
+                });
+            }
         }
     }
 }

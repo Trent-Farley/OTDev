@@ -1,6 +1,7 @@
 CREATE TABLE [FRIDGE] (
   [account_id] NVARCHAR(255),
   [ingred_id] int,
+  [unit_type] NVARCHAR(255),
   [quantity] float,
   [shopping] bit,
   [needed_amount] float,

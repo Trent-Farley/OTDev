@@ -14,6 +14,5 @@ namespace MealFridge.Models.Repositories
         {
             return _dbSet.Where(i => i.RecipeId == recipeId).ToList();
         }
-        
     }
 }

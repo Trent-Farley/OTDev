@@ -41,10 +41,11 @@ namespace MealFridge.Controllers
                 Credentials = _config["SApiKey"]
             };
             await SearchApiAsync(query);
-            query.QueryValue = "lunch";
-            await SearchApiAsync(query);
-            query.QueryValue = "dinner";
-            await SearchApiAsync(query);
+            //query.QueryValue = "lunch";
+            //await SearchApiAsync(query);
+            //query.QueryValue = "dinner";
+            //await SearchApiAsync(query);
+
         }
 
         private async Task SearchApiAsync(Query query)
@@ -53,7 +54,10 @@ namespace MealFridge.Controllers
             if (possibleRecipes != null)
                 foreach (var recipe in possibleRecipes)
                     if (!_db.GetAll().Any(t => t.Id == recipe.Id))
+                    {
+                        await _db.SaveDetails(recipe);
                         await _db.AddOrUpdateAsync(recipe);
+                    }
         }
 
         [HttpPost]
