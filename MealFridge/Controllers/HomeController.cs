@@ -24,7 +24,7 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (_db.GetAll().Count() < 1)
+            if (_db.GetAll().Count() < 300)
                 await SeedDatabase();
             var randomRecipes = _db.GetRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
@@ -35,31 +35,23 @@ namespace MealFridge.Controllers
             var query = new Query
             {
                 SearchType = "Random",
-                Url = ApiConstants.RandomRecipesUrl,
-                QueryName = "tags",
+                Url = ApiConstants.SearchByNameEndpoint,
                 QueryValue = "breakfast",
                 Credentials = _config["SApiKey"]
             };
-            await SearchApiAsync(query);
-            query.QueryValue = "lunch";
-            await SearchApiAsync(query);
-            query.QueryValue = "dinner";
-            await SearchApiAsync(query);
-        }
-
-        private async Task SearchApiAsync(Query query)
-        {
             var possibleRecipes = _spnApi.SearchApi(query);
-            if (possibleRecipes != null)
-                foreach (var recipe in possibleRecipes)
-                    if (!_db.GetAll().Any(t => t.Id == recipe.Id))
-                        await _db.AddOrUpdateAsync(recipe);
+            query.QueryValue = "lunch";
+            _spnApi.SearchApi(query).ForEach(i => possibleRecipes.Add(i));
+            query.QueryValue = "dinner";
+            _spnApi.SearchApi(query).ForEach(i => possibleRecipes.Add(i));
+            if (possibleRecipes.Count > 0)
+                await _db.SaveListOfRecipes(possibleRecipes.Distinct().ToList());
         }
 
         [HttpPost]
         public async Task<IActionResult> RecipeDetails(Query query)
         {
-            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { QueryValue = query.QueryValue }));
+            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
         }
     }
 }

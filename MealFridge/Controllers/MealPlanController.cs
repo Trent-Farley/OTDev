@@ -59,5 +59,11 @@ namespace MealFridge.Controllers
 
             return await Task.FromResult(PartialView("SavedRecipesModal", _savedDb.GetFavoritedRecipe(user)));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> RecipeDetails(Query query)
+        {
+            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
+        }
     }
 }

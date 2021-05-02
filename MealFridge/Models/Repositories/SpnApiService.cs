@@ -10,7 +10,7 @@ namespace MealFridge.Models.Repositories
 {
     public class SpnApiService : ISpnApiService
     {
-        private Query _query;
+        private static Query _query;
 
         public Ingredient IngredientDetails(Ingredient query, string searchType) //Not currently called
         {
@@ -35,14 +35,12 @@ namespace MealFridge.Models.Repositories
             var jsonResponse = SendRequest();
             var output = new List<Ingredient>();
             var ingredients = JObject.Parse(jsonResponse);
-            //Test Start
             foreach (var ingredient in ingredients["results"])
             {
                 var temp = ParseIngredient(ingredient as JObject);
                 if (temp != null)
                     output.Add(temp);
             }
-            //Test End
             return output.ToList();
         }
 
@@ -119,7 +117,7 @@ namespace MealFridge.Models.Repositories
 
                 case "Random":
                     recipes = JObject.Parse(jsonResponse);
-                    foreach (JObject recipe in recipes["recipes"])
+                    foreach (JObject recipe in recipes["results"])
                     {
                         output.Add(GetDetailRecipe(recipe));
                     }
@@ -145,9 +143,11 @@ namespace MealFridge.Models.Repositories
                 detailedRecipe.Summery = recipeDetails["sourceUrl"].Value<string>();
                 detailedRecipe.Servings = recipeDetails["servings"].Value<int>();
                 JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JToken>>(), detailedRecipe);
+
+                detailedRecipe.Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list);
+
                 var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
                 JsonParser.ParseNutrition(nutrients, detailedRecipe);
-                detailedRecipe.Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list);
             }
             catch
             {
