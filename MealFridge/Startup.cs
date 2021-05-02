@@ -49,6 +49,7 @@ namespace MealFridge
             services.AddScoped<IRecipeIngredRepo, RecipeIngredRepo>();
             services.AddScoped<ISpnApiService, SpnApiService>();
             services.AddScoped<IDietRepo, DietRepo>();
+            services.AddScoped<IMealRepo, MealRepo>();
             services.AddAuthentication().AddGoogle(options =>
             {
                 IConfigurationSection googleAuthNSection =

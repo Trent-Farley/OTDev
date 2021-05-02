@@ -22,5 +22,11 @@ namespace MealFridge.Models
             }
             return meals;
         }
+
+        public override string ToString()
+        {
+            return $"\n\t Recipe.Id: {RecipeId} " +
+                $"\n\t Recipe.Title: {Recipe.Title} ";
+        }
     }
 }
