@@ -73,11 +73,5 @@ namespace MealFridge.Controllers
         {
             return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
         }
-
-        [HttpPost]
-        public async Task<IActionResult> RecipeDetails(Query query)
-        {
-            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
-        }
     }
 }

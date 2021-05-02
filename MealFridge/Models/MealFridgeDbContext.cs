@@ -49,9 +49,27 @@ namespace MealFridge.Models
                     .HasMaxLength(255)
                     .HasColumnName("account_id");
 
-                entity.Property(e => e.Diet1)
-                    .HasMaxLength(64)
-                    .HasColumnName("diet");
+                entity.Property(e => e.DairyFree).HasColumnName("dairy_free");
+
+                entity.Property(e => e.GlutenFree).HasColumnName("gluten_free");
+
+                entity.Property(e => e.Keto).HasColumnName("keto");
+
+                entity.Property(e => e.LactoVeg).HasColumnName("lacto-veg");
+
+                entity.Property(e => e.OvoVeg).HasColumnName("ovo-veg");
+
+                entity.Property(e => e.Paleo).HasColumnName("paleo");
+
+                entity.Property(e => e.Pescetarian).HasColumnName("pescetarian");
+
+                entity.Property(e => e.Primal).HasColumnName("primal");
+
+                entity.Property(e => e.Vegen).HasColumnName("vegen");
+
+                entity.Property(e => e.Vegetarian).HasColumnName("vegetarian");
+
+                entity.Property(e => e.Whole30).HasColumnName("whole30");
             });
 
             modelBuilder.Entity<Fridge>(entity =>
@@ -64,6 +82,10 @@ namespace MealFridge.Models
                 entity.Property(e => e.AccountId)
                     .HasMaxLength(255)
                     .HasColumnName("account_id");
+
+                entity.Property(e => e.UnitType)
+                    .HasMaxLength(255)
+                    .HasColumnName("unit_type");
 
                 entity.Property(e => e.IngredId).HasColumnName("ingred_id");
 
@@ -175,10 +197,14 @@ namespace MealFridge.Models
                     .HasColumnType("money")
                     .HasColumnName("cost");
 
+                entity.Property(e => e.DairyFree).HasColumnName("dairy_free");
+
                 entity.Property(e => e.Dessert).HasColumnName("dessert");
 
                 entity.Property(e => e.Dinner).HasColumnName("dinner");
-                
+
+                entity.Property(e => e.GlutenFree).HasColumnName("gluten_free");
+
                 entity.Property(e => e.Image)
                     .HasMaxLength(255)
                     .HasColumnName("image");
@@ -196,6 +222,14 @@ namespace MealFridge.Models
                 entity.Property(e => e.Minutes).HasColumnName("minutes");
 
                 entity.Property(e => e.NetCarbs).HasColumnName("net_carbs");
+
+                entity.Property(e => e.OvoVeg).HasColumnName("ovo-veg");
+
+                entity.Property(e => e.Paleo).HasColumnName("paleo");
+
+                entity.Property(e => e.Pescetarian).HasColumnName("pescetarian");
+
+                entity.Property(e => e.Primal).HasColumnName("primal");
 
                 entity.Property(e => e.Protein).HasColumnName("protein");
 
