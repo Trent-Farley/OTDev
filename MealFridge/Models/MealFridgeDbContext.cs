@@ -41,7 +41,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Diet>(entity =>
             {
                 entity.HasKey(e => e.AccountId)
-                    .HasName("PK__DIET__46A222CDF0765737");
+                    .HasName("PK__DIET__46A222CDC0458A7C");
 
                 entity.ToTable("DIET");
 
@@ -75,7 +75,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Fridge>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.IngredId })
-                    .HasName("PK__FRIDGE__9100B6D1F7790777");
+                    .HasName("PK__FRIDGE__9100B6D14E515FEB");
 
                 entity.ToTable("FRIDGE");
 
@@ -149,8 +149,8 @@ namespace MealFridge.Models
 
             modelBuilder.Entity<Meal>(entity =>
             {
-                entity.HasKey(e => e.AccountId)
-                    .HasName("PK__MEAL__46A222CDDAD9FDC0");
+                entity.HasKey(e => new { e.AccountId, e.RecipeId })
+                    .HasName("PK__MEAL__E5F53C14403BFC2A");
 
                 entity.ToTable("MEAL");
 
@@ -167,6 +167,7 @@ namespace MealFridge.Models
                 entity.HasOne(d => d.Recipe)
                     .WithMany(p => p.Meals)
                     .HasForeignKey(d => d.RecipeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("Meal_FK_Recipe");
             });
 
@@ -266,7 +267,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Recipeingred>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeId, e.IngredId })
-                    .HasName("PK__RECIPEIN__E2D379878FABB861");
+                    .HasName("PK__RECIPEIN__E2D379875A202116");
 
                 entity.ToTable("RECIPEINGRED");
 
@@ -318,7 +319,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Restriction>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.IngredId })
-                    .HasName("PK__RESTRICT__9100B6D148E6D858");
+                    .HasName("PK__RESTRICT__9100B6D1490C5B16");
 
                 entity.ToTable("RESTRICTIONS");
 
@@ -342,7 +343,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Savedrecipe>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.RecipeId })
-                    .HasName("PK__SAVEDREC__E5F53C148579B87B");
+                    .HasName("PK__SAVEDREC__E5F53C14F950824F");
 
                 entity.ToTable("SAVEDRECIPES");
 

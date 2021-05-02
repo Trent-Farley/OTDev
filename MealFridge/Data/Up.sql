@@ -124,7 +124,7 @@ CREATE TABLE [MEAL] (
   [account_id] NVARCHAR(255),
   [recipe_id] int,
   [type] nvarchar(255),
-  PRIMARY KEY ([account_id])
+  PRIMARY KEY ([account_id], [recipe_id])
 )
 
 ALTER TABLE [FRIDGE] ADD CONSTRAINT [Fridge_FK_Ingred] FOREIGN KEY ([ingred_id]) REFERENCES [INGREDIENTS] ([id])
