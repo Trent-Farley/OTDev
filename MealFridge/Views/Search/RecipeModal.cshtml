@@ -1,7 +1,7 @@
 ﻿@model Recipe
 
 <div class="modal show" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable w-100" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal_title">Recipe Details</h5>
@@ -31,11 +31,11 @@
                                 Please check out the recipe <a href="@Model.Summery" target="_blank"> here </a> for full instructions
                             </div>
                             @*<ul class="d-none" id="hidden-ingredients">
-                                @foreach (var ingredient in Model.Recipeingreds)
-                                {
-                                    <li> <p> @ingredient.Ingred.Name </p> </li>
-                                } No longer needed?
-                            </ul>*@
+                                    @foreach (var ingredient in Model.Recipeingreds)
+                                    {
+                                        <li> <p> @ingredient.Ingred.Name </p> </li>
+                                    } No longer needed?
+                                </ul>*@
                         </div>
                     }
                     @if (Model == null)

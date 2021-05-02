@@ -24,7 +24,7 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (_db.GetAll().Count() < 1)
+            if (_db.GetAll().Count() <= 0)
                 await SeedDatabase();
             var randomRecipes = _db.GetRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
@@ -35,11 +35,11 @@ namespace MealFridge.Controllers
             var query = new Query
             {
                 SearchType = "Random",
-                Url = ApiConstants.RandomRecipesUrl,
-                QueryName = "tags",
+                Url = ApiConstants.SearchByNameEndpoint,
                 QueryValue = "breakfast",
                 Credentials = _config["SApiKey"]
             };
+<<<<<<< HEAD
             await SearchApiAsync(query);
             //query.QueryValue = "lunch";
             //await SearchApiAsync(query);
@@ -58,12 +58,21 @@ namespace MealFridge.Controllers
                         await _db.SaveDetails(recipe);
                         await _db.AddOrUpdateAsync(recipe);
                     }
+=======
+            var seedRecipes = _spnApi.SearchApi(query);
+            query.QueryValue = "lunch";
+            _spnApi.SearchApi(query).ToList().ForEach(l => seedRecipes.Add(l));
+            query.QueryValue = "dinner";
+            _spnApi.SearchApi(query).ToList().ForEach(d => seedRecipes.Add(d));
+            if (seedRecipes.Count > 0)
+                await _db.SaveListOfRecipes(seedRecipes.Distinct().ToList());
+>>>>>>> 9fb5dfd6960d1ac1ba9665637b470a895d1ef24b
         }
 
         [HttpPost]
         public async Task<IActionResult> RecipeDetails(Query query)
         {
-            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { QueryValue = query.QueryValue }));
+            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
         }
     }
 }
