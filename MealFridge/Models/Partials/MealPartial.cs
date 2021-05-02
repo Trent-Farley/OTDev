@@ -17,7 +17,7 @@ namespace MealFridge.Models
                 meals.Add(new Meal
                 {
                     Recipe = recipe,
-                    MealString = type
+                    AccountId = type
                 });
             }
             return meals;

@@ -18,7 +18,7 @@ namespace MealFridge.Models.Repositories
 
         public Meal GetMeal(string type, string userId, List<Ingredient> bans, List<Ingredient> dislikes)
         {
-            var possibleMeals = _dbSet.Where(i => i.MealString == type).ToList();
+            var possibleMeals = _dbSet.Where(i => i.AccountId == type).ToList();
             if (possibleMeals.Count < 5)
             {
                 var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0).ToList();
@@ -27,10 +27,8 @@ namespace MealFridge.Models.Repositories
                 recipe = FindSafeRecipes(bans, dislikes, recipes)[0];
                 var m = new Meal()
                 {
-                    MealString = type,
                     Recipe = _recipeSet.FirstOrDefault(r => r.Id == recipe.Id),
                     RecipeId = recipe.Id,
-                    Day = DateTime.Now,
                     AccountId = userId
                 };
                 _dbSet.Add(m);
@@ -81,11 +79,12 @@ namespace MealFridge.Models.Repositories
 
         public Meal GetMeal(string type, string userId)
         {
-            var possibleMeals = _dbSet.Where(i => i.MealString == type).ToList();
-            if (possibleMeals.Count < 1)
-            {
-            }
-            return possibleMeals[0];
+            //var possibleMeals = _dbSet.Where(i => i.MealString == type).ToList();
+            //if (possibleMeals.Count < 1)
+            //{
+            //}
+            //return possibleMeals[0];
+            return null;
         }
 
         public List<Meal> GetMeals(string type, string userId, List<Ingredient> bans, List<Ingredient> dislikes, int days)
