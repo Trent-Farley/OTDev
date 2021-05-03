@@ -17,10 +17,16 @@ namespace MealFridge.Models
                 meals.Add(new Meal
                 {
                     Recipe = recipe,
-                    MealString = type
+                    AccountId = type
                 });
             }
             return meals;
+        }
+
+        public override string ToString()
+        {
+            return $"\n\t Recipe.Id: {RecipeId} " +
+                $"\n\t Recipe.Title: {Recipe.Title} ";
         }
     }
 }

@@ -42,6 +42,9 @@ namespace MealFridge.Models.Repositories
                             {
                                 var grabbed = ingDb.FirstOrDefault(i => i.Id == rIng.IngredId);
                                 rIng.Ingred = grabbed;
+                                rIng.Recipe = recipe;
+                                rIng.RecipeId = recipe.Id;
+                                rIng.IngredId = grabbed.Id;
                             }
                             else
                                 await ingDb.AddAsync(rIng.Ingred);

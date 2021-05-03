@@ -24,7 +24,7 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (_db.GetAll().Count() <= 0)
+            if (_db.GetAll().Count() == 0)
                 await SeedDatabase();
             var randomRecipes = _db.GetRandomSix();
             return await Task.FromResult(View("Index", randomRecipes));
