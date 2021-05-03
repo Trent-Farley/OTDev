@@ -37,24 +37,18 @@ namespace MealFridge.Controllers
             var userId = _user.GetUserId(User);
             var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
             var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
-            Console.WriteLine(_mealRepo.GetMeal("Breakfast", userId, banned, dislikes));
+
+            var breakfast = _mealRepo.GetMeals("Breakfast", userId, banned, dislikes, days);
+            var Lunch = _mealRepo.GetMeals("Lunch", userId, banned, dislikes, days);
+            var dinner = _mealRepo.GetMeals("Lunch", userId, banned, dislikes, days);
+            if (breakfast.Count < days || Lunch.Count < days || dinner.Count < days)
+                return await Task.FromResult(PartialView("MealPlan", null));
+
             var meals = new Meals
             {
-                Breakfast = Meal.CreateMealsFromRecipes(_recipeRepo.GetAll()
-                    .Where(r => r.Breakfast == true)
-                    .OrderBy(r => Guid.NewGuid())
-                    .Take(days)
-                    .ToList()),
-                Lunch = Meal.CreateMealsFromRecipes(_recipeRepo.GetAll()
-                   .Where(r => r.Lunch == true)
-                   .OrderBy(r => Guid.NewGuid())
-                   .Take(days)
-                   .ToList()),
-                Dinner = Meal.CreateMealsFromRecipes(_recipeRepo.GetAll()
-                   .Where(r => r.Dinner == true)
-                   .OrderBy(r => Guid.NewGuid())
-                   .Take(days)
-                   .ToList()),
+                Breakfast = breakfast,
+                Lunch = Lunch,
+                Dinner = dinner,
                 Days = DatesGenerator.GetDays(days)
             };
             return await Task.FromResult(PartialView("MealPlan", meals));

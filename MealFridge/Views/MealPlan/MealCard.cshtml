@@ -1,0 +1,16 @@
+﻿@model Meal
+
+<div class="card shadow-lg rounded-lg">
+    <img src="https://spoonacular.com/recipeImages/@Model.Recipe.Image" alt="Image of recipe" id="img-@Model.Recipe.Id" class="card-image" />
+    <div class="card-body">
+        <h4 class="card-title" id="title-@Model.Recipe.Id">
+            @Model.Recipe.Title
+        </h4>
+        <div class="button-group w-100">
+            <button class="btn btn-outline-primary" id="btn-@Model.Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Recipe.Id')">
+                <i class="fas fa-heart"></i> Swap
+            </button>
+            <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Recipe.Id')"><i class="fa fa-info">  </i></button>
+        </div>
+    </div>
+</div>
