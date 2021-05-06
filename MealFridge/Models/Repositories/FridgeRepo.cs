@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using UnitsNet; 
+using MealFridge.Utils; 
 
 namespace MealFridge.Models.Repositories
 {
@@ -67,19 +67,7 @@ namespace MealFridge.Models.Repositories
             if (await ExistsAsync(userId, r.IngredId))
             {
                 var item = await FindByIdAsync(userId, r.IngredId);
-                var tempAmount = 0.0;
-                if (Volume.TryParseUnit(item.UnitType, out var itemUnit) && Volume.TryParseUnit(r.ServingUnit, out var rUnit))
-                {
-                    tempAmount = UnitConverter.Convert((QuantityValue)r.Amount, rUnit, itemUnit);
-                }
-                else if (Mass.TryParseUnit(item.UnitType, out var iUnit) && Mass.TryParseUnit(r.ServingUnit, out var reUnit))
-                {
-                    tempAmount = UnitConverter.Convert((QuantityValue)r.Amount, reUnit, iUnit);
-                }
-                else if (item.UnitType == r.ServingUnit)
-                    tempAmount = (double)r.Amount;
-                else
-                    return; //Oops
+                var tempAmount = UnitConverter.Convert(r.Amount ?? 0.0, r.ServingUnit, item.UnitType);
                 item.NeededAmount += tempAmount;
                 if (item.NeededAmount > item.Quantity)
                     item.Shopping = true;
