@@ -21,25 +21,6 @@ namespace MealFridge.Tests.MealPlan
     public class MealPlanningTests
     {
         [Test]
-        public async Task TestIndex_WithLoggedInUser_ShouldReturnIndex()
-        {
-            //Arrange
-            var userManagerFake = MockObjects.CreateUserMock();
-            var controller = new MealPlanController(null, userManagerFake.Object, null, null, null)
-            {
-                ControllerContext = new ControllerContext
-                {
-                    HttpContext = MockObjects.CreateMockContext().Object
-                }
-            };
-            //Act
-            var result = await controller.Index();
-            //Assert
-            var data = (result as ViewResult).Model;
-            Assert.That(data, Is.Null);
-        }
-
-        [Test]
         public async Task TestMealPlanRoute_WithRecipes_ShouldReturnPopulatedMeals()
         {
             //Arrange
@@ -60,9 +41,9 @@ namespace MealFridge.Tests.MealPlan
             var data = (results as PartialViewResult).Model as Meals;
             //assert
             Assert.That(data, Is.Not.Null);
-            Assert.That(data.Breakfast.Count, Is.EqualTo(3));
-            Assert.That(data.Lunch.Count, Is.EqualTo(3));
-            Assert.That(data.Dinner.Count, Is.EqualTo(3));
+            Assert.That(data.Breakfast.Count, Is.EqualTo(10));
+            Assert.That(data.Lunch.Count, Is.EqualTo(10));
+            Assert.That(data.Dinner.Count, Is.EqualTo(10));
         }
 
         [Test]
@@ -86,9 +67,9 @@ namespace MealFridge.Tests.MealPlan
             var data = (results as PartialViewResult).Model as Meals;
             //assert
             Assert.That(data, Is.Not.Null);
-            Assert.That(data.Breakfast.Count, Is.EqualTo(0));
-            Assert.That(data.Lunch.Count, Is.EqualTo(0));
-            Assert.That(data.Dinner.Count, Is.EqualTo(0));
+            Assert.That(data.Breakfast.Count, Is.EqualTo(10));
+            Assert.That(data.Lunch.Count, Is.EqualTo(10));
+            Assert.That(data.Dinner.Count, Is.EqualTo(10));
         }
 
         [Test]
