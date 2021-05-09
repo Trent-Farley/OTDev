@@ -15,5 +15,7 @@ namespace MealFridge.Models.Interfaces
         public Meal GetMeal(DateTime mealTime, string userId, List<Ingredient> bans, List<Ingredient> dislikes);
 
         public Meal GetMeal(DateTime mealTime, string userId);
+
+        public List<Meal> GetAllMealsWithRecipes();
     }
 }
