@@ -104,8 +104,8 @@ namespace MealFridge.Models.Repositories
                 };
                 if (!_dbSet.Any(m => m.AccountId == userId && m.Day == temp.Day))
                 {
-                    _dbSet.Add(temp);
-                    _context.SaveChanges();
+                    //_dbSet.Add(temp);
+                    //_context.SaveChanges();
                 }
                 newMeals.Add(temp);
             }
