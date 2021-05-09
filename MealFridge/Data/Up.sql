@@ -20,7 +20,8 @@ CREATE TABLE [DIET] (
   [pescetarian] bit,
   [paleo] bit,
   [primal] bit,
-  [whole30] bit
+  [whole30] bit,
+  [metric] bit
 )
 
 CREATE TABLE [INGREDIENTS] (

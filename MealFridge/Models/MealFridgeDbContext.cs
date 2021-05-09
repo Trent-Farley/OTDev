@@ -70,6 +70,8 @@ namespace MealFridge.Models
                 entity.Property(e => e.Vegetarian).HasColumnName("vegetarian");
 
                 entity.Property(e => e.Whole30).HasColumnName("whole30");
+
+                entity.Property(e => e.Metric).HasColumnName("metric");
             });
 
             modelBuilder.Entity<Fridge>(entity =>

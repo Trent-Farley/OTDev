@@ -24,6 +24,7 @@ function updateDiet(): void {
     let Paleo: HTMLInputElement = <HTMLInputElement>document.getElementById("Paleo");
     let Pescetarian: HTMLInputElement = <HTMLInputElement>document.getElementById("Pescetarian");
     let Primal: HTMLInputElement = <HTMLInputElement>document.getElementById("Primal");
+    let Metric: HTMLInputElement = <HTMLInputElement>document.getElementById("Metric");
     $.ajax({
         url: "/AccountManagement/UpdateDiet",
         method: "POST",
@@ -38,7 +39,8 @@ function updateDiet(): void {
             ovoVeg: OvoVeg.checked,
             paleo: Paleo.checked,
             pescetarian: Pescetarian.checked,
-            primal: Primal.checked
+            primal: Primal.checked,
+            metric: Metric.checked
         },
         success: (data) => {
             $("#alert").empty();
