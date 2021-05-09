@@ -58,7 +58,7 @@ namespace MealFridge.Tests.Utils
             {
                 meals.Add(new Meal
                 {
-                    Type = titles[i],
+                    MealType = titles[i],
                     RecipeId = i,
                     AccountId = "1",
                     Recipe = recipes[i]
@@ -121,8 +121,8 @@ namespace MealFridge.Tests.Utils
             mealRepo.Setup(m => m.GetAll()).Returns(CreateMeals(count).AsQueryable());
             mealRepo.Setup(m => m.GetMeals(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<int>())).Returns(CreateMeals(count));
             mealRepo.Setup(m => m.GetMeals(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(CreateMeals(count));
-            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>())).Returns(CreateMeals(count)[0]);
-            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
+            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
+            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
 
             return mealRepo;
         }
