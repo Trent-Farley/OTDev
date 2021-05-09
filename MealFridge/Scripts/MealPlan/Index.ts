@@ -8,6 +8,7 @@ function getMealPlan(): void {
         },
         error: (err) => { console.log(err); },
         success: (generatedMeals) => {
+            $("#genSLButton").show();
             $("#meals").html(generatedMeals);
         }
     })
@@ -31,4 +32,33 @@ function swapOut(id: string): void {
     title.text(modalTitle);
     $("#img-" + RECIPEID).attr("src", $("#mimg-" + id).attr("src"));
     $("#recipe-modal").modal('toggle');
+}
+
+function genSLfromMP(): void {
+    let temp = $('h4');
+    let recipes:string[] = [];
+    for (let i = 0; i < temp.length; i++) {
+        recipes.push(temp[i].id.substring(6));
+    }
+    var postData = { values: recipes };
+    $.ajax({
+        url: "/Shopping/AddFromMealPlan",
+        type: "POST",
+        data: postData,
+        traditional: true,
+        error: (err) => { console.log(err); },
+        success: () => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Saved</strong> Your Shopping List is updated
+                </div>
+            `);
+            $("#genSLButton").hide();
+
+        }
+    });
 }

@@ -22,7 +22,19 @@ namespace MealFridge.Models.Repositories
                 .Take(6)
                 .ToList();
         }
-
+        public virtual List<Recipe> GetRecipesbyNames(List<string> recipes, IQueryable<Recipe> recipeRepo)
+        {
+            List<Recipe> foundRecipes = new List<Recipe>();
+            foreach (var recipe in recipes)
+            {
+                var temp = recipeRepo.Where(r => r.Title == recipe).FirstOrDefault();
+                if (temp != null)
+                {
+                    foundRecipes.Add(temp);
+                }
+            }
+            return foundRecipes;
+        }
         public virtual async Task SaveListOfRecipes(List<Recipe> recipes)
         {
             foreach (var recipe in recipes)

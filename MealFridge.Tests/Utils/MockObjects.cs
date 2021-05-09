@@ -58,7 +58,7 @@ namespace MealFridge.Tests.Utils
             {
                 meals.Add(new Meal
                 {
-                    MealString = titles[i],
+                    //MealString = titles[i],
                     RecipeId = i,
                     AccountId = "1",
                     Recipe = recipes[i]
