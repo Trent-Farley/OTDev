@@ -87,14 +87,27 @@ namespace MealFridge.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RecipeDetails(Query query)
+        public async Task<IActionResult> MealDetails(Query query)
         {
             if (!int.TryParse(query.QueryValue, out var id))
                 return await Task.FromResult(StatusCode(400));
-            var meal = _mealRepo.GetAll()
+            var meal = _mealRepo.GetAllMealsWithRecipes()
                 .Where(rt => rt.RecipeId == id)
                 .FirstOrDefault();
             return await Task.FromResult(PartialView("MealModal", meal));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RegenerateMeal(string mealDay)
+        {
+            var cday = DateTime.Parse(mealDay);
+
+            var userId = _user.GetUserId(User);
+            var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
+            var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
+            var newMeal = _mealRepo.GetMeal(cday, userId, banned, dislikes);
+
+            return await Task.FromResult(PartialView("MealCard", newMeal));
         }
     }
 }

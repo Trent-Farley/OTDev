@@ -22,7 +22,12 @@ namespace MealFridge.Models.Repositories
             if (currentMeals.Count > 1)
                 _dbSet.Remove(_dbSet.First(m => m.AccountId == userId && m.Day == mealTime));
             var type = GetType(mealTime);
-            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0 && r.GetRecipeType() == type).Include(ri => ri.Recipeingreds).OrderBy(g => Guid.NewGuid()).ToList();
+
+            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
+                .Include(ri => ri.Recipeingreds)
+                .ThenInclude(i => i.Ingred)
+                .OrderBy(g => Guid.NewGuid())
+                .ToList();
             var meals = FindRelevantMeals(recipes, userId, mealTime);
             meals = FindSafeMeals(bans, dislikes, meals);
             foreach (var meal in meals)
@@ -40,8 +45,8 @@ namespace MealFridge.Models.Repositories
                     {
                         _dbSet.Add(m);
                         _context.SaveChanges();
-                        return m;
                     }
+                    return m;
                 }
             return null;
         }
@@ -55,7 +60,11 @@ namespace MealFridge.Models.Repositories
             }
 
             var type = GetType(mealTime);
-            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0).Include(ri => ri.Recipeingreds).OrderBy(g => Guid.NewGuid()).ToList();
+            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
+             .Include(ri => ri.Recipeingreds)
+             .ThenInclude(i => i.Ingred)
+             .OrderBy(g => Guid.NewGuid())
+             .ToList();
             recipes = recipes.Where(r => r.GetRecipeType() == type).ToList();
             var meals = FindRelevantMeals(recipes, userId, mealTime);
             foreach (var meal in meals)
@@ -88,7 +97,11 @@ namespace MealFridge.Models.Repositories
             RemoveOldMeals(currentMeals);
             var type = GetType(mealTime);
 
-            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0).Include(ri => ri.Recipeingreds).OrderBy(g => Guid.NewGuid()).ToList();
+            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
+             .Include(ri => ri.Recipeingreds)
+             .ThenInclude(i => i.Ingred)
+             .OrderBy(g => Guid.NewGuid())
+             .ToList();
             var meals = FindRelevantMeals(recipes, userId, mealTime);
             meals = FindSafeMeals(bans, dislikes, meals);
             var newMeals = new List<Meal>();
@@ -121,7 +134,11 @@ namespace MealFridge.Models.Repositories
             RemoveOldMeals(currentMeals);
             var type = GetType(mealTime);
 
-            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0).Include(ri => ri.Recipeingreds).OrderBy(g => Guid.NewGuid()).ToList();
+            var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
+                .Include(ri => ri.Recipeingreds)
+                .ThenInclude(i => i.Ingred)
+                .OrderBy(g => Guid.NewGuid())
+                .ToList();
             var meals = FindRelevantMeals(recipes, userId, mealTime);
             var newMeals = new List<Meal>();
             for (var i = 0; i < days; ++i)
@@ -159,15 +176,21 @@ namespace MealFridge.Models.Repositories
             switch (type)
             {
                 case "Breakfast":
-                    recipes = recipes.Where(b => b.Breakfast == true).OrderBy(g => Guid.NewGuid()).ToList();
+                    recipes = recipes.Where(b => b.Breakfast == true)
+                        .OrderBy(g => Guid.NewGuid())
+                        .ToList();
                     break;
 
                 case "Lunch":
-                    recipes = recipes.Where(b => b.Lunch == true).OrderBy(g => Guid.NewGuid()).ToList();
+                    recipes = recipes.Where(b => b.Lunch == true)
+                        .OrderBy(g => Guid.NewGuid())
+                        .ToList();
                     break;
 
                 case "Dinner":
-                    recipes = recipes.Where(b => b.Dinner == true).OrderBy(g => Guid.NewGuid()).ToList();
+                    recipes = recipes.Where(b => b.Dinner == true)
+                        .OrderBy(g => Guid.NewGuid())
+                        .ToList();
                     break;
             }
             var meals = new List<Meal>();
@@ -233,6 +256,14 @@ namespace MealFridge.Models.Repositories
                 found.Add(r);
             }
             return found;
+        }
+
+        public List<Meal> GetAllMealsWithRecipes()
+        {
+            return _dbSet
+                .Include(r => r.Recipe)
+                .Include(r => r.Recipe.Recipeingreds).ThenInclude(i => i.Ingred)
+                .ToList();
         }
     }
 }

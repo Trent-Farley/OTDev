@@ -32,3 +32,32 @@ function swapOut(id: string): void {
     $("#img-" + RECIPEID).attr("src", $("#mimg-" + id).attr("src"));
     $("#recipe-modal").modal('toggle');
 }
+function getMealDetails(recipeId) {
+    $.ajax({
+        url: "/MealPlan/MealDetails",
+        method: "POST",
+        data: {
+            QueryValue: recipeId
+        },
+        success: (data) => {
+            $("#modal-container").empty();
+            $("#modal-container").html(data);
+            $('#meal-modal').modal("show");
+        },
+        error: (err) => { console.log(err); }
+    });
+}
+function regenerate(mealDay, currentId) {
+    $.ajax({
+        url: "/MealPlan/RegenerateMeal",
+        method: "POST",
+        data: {
+            mealDay: mealDay
+        },
+        success: (data) => {
+            console.log(currentId);
+            $("#" + currentId).html(data);
+        },
+        error: (err) => { console.log(err); }
+    });
+}
