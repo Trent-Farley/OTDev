@@ -24,14 +24,16 @@ namespace MealFridge.Controllers
         private readonly IRestrictionRepo _restrictContext;
         private readonly IRecipeIngredRepo _recipeIngredContext;
         private readonly IFridgeRepo _fridgeContext;
+        private readonly IRecipeRepo _recipeContext;
 
-        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext)
+        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext, IRecipeRepo recipeRepo)
         {
             _db = context;
             _config = config;
             _user = user;
             _spnApi = service;
             _restrictContext = restrictContext;
+            _recipeContext = recipeRepo;
             _recipeIngredContext = recipeIngredContext;
             _fridgeContext = fridgeContext;
         }
@@ -67,7 +69,7 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-           
+            var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
            
             if (possibleRecipes.Count < 10)
             {               
@@ -138,6 +140,8 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> RecipeDetails(Query query)
         {
+            var userId = _user.GetUserId(User);
+            var fridge = _db.Fridges.Where(i=> i.AccountId == userId).Include(n => n.Ingred).ToList();
             if (!int.TryParse(query.QueryValue, out var id))
                 return await Task.FromResult(StatusCode(400));
             var recipe = _db.Recipes
@@ -172,7 +176,9 @@ namespace MealFridge.Controllers
                     }
                 }
             }
-            return await Task.FromResult(PartialView("RecipeModal", recipe));
+            var commonIngred = CheckInventory(recipe.Recipeingreds.ToList());
+            var viewModel = new FridgeAndRecipeViewModel() { GetFridge = fridge, GetRecipes = recipe, GetIngredients = commonIngred};
+            return await Task.FromResult(PartialView("RecipeModal", viewModel));
         }
 
         /// <summary>
@@ -219,5 +225,31 @@ namespace MealFridge.Controllers
             await _db.SaveChangesAsync();
             return StatusCode(200);
         }
+
+        public  List<Ingredient> CheckInventory(List<Recipeingred> recipes)
+        {
+            var userId = _user.GetUserId(User);
+            var fridge = _db.Fridges.Where(i => i.AccountId == userId).Include(n => n.Ingred).ToList();
+            var commonIngredients = new List<Ingredient>();
+
+            foreach(var i in fridge)
+            {
+               foreach(var r in recipes)
+                {
+                   if(i.Ingred.Id == r.Ingred.Id || i.Ingred.Name == r.Ingred.Name)
+                    {
+                        commonIngredients.Add(r.Ingred);
+                    }
+                }
+            }
+
+            return commonIngredients;
+        }
+
+        //public void EmptyInventory(List<Ingredient> other)
+        //{
+        //    var temp = _db.Fridges.Where(i => i.IngredId == other);
+        //    _db.Fridges.FirstOrDefault(temp).Quantity--;
+        //}
     }
 }

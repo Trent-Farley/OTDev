@@ -40,63 +40,81 @@ else
     @for (var i = 0; i < 7; ++i)
     {
 
-        <div class="row m-lg-2 mb-lg-4">
-            <div class="col-sm-3 bg-secondary">
-                <div class="card shadow-lg rounded-lg">
-                    <h2 class="card-title text-center">
-                        @Model.Days[i]
-                    </h2>
-                </div>
+
+    <div class="row m-lg-2 mb-lg-4">
+        <div class="col-sm-3 bg-secondary">
+            <div class="card shadow-lg rounded-lg">
+                <h2 class="card-title text-center">
+                    @Model.Days[i]
+                </h2>
             </div>
-            <div class="col-sm-3 bg-primary" id="@Model.Breakfast[i].Recipe.Id">
-                <div class="card shadow-lg rounded-lg">
+        </div>
+        <div class="col-sm-3 bg-primary" id="@Model.Breakfast[i].Recipe.Id">
+            <div class="card shadow-lg rounded-lg">
                     <img src="https://spoonacular.com/recipeImages/@Model.Breakfast[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Breakfast[i].Recipe.Id" class="card-image" />
-                    <div class="card-body">
-                        <h4 class="card-title" id="title-@Model.Breakfast[i].Recipe.Id">
-                            @Model.Breakfast[i].Recipe.Title
-                        </h4>
-                        <div class="button-group w-100">
-                            <button class="btn btn-outline-primary" id="btn-@Model.Breakfast[i].Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Breakfast[i].Recipe.Id')">
-                                <i class="fas fa-heart"></i> Swap
-                            </button>
-                            <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Breakfast[i].Recipe.Id')"><i class="fa fa-info">  </i></button>
-                        </div>
+                    <div class="container">
+                        <p> </p>
+                        <button class="btn-sm btn-outline-success fa fa-heart" onclick="favorite(@Model.Breakfast[i].Recipe.Id)" style="display:inline-flex; width:40%; margin-right:10px"> Save it </button>
+                        <button class="btn-sm btn-outline-danger fa fa-heart-broken" onclick="shelf(@Model.Breakfast[i].Recipe.Id)" style="display:inline-flex; margin-left:20px"> Shelf it </button>
                     </div>
-                </div>
-            </div>
-            <div class="col-sm-3 bg-success">
-                <div class="card shadow-lg rounded-lg">
-                    <img src="https://spoonacular.com/recipeImages/@Model.Lunch[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Lunch[i].Recipe.Id" class="card-image" />
-                    <div class="card-body">
-                        <h4 class="card-title" id="title-@Model.Lunch[i].Recipe.Id">
-                            @Model.Lunch[i].Recipe.Title
-                        </h4>
-                        <div class="button-group w-100">
-                            <button class="btn btn-outline-primary" id="btn-@Model.Lunch[i].Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Lunch[i].Recipe.Id')">
-                                <i class="fas fa-heart"></i> Swap
-                            </button>
-                            <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Lunch[i].Recipe.Id')"><i class="fa fa-info">  </i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 bg-warning">
-                <div class="card shadow-lg rounded-lg">
-                    <img src="https://spoonacular.com/recipeImages/@Model.Dinner[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Dinner[i].Recipe.Id" class="card-image" />
-                    <div class="card-body">
-                        <h4 class="card-title" id="title-@Model.Dinner[i].Recipe.Id">
-                            @Model.Dinner[i].Recipe.Title
-                        </h4>
-                        <div class="button-group w-100">
-                            <button class="btn btn-outline-primary" type="button" id="btn-@Model.Dinner[i].Recipe.Id" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Dinner[i].Recipe.Id')">
-                                <i class="fas fa-heart"></i> Swap
-                            </button>
-                            <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Dinner[i].Recipe.Id')"><i class="fa fa-info">  </i></button>
-                        </div>
+                <div class="card-body">
+                    <h4 class="card-title" id="title-@Model.Breakfast[i].Recipe.Id">
+                        @Model.Breakfast[i].Recipe.Title
+                    </h4>
+                    <div class="button-group w-100">
+                        <button class="btn btn-outline-primary" id="btn-@Model.Breakfast[i].Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Breakfast[i].Recipe.Id')">
+                            <i class="fas fa-heart"></i> Swap
+                        </button>
+                        <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Breakfast[i].Recipe.Id')"><i class="fa fa-info">  </i></button>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-sm-3 bg-success">
+            <div class="card shadow-lg rounded-lg">
+                <img src="https://spoonacular.com/recipeImages/@Model.Lunch[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Lunch[i].Recipe.Id" class="card-image" />
+                <div class="container">
+                    <p> </p>
+                    <button class="btn-sm btn-outline-success fa fa-heart" onclick="favorite(@Model.Lunch[i].Recipe.Id)" style="display:inline-flex; width:40%; margin-right:10px"> Save it </button>
+                    <button class="btn-sm btn-outline-danger fa fa-heart-broken" onclick="shelf(@Model.Lunch[i].Recipe.Id)" style="display:inline-flex; margin-left:20px"> Shelf it </button>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title" id="title-@Model.Lunch[i].Recipe.Id">
+                        @Model.Lunch[i].Recipe.Title
+                    </h4>
+                    <div class="button-group w-100">
+                        <button class="btn btn-outline-primary" id="btn-@Model.Lunch[i].Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Lunch[i].Recipe.Id')">
+                            <i class="fas fa-heart"></i> Swap
+                        </button>
+                        <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Lunch[i].Recipe.Id')"><i class="fa fa-info">  </i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3 bg-warning">
+            <div class="card shadow-lg rounded-lg">
+                <img src="https://spoonacular.com/recipeImages/@Model.Dinner[i].Recipe.Image" alt="Image of recipe" id="img-@Model.Dinner[i].Recipe.Id" class="card-image" />
+                <div class="container">
+                    <p> </p>
+                    <button class="btn-sm btn-outline-success fa fa-heart" onclick="favorite(@Model.Dinner[i].Recipe.Id)" style="display:inline-flex; width:40%; margin-right:10px" > Save it </button>
+                    <button class="btn-sm btn-outline-danger fa fa-heart-broken" onclick="shelf(@Model.Dinner[i].Recipe.Id)" style="display:inline-flex; margin-left:20px"> Shelf it </button>
+                </div>
+                
+                <div class="card-body">
+                    <h4 class="card-title" id="title-@Model.Dinner[i].Recipe.Id">
+                        @Model.Dinner[i].Recipe.Title
+                    </h4>
+                    <div class="button-group w-100">
+                        <button class="btn btn-outline-primary" type="button" id="btn-@Model.Dinner[i].Recipe.Id" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Dinner[i].Recipe.Id')">
+                            <i class="fas fa-heart"></i> Swap
+                        </button>
+                        <button class="btn btn-outline-primary" type="button" onclick="getHomeDetails('@Model.Dinner[i].Recipe.Id')"><i class="fa fa-info">  </i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+        
 
     }
 }

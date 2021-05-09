@@ -32,8 +32,8 @@ namespace MealFridge.Models.Repositories
                     AccountId = userId,
                     Type = type
                 };
-                _dbSet.Add(m);
-                _context.SaveChanges();
+                //_dbSet.Add(m);
+                //_context.SaveChanges();
                 return m;
             }
             var collectedRecipes = possibleMeals.Select(r => r.Recipe).ToList();
@@ -80,12 +80,11 @@ namespace MealFridge.Models.Repositories
 
         public Meal GetMeal(string type, string userId)
         {
-            //var possibleMeals = _dbSet.Where(i => i.MealString == type).ToList();
-            //if (possibleMeals.Count < 1)
-            //{
-            //}
-            //return possibleMeals[0];
-            return null;
+            var possibleMeals = _dbSet.Where(i => i.Type == type).ToList();
+            if (possibleMeals.Count < 1)
+            {
+            }
+            return possibleMeals[0];
         }
 
         public List<Meal> GetMeals(string type, string userId, List<Ingredient> bans, List<Ingredient> dislikes, int days)

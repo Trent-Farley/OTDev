@@ -13,5 +13,7 @@ namespace MealFridge.Models.Interfaces
         List<Fridge> FindByAccount(string userId);
         List<Ingredient> FindByIngredient(int ingredId);
         Task AddFridgeAsync(Fridge fridgeIngredient);
+        //IQueryable<Fridge> GetFridgeByAccount(IQueryable<Fridge> fridge, string id);
+        //IQueryable<Fridge> GetFridgeById(IQueryable<Fridge> fridge, int id);
     }
 }

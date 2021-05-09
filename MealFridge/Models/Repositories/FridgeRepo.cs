@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace MealFridge.Models.Repositories
 {
@@ -30,7 +31,7 @@ namespace MealFridge.Models.Repositories
         public List<Ingredient> FindByIngredient(int ingredId)
         {
             var ingreds = new List<Ingredient>();
-            foreach(var i in _dbSet.Where(i => i.IngredId == ingredId))
+            foreach (var i in _dbSet.Where(i => i.IngredId == ingredId))
             {
                 ingreds.Add(i.Ingred);
             }
@@ -60,5 +61,15 @@ namespace MealFridge.Models.Repositories
                 _dbSet.Add(fridgeIngredient);
             await _context.SaveChangesAsync();
         }
+
+        //public IQueryable<Fridge> GetFridgeByAccount(IQueryable<Fridge> fridge, string id)
+        //{
+        //    return fridge.Where(i => i.AccountId == id);
+        //}
+
+        //public IQueryable<Fridge> GetFridgeById(IQueryable<Fridge> fridge, int id)
+        //{
+        //    return fridge.Where(i => i.IngredId == id);
+        //}
     }
 }

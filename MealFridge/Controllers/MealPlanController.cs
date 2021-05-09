@@ -18,14 +18,16 @@ namespace MealFridge.Controllers
         private ISavedrecipeRepo _savedRepo;
         private IMealRepo _mealRepo;
         private IRestrictionRepo _restrictionRepo;
+        private ISavedrecipeRepo _savedRecipeRepo;
 
-        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo)
+        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo, ISavedrecipeRepo savedRepo)
         {
             _recipeRepo = ctx;
             _user = user;
             _savedRepo = savedrecipe;
             _mealRepo = mealRepo;
             _restrictionRepo = resRepo;
+            _savedRecipeRepo = savedRepo;
         }
 
         public async Task<IActionResult> Index() =>
@@ -74,10 +76,37 @@ namespace MealFridge.Controllers
             return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> RecipeDetails(Query query)
+        //[HttpPost]
+        //public async Task<IActionResult> RecipeDetails(Query query)
+        //{
+        //    return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
+        //}
+
+        public async Task<IActionResult> SavedRecipe(int id, string other)
         {
-            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
+            var userId = _user.GetUserId(User);
+            var favRecipe = await _recipeRepo.FindByIdAsync(id);
+            var recipe = new Savedrecipe
+            {
+                Recipe = favRecipe,
+                AccountId = userId.ToString(),
+            };
+            if(other == "Shelved")
+            {
+                recipe.Favorited = false;
+                recipe.Shelved = true;
+            }
+            if (other == "Favorite")
+            {
+                recipe.Favorited = true;
+                recipe.Shelved = false;
+            }
+            if (!_savedRecipeRepo.GetFavoritedRecipe(userId).Contains(recipe))
+            {
+                await _savedRecipeRepo.AddOrUpdateAsync(recipe);
+            }
+            return StatusCode(200);
         }
-    }
+
+    } 
 }

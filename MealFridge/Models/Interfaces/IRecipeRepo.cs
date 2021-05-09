@@ -11,5 +11,7 @@ namespace MealFridge.Models.Interfaces
         public List<Recipe> GetRandomSix();
 
         public Task SaveListOfRecipes(List<Recipe> recipes);
+
+        public IQueryable<Recipe> GetRecipesByName(string name);
     }
 }

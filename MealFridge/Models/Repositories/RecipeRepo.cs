@@ -55,5 +55,12 @@ namespace MealFridge.Models.Repositories
                     }
                 }
         }
+
+        public IQueryable<Recipe> GetRecipesByName(string name)
+        {
+
+            var temp = _dbSet.Where(t => t.Title.Contains(name));
+            return temp;
+        }
     }
 }
