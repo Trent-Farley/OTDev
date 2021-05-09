@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -61,6 +62,7 @@ namespace MealFridge.Tests.Utils
                     MealType = titles[i],
                     RecipeId = i,
                     AccountId = "1",
+                    Day = DateTime.Now + TimeSpan.FromDays(i),
                     Recipe = recipes[i]
                 });
             }
@@ -119,10 +121,10 @@ namespace MealFridge.Tests.Utils
         {
             var mealRepo = new Mock<IMealRepo>();
             mealRepo.Setup(m => m.GetAll()).Returns(CreateMeals(count).AsQueryable());
-            mealRepo.Setup(m => m.GetMeals(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<int>())).Returns(CreateMeals(count));
-            mealRepo.Setup(m => m.GetMeals(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>())).Returns(CreateMeals(count));
-            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
-            mealRepo.Setup(m => m.GetMeal(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
+            mealRepo.Setup(m => m.GetMeals(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(CreateMeals(count));
+            mealRepo.Setup(m => m.GetMeals(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(CreateMeals(count));
+            mealRepo.Setup(m => m.GetMeal(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>())).Returns(CreateMeals(count)[0]);
+            mealRepo.Setup(m => m.GetMeal(It.IsAny<DateTime>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
 
             return mealRepo;
         }

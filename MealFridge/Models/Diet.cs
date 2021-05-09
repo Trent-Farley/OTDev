@@ -19,5 +19,6 @@ namespace MealFridge.Models
         public bool? Paleo { get; set; }
         public bool? Primal { get; set; }
         public bool? Whole30 { get; set; }
+        public bool? Metric { get; set; }
     }
 }

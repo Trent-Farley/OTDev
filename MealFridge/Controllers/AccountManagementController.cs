@@ -32,7 +32,7 @@ namespace MealFridge.Controllers
             return View();
         }
 
-        public async Task<IActionResult> UpdateDiet(bool whole30, bool dairyFree, bool glutenFree, bool keto, bool vegen, bool vegetarian, bool lactoVeg, bool ovoVeg, bool paleo, bool pescetarian, bool primal)
+        public async Task<IActionResult> UpdateDiet(bool whole30, bool dairyFree, bool glutenFree, bool keto, bool vegen, bool vegetarian, bool lactoVeg, bool ovoVeg, bool paleo, bool pescetarian, bool primal, bool metric)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -50,7 +50,8 @@ namespace MealFridge.Controllers
                     OvoVeg = ovoVeg,
                     Paleo = paleo,
                     Pescetarian = pescetarian,
-                    Primal = primal
+                    Primal = primal,
+                    Metric = metric
                 };
                 await _dietContext.AddOrUpdateAsync(diet);
                 return await Task.FromResult(RedirectToAction("DietaryRestrictions"));
@@ -84,7 +85,7 @@ namespace MealFridge.Controllers
                     restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
                 }
                 dietRestr.userRestrictions = userRestrictions;
-                dietRestr.Diet = _dietContext.Diet(_dietContext.GetAll(), userId);
+                dietRestr.Diet = await _dietContext.FindByIdAsync(userId);
                 if (dietRestr.Diet == null)
                 {
                     dietRestr.Diet = new Diet()
@@ -99,7 +100,8 @@ namespace MealFridge.Controllers
                         Primal = false,
                         Vegen = false,
                         Vegetarian = false,
-                        Whole30 = false
+                        Whole30 = false,
+                        Metric = false
                     };
                 }
                 return await Task.FromResult(View("DietaryRestrictions", dietRestr));

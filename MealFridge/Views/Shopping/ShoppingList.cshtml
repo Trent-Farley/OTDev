@@ -29,7 +29,7 @@
                                     onclick="updateQuant('@i.Ingred.Id', -1)">
                                 <i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-light disabled">@i.Quantity</button>
+                            <button type="button" class="btn btn-light disabled">@(Math.Round(i.Quantity.GetValueOrDefault(), 2) + " " + i.UnitType)</button>
                             <button type="button" title="Add one" class="btn btn-outline-success"
                                     onclick="updateQuant('@i.Ingred.Id', 1)">
                                 <i class="fa fa-plus"></i>
@@ -40,7 +40,7 @@
                                     onclick="updateNeeded('@i.Ingred.Id', -1)">
                                 <i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-light disabled">@i.NeededAmount</button>
+                            <button type="button" class="btn btn-light disabled">@(Math.Round(i.NeededAmount.GetValueOrDefault(), 2) + " " + i.UnitType)</button>
                             <button type="button" title="Add one" class="btn btn-outline-success"
                                     onclick="updateNeeded('@i.Ingred.Id', 1)">
                                 <i class="fa fa-plus"></i>
