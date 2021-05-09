@@ -30,8 +30,29 @@ namespace MealFridge.Controllers
             _savedRecipeRepo = savedRepo;
         }
 
-        public async Task<IActionResult> Index() =>
-            await Task.FromResult(View());
+        public async Task<IActionResult> Index()
+        {
+            var userId = _user.GetUserId(User);
+            var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
+            var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
+            var cDay = DateTime.Now;
+            cDay = cDay.Date + TimeSpan.FromHours(8);
+            var breakfast = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
+            cDay = cDay.Date + TimeSpan.FromHours(12);
+            var Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
+            cDay = cDay.Date + TimeSpan.FromHours(17);
+            var dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
+            if (breakfast.Count() < 1 || Lunch.Count() < 1 || dinner.Count() < 1)
+                return await Task.FromResult(View("Index", null));
+
+            var meals = new Meals
+            {
+                Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
+                Lunch = Lunch.OrderBy(d => d.Day).ToList(),
+                Dinner = dinner.OrderBy(d => d.Day).ToList(),
+            };
+            return await Task.FromResult(View("Index", meals));
+        }
 
         [HttpPost]
         public async Task<IActionResult> MealPlan(int days)
@@ -39,24 +60,21 @@ namespace MealFridge.Controllers
             var userId = _user.GetUserId(User);
             var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
             var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
-            Console.WriteLine(_mealRepo.GetMeal("Breakfast", userId, banned, dislikes));
+            var cDay = DateTime.Now;
+            cDay = cDay.Date + TimeSpan.FromHours(8);
+            var breakfast = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true);
+            cDay = cDay.Date + TimeSpan.FromHours(12);
+            var Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true);
+            cDay = cDay.Date + TimeSpan.FromHours(17);
+            var dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true);
+            if (breakfast.Count < days || Lunch.Count < days || dinner.Count < days)
+                return await Task.FromResult(PartialView("MealPlan", null));
+
             var meals = new Meals
             {
-                Breakfast = Meal.CreateMealsFromRecipes(_recipeRepo.GetAll()
-                    .Where(r => r.Breakfast == true)
-                    .OrderBy(r => Guid.NewGuid())
-                    .Take(days)
-                    .ToList()),
-                Lunch = Meal.CreateMealsFromRecipes(_recipeRepo.GetAll()
-                   .Where(r => r.Lunch == true)
-                   .OrderBy(r => Guid.NewGuid())
-                   .Take(days)
-                   .ToList()),
-                Dinner = Meal.CreateMealsFromRecipes(_recipeRepo.GetAll()
-                   .Where(r => r.Dinner == true)
-                   .OrderBy(r => Guid.NewGuid())
-                   .Take(days)
-                   .ToList()),
+                Breakfast = breakfast,
+                Lunch = Lunch,
+                Dinner = dinner,
                 Days = DatesGenerator.GetDays(days)
             };
             return await Task.FromResult(PartialView("MealPlan", meals));
@@ -73,7 +91,12 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> RecipeDetails(Query query)
         {
-            return await Task.FromResult(RedirectToAction("RecipeDetails", "Search", new { query.QueryValue }));
+            if (!int.TryParse(query.QueryValue, out var id))
+                return await Task.FromResult(StatusCode(400));
+            var meal = _mealRepo.GetAll()
+                .Where(rt => rt.RecipeId == id)
+                .FirstOrDefault();
+            return await Task.FromResult(PartialView("MealModal", meal));
         }
 
         //[HttpPost]

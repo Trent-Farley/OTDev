@@ -1,6 +1,7 @@
 CREATE TABLE [FRIDGE] (
   [account_id] NVARCHAR(255),
   [ingred_id] int,
+  [unit_type] NVARCHAR(255),
   [quantity] float,
   [shopping] bit,
   [needed_amount] float,
@@ -19,7 +20,8 @@ CREATE TABLE [DIET] (
   [pescetarian] bit,
   [paleo] bit,
   [primal] bit,
-  [whole30] bit
+  [whole30] bit,
+  [metric] bit
 )
 
 CREATE TABLE [INGREDIENTS] (
@@ -122,9 +124,10 @@ CREATE TABLE [SAVEDRECIPES] (
 
 CREATE TABLE [MEAL] (
   [account_id] NVARCHAR(255),
+  [day] datetime,
   [recipe_id] int,
-  [type] nvarchar(255),
-  PRIMARY KEY ([account_id], [recipe_id])
+  [MealType] nvarchar(255),
+  PRIMARY KEY ([account_id], [day])
 )
 
 ALTER TABLE [FRIDGE] ADD CONSTRAINT [Fridge_FK_Ingred] FOREIGN KEY ([ingred_id]) REFERENCES [INGREDIENTS] ([id])

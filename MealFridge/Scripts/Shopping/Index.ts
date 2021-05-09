@@ -1,6 +1,16 @@
 ﻿document.getElementById('print-list-button').addEventListener('click', e => {
     window.print();
 })
+document.getElementById('measure-swap').addEventListener('click', e => {
+    $.ajax({
+        url: "/Shopping/Swap",
+        method: "POST",
+        success: (data) => {
+            $("#innerShopping").empty();
+            $("#innerShopping").html(data);
+        }
+    })
+})
 
 function updateNeeded(id: string, amount: string): void {
     $.ajax({

@@ -10,9 +10,9 @@ namespace MealFridge.Models.Repositories
     {
         public DietRepo(MealFridgeDbContext ctx) : base(ctx) { }
 
-        public Diet Diet(IQueryable<Diet> diets ,string userId)
+        public Task<Diet> FindByIdAsync(string userId)
         {
-            return diets.Where(d => d.AccountId == userId).FirstOrDefault();
+            return Task.FromResult(_dbSet.Where(d => d.AccountId == userId).FirstOrDefault());
         }
     }
 }

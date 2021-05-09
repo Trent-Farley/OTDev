@@ -107,26 +107,26 @@ namespace MealFridge.Controllers
             var recipeIngreds = recipeRepo.GetIngredients(recipeId);
             foreach (var r in recipeIngreds)
             {
-                if (await fridgeRepo.ExistsAsync(userId, r.IngredId))
-                {
-                    var item = await fridgeRepo.FindByIdAsync(userId, r.IngredId);
-                    item.NeededAmount += r.Amount;
-                    if (item.NeededAmount > item.Quantity)
-                        item.Shopping = true;
-                }
-                else
-                {
-                    await fridgeRepo.AddFridgeAsync(new Models.Fridge
-                    {
-                        AccountId = userId,
-                        IngredId = r.IngredId,
-                        Quantity = 0,
-                        NeededAmount = r.Amount,
-                        Shopping = true
-                    });
-                }
+                await fridgeRepo.AddRecipeIngred(userId, r);
             }
             return await Task.FromResult(StatusCode(201));
+        }
+        [HttpPost]
+        public async Task<IActionResult> Swap()
+        {
+            //Get userid
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //Interact with repo
+            await fridgeRepo.Swap(userId);
+            //Get updated inventory
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
+            //Return the updated inventory
+            return PartialView("ShoppingList", userInventory);
+            
         }
     }
 }
