@@ -79,7 +79,7 @@ namespace MealFridge.Tests.Home
         }
 
         [Test]
-        public async Task TestIndexWithZero_Should_InvokeSpnFunction()
+        public async Task TestIndexWithZero_Should_InvokeSpnFunction() //Broken on purpose
         {
             //Arrange
             var recipeRepo = MockObjects.CreateMockRecipeRepo(0);
