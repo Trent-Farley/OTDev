@@ -7,6 +7,6 @@ namespace MealFridge.Models.Interfaces
 {
     public interface IDietRepo : IRepository<Diet>
     {
-        Diet Diet(IQueryable<Diet> diets, string userId);
+        Task<Diet> FindByIdAsync(string userId);
     }
 }

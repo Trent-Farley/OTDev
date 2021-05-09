@@ -33,7 +33,7 @@ namespace MealFridge.Utils
             public bool checkInput(string val)
             {
                 bool check = false;
-                if(inputs.Any(i => i == val))
+                if(inputs.Any(i => i == val.ToLower()))
                     check = true;
                 return check;
             }
@@ -111,7 +111,7 @@ namespace MealFridge.Utils
                     result = volumeMetric.First(c => c.checkInput(toType)).ConvertFromDef(temp);
                 else if (volumeUs.Any(c => c.checkInput(toType)))
                 {
-                    temp *= 4.167;
+                    temp *= 4.226752837730374; 
                     result = volumeUs.First(c => c.checkInput(toType)).ConvertFromDef(temp);
                 }
                 else
@@ -126,7 +126,7 @@ namespace MealFridge.Utils
                     result = volumeUs.First(c => c.checkInput(toType)).ConvertFromDef(temp);
                 else if (volumeMetric.Any(c => c.checkInput(toType)))
                 {
-                    temp /= 4.22675;
+                    temp /= 4.226752837730374;
                     result = volumeMetric.First(c => c.checkInput(toType)).ConvertFromDef(temp);
                 }
                 else
@@ -143,28 +143,28 @@ namespace MealFridge.Utils
 
         public static bool isVolume(string type)
         {
-            if (volumeUs.Any(c => type.Contains(c.Type)) || volumeMetric.Any(c => type.Contains(c.Type)))
+            if (volumeUs.Any(c => c.checkInput(type)) || volumeMetric.Any(c => c.checkInput(type)))
                 return true;
             else 
                 return false;
         }
         public static bool isMass(string type)
         {
-            if (massUs.Any(c => type.Contains(c.Type)) || massMetric.Any(c => type.Contains(c.Type)))
+            if (massUs.Any(c => c.checkInput(type)) || massMetric.Any(c => c.checkInput(type)))
                 return true;
             else
                 return false;
         }
         public static bool isMetric(string type)
         {
-            if (massMetric.Any(c => type.Contains(c.Type)) || volumeMetric.Any(c => type.Contains(c.Type)))
+            if (massMetric.Any(c => c.checkInput(type)) || volumeMetric.Any(c => c.checkInput(type)))
                 return true;
             else
                 return false;
         }
         public static bool isUs(string type)
         {
-            if (volumeUs.Any(c => type.Contains(c.Type)) || massUs.Any(c => type.Contains(c.Type)))
+            if (volumeUs.Any(c => c.checkInput(type)) || massUs.Any(c => c.checkInput(type)))
                 return true;
             else
                 return false;
@@ -207,26 +207,51 @@ namespace MealFridge.Utils
                 }
                 else
                 {
-                    var quart = Convert(amount, fromType, "quart");
-                    if (quart > 1 && quart < 4)
-                    {
-                        unit += "quart";
-                        val = quart;
-                    }
-                    else if (quart > 4)
+                    var cup = Convert(amount, fromType, "cup");
+                    if (cup > 16)
                     {
                         unit += "gallon";
-                        val = quart/4;
+                        val = cup/16;
                     }
-                    else if (quart > .5)
+                    else if (cup > 4) 
+                    {
+                        unit += "quart";
+                        val = cup / 4;
+                    }
+                    else if (cup > 2)
                     {
                         unit += "pint";
-                        val = quart * 2;
+                        val = cup / 2;
                     }
-                    else if (quart > .25)
+                    else if (cup < 1 / 1536.0)
+                    {
+                        unit += "smidge";
+                        val = cup / (1 / 1536.0);
+                    }
+                    else if (cup < 1 / 768.0)
+                    {
+                        unit += "pinch";
+                        val = cup / (1 / 768.0);
+                    }
+                    else if (cup < 1 / 384.0)
+                    {
+                        unit += "dash";
+                        val = cup / (1 / 384.0);
+                    }
+                    else if (cup < 1 / 48.0)
+                    {
+                        unit += "teaspoon";
+                        val = cup / (1 / 48.0);
+                    }
+                    else if (cup < 1 / 16.0)
+                    {
+                        unit += "tablespoon";
+                        val = cup / (1 / 16.0);
+                    }
+                    else
                     {
                         unit += "cup";
-                        val = quart * 4;
+                        val = cup;
                     }
                 }
             }
@@ -235,7 +260,7 @@ namespace MealFridge.Utils
                 unit += fromType;
                 val = amount;
             }
-            return new KeyValuePair<string, double>(unit, amount);
+            return new KeyValuePair<string, double>(unit, val);
         }
     }
 }

@@ -61,7 +61,6 @@ namespace MealFridge.Models.Repositories
                 _dbSet.Add(fridgeIngredient);
             await _context.SaveChangesAsync();
         }
-        //Fix plurals and TryParse Skipping
         public async Task AddRecipeIngred(string userId, Recipeingred r)
         {
             if (await ExistsAsync(userId, r.IngredId))
@@ -93,7 +92,6 @@ namespace MealFridge.Models.Repositories
                     UnitType = r.ServingUnit,
                     Shopping = true
                 };
-                //broken
                 bool check = false;
                 var test = _context.Set<Diet>().Where(d => d.AccountId == userId).FirstOrDefault();
                 if (test.Metric != null)
@@ -135,6 +133,54 @@ namespace MealFridge.Models.Repositories
                 }
                 await AddFridgeAsync(item);
             }
+        }
+
+        public async Task Swap(string userId)
+        {
+            var fridge = FindByAccount(userId);
+            foreach (var i in fridge)
+            {
+                if (UnitConverter.isUs(i.UnitType))
+                {
+                    if (UnitConverter.isMass(i.UnitType))
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "gram");
+                        var pair = UnitConverter.RoundedAmount(val, "gram");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                    else
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "milliliter");
+                        var pair = UnitConverter.RoundedAmount(val, "milliliter");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                }
+                else if (UnitConverter.isMetric(i.UnitType))
+                {
+                    if (UnitConverter.isMass(i.UnitType))
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "pound");
+                        var pair = UnitConverter.RoundedAmount(val, "pound");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                    else
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "cup");
+                        var pair = UnitConverter.RoundedAmount(val, "cup");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                }
+                await AddFridgeAsync(i);
+            }
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -85,7 +85,7 @@ namespace MealFridge.Controllers
                     restriction.Ingred = await _ingredientContext.FindByIdAsync(restriction.IngredId);
                 }
                 dietRestr.userRestrictions = userRestrictions;
-                dietRestr.Diet = _dietContext.Diet(_dietContext.GetAll(), userId);
+                dietRestr.Diet = await _dietContext.FindByIdAsync(userId);
                 if (dietRestr.Diet == null)
                 {
                     dietRestr.Diet = new Diet()

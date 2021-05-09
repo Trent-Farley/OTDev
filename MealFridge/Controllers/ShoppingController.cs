@@ -111,5 +111,22 @@ namespace MealFridge.Controllers
             }
             return await Task.FromResult(StatusCode(201));
         }
+        [HttpPost]
+        public async Task<IActionResult> Swap()
+        {
+            //Get userid
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //Interact with repo
+            await fridgeRepo.Swap(userId);
+            //Get updated inventory
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
+            //Return the updated inventory
+            return PartialView("ShoppingList", userInventory);
+            
+        }
     }
 }
