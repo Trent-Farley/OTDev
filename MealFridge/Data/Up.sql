@@ -1,6 +1,7 @@
 CREATE TABLE [FRIDGE] (
   [account_id] NVARCHAR(255),
   [ingred_id] int,
+  [unit_type] NVARCHAR(255),
   [quantity] float,
   [shopping] bit,
   [needed_amount] float,
@@ -19,7 +20,8 @@ CREATE TABLE [DIET] (
   [pescetarian] bit,
   [paleo] bit,
   [primal] bit,
-  [whole30] bit
+  [whole30] bit,
+  [metric] bit
 )
 
 CREATE TABLE [INGREDIENTS] (

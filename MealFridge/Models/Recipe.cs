@@ -51,7 +51,6 @@ namespace MealFridge.Models
         public bool? Paleo { get; set; }
         public bool? Primal { get; set; }
         public bool? Whole30 { get; set; }
-
         public virtual ICollection<Meal> Meals { get; set; }
         public virtual ICollection<Recipeingred> Recipeingreds { get; set; }
         public virtual ICollection<Savedrecipe> Savedrecipes { get; set; }

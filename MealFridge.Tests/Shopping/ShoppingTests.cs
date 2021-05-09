@@ -1,6 +1,7 @@
 ﻿using MealFridge.Models;
 using MealFridge.Models.Interfaces;
 using MealFridge.Models.Repositories;
+using MealFridge.Utils;
 using MealFridge.Tests.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -38,7 +39,8 @@ namespace MealFridge.Tests.Shopping
                     IngredId = 1,
                     Quantity = 1,
                     NeededAmount = 0,
-                    Shopping = false
+                    Shopping = false,
+                    UnitType = "teaspoon"
                 },
                 new Fridge
                 {
@@ -46,7 +48,8 @@ namespace MealFridge.Tests.Shopping
                     IngredId = 2,
                     Quantity = 0,
                     NeededAmount = 1,
-                    Shopping = true
+                    Shopping = true,
+                    UnitType= "pound"
                 },
                 new Fridge
                 {
@@ -54,7 +57,8 @@ namespace MealFridge.Tests.Shopping
                     IngredId = 3,
                     Quantity = 0,
                     NeededAmount = 1,
-                    Shopping = true
+                    Shopping = true,
+                    UnitType = "gallon"
                 }
             };
 
@@ -197,6 +201,81 @@ namespace MealFridge.Tests.Shopping
             //Assert
             Assert.IsTrue(fridgeRepo.GetAll().Contains(item));
             Assert.IsFalse((await fridgeRepo.FindByIdAsync("1", 1)).Shopping);
+        }
+
+        [Test]
+        public async Task ShoppingList_UnitConverterUsLiquid()
+        {
+            IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
+            var addItem = new Recipeingred
+            {
+                IngredId = 1,
+                RecipeId = 1,
+                Amount = 1,
+                ServingUnit = "cups"
+            };
+            //Act
+            await fridgeRepo.AddRecipeIngred("1", addItem);
+            //Assert
+            var item = await fridgeRepo.FindByIdAsync("1", 1);
+            Assert.AreEqual(item.UnitType, "teaspoon");
+            Assert.AreEqual(item.NeededAmount, 48);
+        }
+        [Test]
+        public async Task ShoppingList_UnitConverterMetricToUsLiquid()
+        {
+            IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
+            var addItem = new Recipeingred
+            {
+                IngredId = 1,
+                RecipeId = 1,
+                Amount = 1,
+                ServingUnit = "liter"
+            };
+            //Act
+            await fridgeRepo.AddRecipeIngred("1", addItem);
+            //Assert
+            var item = await fridgeRepo.FindByIdAsync("1", 1);
+            Assert.AreEqual(item.UnitType, "teaspoon");
+            Assert.IsTrue(item.NeededAmount > 200);
+            Assert.IsTrue(item.NeededAmount < 203);
+        }
+        [Test]
+        public async Task ShoppingList_UnitConverterUsMass()
+        {
+            IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
+            var addItem = new Recipeingred
+            {
+                IngredId = 2,
+                RecipeId = 1,
+                Amount = 8,
+                ServingUnit = "ounce"
+            };
+            //Act
+            await fridgeRepo.AddRecipeIngred("1", addItem);
+            //Assert
+            var item = await fridgeRepo.FindByIdAsync("1", 2);
+            Assert.AreEqual(item.UnitType, "pound");
+            Assert.AreEqual(item.NeededAmount, 1.5);
+        }
+        [Test]
+        public async Task ShoppingList_UnitConverterMetricToUsMass()
+        {
+            IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
+            var addItem = new Recipeingred
+            {
+                IngredId = 2,
+                RecipeId = 1,
+                Amount = 500,
+                ServingUnit = "gram"
+            };
+            //Act
+            await fridgeRepo.AddRecipeIngred("1", addItem);
+            //Assert
+            var item = await fridgeRepo.FindByIdAsync("1", 2);
+            Assert.AreEqual(item.UnitType, "pound");
+            Assert.IsTrue(item.NeededAmount > 2.1);
+            Assert.IsTrue(item.NeededAmount < 2.3);
         }
     }
 }

@@ -27,7 +27,7 @@
                             <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId" onclick="updateInventory('@i.Ingred.Id', -1)">
                                 <i class="fa fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-light disabled">@i.Quantity</button>
+                            <button type="button" class="btn btn-light disabled">@(i.Quantity + " " + i.UnitType)</button>
                             <button type="button" title="Add one" class="btn btn-outline-success"
                                     onclick="updateInventory('@i.Ingred.Id', 1)">
                                 <i class="fa fa-plus"></i>

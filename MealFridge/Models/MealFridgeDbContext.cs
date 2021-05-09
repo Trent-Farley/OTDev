@@ -70,6 +70,8 @@ namespace MealFridge.Models
                 entity.Property(e => e.Vegetarian).HasColumnName("vegetarian");
 
                 entity.Property(e => e.Whole30).HasColumnName("whole30");
+
+                entity.Property(e => e.Metric).HasColumnName("metric");
             });
 
             modelBuilder.Entity<Fridge>(entity =>
@@ -82,6 +84,10 @@ namespace MealFridge.Models
                 entity.Property(e => e.AccountId)
                     .HasMaxLength(255)
                     .HasColumnName("account_id");
+
+                entity.Property(e => e.UnitType)
+                    .HasMaxLength(255)
+                    .HasColumnName("unit_type");
 
                 entity.Property(e => e.IngredId).HasColumnName("ingred_id");
 
@@ -109,6 +115,7 @@ namespace MealFridge.Models
                 entity.Property(e => e.Aisle)
                     .HasMaxLength(255)
                     .HasColumnName("aisle");
+
 
                 entity.Property(e => e.Calories).HasColumnName("calories");
 
