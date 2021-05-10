@@ -7,16 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
-    <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <CustomAdditionalCompileInputs Remove="Business\Features\Example\Calculator.feature.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Fridge\" />
-    <Folder Include="Search\" />
+    <UpToDateCheckBuild Remove="Business\Features\Example\Calculator.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
+    <PackageReference Include="Moq" Version="4.16.1" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="SpecFlow" Version="3.7.38" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.7.38" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Unit\Fridge\" />
   </ItemGroup>
 
   <ItemGroup>
