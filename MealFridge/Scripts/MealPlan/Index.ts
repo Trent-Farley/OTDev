@@ -36,7 +36,7 @@ function swapOut(id: string): void {
 
 function genSLfromMP(): void {
     let temp = $('h4');
-    let recipes:string[] = [];
+    let recipes: string[] = [];
     for (let i = 0; i < temp.length; i++) {
         recipes.push(temp[i].id.substring(6));
     }
@@ -61,32 +61,33 @@ function genSLfromMP(): void {
 
         }
     });
-function getMealDetails(recipeId) {
-    $.ajax({
-        url: "/MealPlan/MealDetails",
-        method: "POST",
-        data: {
-            QueryValue: recipeId
-        },
-        success: (data) => {
-            $("#modal-container").empty();
-            $("#modal-container").html(data);
-            $('#meal-modal').modal("show");
-        },
-        error: (err) => { console.log(err); }
-    });
 }
-function regenerate(mealDay, currentId) {
-    $.ajax({
-        url: "/MealPlan/RegenerateMeal",
-        method: "POST",
-        data: {
-            mealDay: mealDay
-        },
-        success: (data) => {
-            console.log(currentId);
-            $("#" + currentId).html(data);
-        },
-        error: (err) => { console.log(err); }
-    });
-}
+    function getMealDetails(recipeId) {
+        $.ajax({
+            url: "/MealPlan/MealDetails",
+            method: "POST",
+            data: {
+                QueryValue: recipeId
+            },
+            success: (data) => {
+                $("#modal-container").empty();
+                $("#modal-container").html(data);
+                $('#meal-modal').modal("show");
+            },
+            error: (err) => { console.log(err); }
+        });
+    }
+    function regenerate(mealDay, currentId) {
+        $.ajax({
+            url: "/MealPlan/RegenerateMeal",
+            method: "POST",
+            data: {
+                mealDay: mealDay
+            },
+            success: (data) => {
+                console.log(currentId);
+                $("#" + currentId).html(data);
+            },
+            error: (err) => { console.log(err); }
+        });
+    }

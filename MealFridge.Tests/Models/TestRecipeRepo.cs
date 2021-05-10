@@ -18,32 +18,47 @@ namespace MealFridge.Tests.Models
 {
     class TestRecipeRepo
     {
+        private Mock<DbSet<Recipe>> _mockRecipeDbSet;
+        private List<Recipe> _recipes;
+        Mock<MealFridgeDbContext> _mockContext;
+        IRecipeRepo _recipeRepo;
         [SetUp]
         public void SetUp()
         {
-
-        }
-        [Test]
-        public void GetRecipesByName()
-        {
-            List<Recipe> recipes = new List<Recipe>
+            _recipes = new List<Recipe>
             {
                 new Recipe{Title="apple pie", Id = 0, Meals = null, Savedrecipes = null, Recipeingreds = null},
                 new Recipe{Title="ice cream", Id = 1},
                 new Recipe{Title="Chocolate Cake", Id = 2},
                 new Recipe{Title="peanut butter & jelly", Id = 3}
             };
-            var mockRecipeDbSet = MockObjects.GetMockDbSet(recipes.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
-            mockContext.Setup(ctx => ctx.Set<Recipe>()).Returns(mockRecipeDbSet.Object);
-            IRecipeRepo recipeRepo = new RecipeRepo(mockContext.Object);
+            _mockRecipeDbSet = MockObjects.GetMockDbSet(_recipes.AsQueryable());
+            _mockContext = new Mock<MealFridgeDbContext>();
+            _mockContext.Setup(ctx => ctx.Set<Recipe>()).Returns(_mockRecipeDbSet.Object);
+            _recipeRepo = new RecipeRepo(_mockContext.Object);
 
+        }
+        [Test]
+        public void GetRecipesByNameTest_CheckForRecipesIntheDatabase_ShouldReturnRecipes()
+        {
+            SetUp();
             List<string> recipesToTest = new List<string>();
             recipesToTest.Add("apple pie");
             recipesToTest.Add("ice cream");
-
-            var temp = recipeRepo.GetRecipesbyNames(recipesToTest, recipeRepo.GetAll());
+            var temp = _recipeRepo.GetRecipesbyNames(recipesToTest, _recipeRepo.GetAll());
             Assert.That(temp[0].Title == recipesToTest[0]);
+            Assert.That(temp[1].Title == recipesToTest[1]);
+        }
+
+        [Test]
+        public void GetRecipesByNameTest_CheckForRecipesNOTInTheDB_ShouldReturnEmptyList()
+        {
+            SetUp();
+            List<string> recipesToTest = new List<string>();
+            recipesToTest.Add("Sandwich");
+            recipesToTest.Add("Good Salad");
+            var temp = _recipeRepo.GetRecipesbyNames(recipesToTest, _recipeRepo.GetAll());
+            Assert.That(temp.Count < 1);
         }
     }
 }
