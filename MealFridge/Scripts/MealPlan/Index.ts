@@ -92,7 +92,7 @@ function shelf(id: string): void {
     });
 
 
-    function swapOut(id: string): void {
+    function SwapOut(id: string): void {
         let modalTitle = $("#mtitle-" + id).text();
         let title = $("#title-" + RECIPEID);
         title.text(modalTitle);
@@ -100,7 +100,7 @@ function shelf(id: string): void {
         $("#recipe-modal").modal('toggle');
     }
 
-    function getMealDetails(recipeId) {
+    function GetMealDetails(recipeId) {
         $.ajax({
             url: "/MealPlan/MealDetails",
             method: "POST",

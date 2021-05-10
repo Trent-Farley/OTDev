@@ -20,7 +20,7 @@
             <button class="btn btn-outline-danger " id="btn-@Model.Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Recipe.Id')">
                 <i class="fas fa-save"></i> Swap
             </button>
-            <button class="btn btn-outline-secondary " type="button" onclick="getMealDetails('@Model.Recipe.Id')">
+            <button class="btn btn-outline-secondary " type="button" onclick="GetMealDetails('@Model.Recipe.Id')">
                 <i class="fa fa-info">  </i>
             </button>
             <button class="btn btn-outline-primary" type="button" onclick="regenerate('@Model.Day.ToString()', '@Model.Day.DayOfWeek-@Model.MealType')">
