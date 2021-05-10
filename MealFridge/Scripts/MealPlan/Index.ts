@@ -99,6 +99,7 @@ function shelf(id: string): void {
         $("#img-" + RECIPEID).attr("src", $("#mimg-" + id).attr("src"));
         $("#recipe-modal").modal('toggle');
     }
+
     function getMealDetails(recipeId) {
         $.ajax({
             url: "/MealPlan/MealDetails",

@@ -30,18 +30,18 @@
                             <div class="card-group">
                                 @if (Model.GetIngredients.Count > 0)
                                 {
-                                    <div class="card">
-                                        <p> Common Ingredients:</p>
-                                        @foreach (var i in Model.GetIngredients)
-                                        {
-                                            <ul class="fa-ul">
-                                                <li>
-                                                    <button class="btn-outline-success fa fa-utensil-spoon" onclick="commonInventory(@i.Id, -1)"> Cooked </button>
-                                                    @i.Name
-                                                </li>
-                                            </ul>
-                                        }
-                                    </div>
+                                <div class="card">
+                                    <p> Common Ingredients:</p>
+                                    @foreach (var i in Model.GetIngredients)
+                                    {
+                                        <ul class="fa-ul">
+                                            <li>
+                                                @i.Name
+                                            </li>
+                                        </ul>
+                                    }
+                                    <button class="btn-outline-success fa fa-utensil-spoon" onclick="commonInventory('@Model.StringIt()', -1)"> Cooked </button>
+                                </div>
                                 }
                                
                             </div>

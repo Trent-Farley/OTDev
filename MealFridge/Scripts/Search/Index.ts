@@ -149,12 +149,13 @@ function addShelf(id: string): void {
     });
 }
 
-function commonInventory(id: string, amount: string): void {
+function commonInventory(list: string, amount: string): void {
+    console.log(list)
     $.ajax({
         url: "/Search/EmptyInventory",
         method: "POST",
         data: {
-            id: id,
+            list: list,
             amount: parseInt(amount)
         },
         //success: (data) => {
@@ -163,7 +164,7 @@ function commonInventory(id: string, amount: string): void {
         //},
         error: (err) => { console.log(err); }
     })
-    alert("Your ingredient has been cooked! This will now longer appear in your inventory");
+    alert("Your ingredient has been cooked!");
 }
 const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
 inputSearch.addEventListener("keydown", (e) => {

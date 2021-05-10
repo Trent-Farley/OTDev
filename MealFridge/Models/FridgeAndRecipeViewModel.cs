@@ -11,5 +11,15 @@ namespace MealFridge.Models
         public List<Fridge> GetFridge { get; set; }
         public Recipe GetRecipes { get; set; }
         public List<Ingredient> GetIngredients { get; set; }
+
+        public string StringIt()
+        {
+            var s = "";
+            foreach(var i in GetIngredients)
+            {
+                s += i.Id + " ";
+            }
+            return s;
+        }
     }
 }

@@ -246,29 +246,41 @@ namespace MealFridge.Controllers
             return commonIngredients;
         }
 
-        public async Task<IActionResult> EmptyInventory(int id, int amount)
+        public async Task<IActionResult> EmptyInventory(string list, int amount)
         {
-            //Find the current fridge and user
             var userId = _user.GetUserId(User);
-            var fridgeIngredient = _db.Fridges.Where(i => i.AccountId == userId).FirstOrDefault() ?? new Fridge()
+           
+            foreach(var i in list.Split(' '))
             {
-                AccountId = userId,
-                IngredId = id,
-                NeededAmount = 0,
-                Quantity = 0,
-                Shopping = false
-            };  
-            fridgeIngredient.Ingred = _db.Fridges.Where(i => i.IngredId == id).FirstOrDefault().Ingred;
-            fridgeIngredient.Quantity += amount;
-            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
-                _db.Fridges.Remove(fridgeIngredient);
-                _db.SaveChanges();
-            if (fridgeIngredient.Quantity < fridgeIngredient.NeededAmount)
-                fridgeIngredient.Shopping = true;
-            else
-                fridgeIngredient.Shopping = false;
-            _db.Fridges.Add(fridgeIngredient);
-            return PartialView("RecipeModal");
+                if (i == "")
+                {
+                    return await Task.FromResult(StatusCode(200));
+                }
+                var id = int.Parse(i);              
+                var fridgeIngredient = _db.Fridges.Where(i => i.AccountId == userId).FirstOrDefault() ?? new Fridge()
+                {
+                    AccountId = userId,
+                    IngredId = id,
+                    NeededAmount = 0,
+                    Quantity = 0,
+                    Shopping = false
+                };
+                fridgeIngredient.Ingred = _db.Fridges.Where(i => i.IngredId == id).FirstOrDefault().Ingred;
+                fridgeIngredient.Quantity += amount;
+                if (fridgeIngredient.Quantity <= 0)
+                {
+                    _db.Fridges.Remove(fridgeIngredient);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    _db.Fridges.Update(fridgeIngredient);
+                    _db.SaveChanges();
+                }
+            }
+            
+            //_db.Fridges.Add(fridgeIngredient);
+            return await Task.FromResult(StatusCode(200));
         }
     }
 }
