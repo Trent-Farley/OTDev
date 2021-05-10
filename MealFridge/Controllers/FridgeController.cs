@@ -24,7 +24,6 @@ namespace MealFridge.Controllers
         private readonly IIngredientRepo ingredientRepo;
         private readonly IRestrictionRepo restrictionRepo;
         private readonly IRecipeRepo _recipeRepo;
-        private readonly ISavedrecipeRepo _savedRecipeRepo;
         private readonly ISpnApiService _spnApi;
         private readonly UserManager<IdentityUser> _user;
         private readonly string _ingredientSearchEndpoint = "https://api.spoonacular.com/food/ingredients/search";

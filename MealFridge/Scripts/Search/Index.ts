@@ -149,6 +149,22 @@ function addShelf(id: string): void {
     });
 }
 
+function commonInventory(id: string, amount: string): void {
+    $.ajax({
+        url: "/Search/EmptyInventory",
+        method: "POST",
+        data: {
+            id: id,
+            amount: parseInt(amount)
+        },
+        //success: (data) => {
+        //    $("#fridge-table-main").empty();
+        //    $("#fridge-table-main").html(data);
+        //},
+        error: (err) => { console.log(err); }
+    })
+    alert("Your ingredient has been cooked! This will now longer appear in your inventory");
+}
 const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
 inputSearch.addEventListener("keydown", (e) => {
     //checks whether the pressed key is "Enter"

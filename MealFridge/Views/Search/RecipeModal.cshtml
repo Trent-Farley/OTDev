@@ -28,23 +28,16 @@
                                 }
                             </ul>
                             <div class="card-group">
-                                <div class="card">
-                                    <p> Your Current Inventory: </p>
-                                    @foreach (var i in Model.GetFridge)
-                                    {
-                                        <ul> @i.Ingred.Name </ul>
-                                    }
-                                </div>
-
                                 @if (Model.GetIngredients.Count > 0)
                                 {
                                     <div class="card">
-                                        <p> This recipe and your inventory share these ingredients:</p>
+                                        <p> Common Ingredients:</p>
                                         @foreach (var i in Model.GetIngredients)
                                         {
                                             <ul class="fa-ul">
                                                 <li>
-                                                    @i.Name 
+                                                    <button class="btn-outline-success fa fa-utensil-spoon" onclick="commonInventory(@i.Id, -1)"> Cooked </button>
+                                                    @i.Name
                                                 </li>
                                             </ul>
                                         }

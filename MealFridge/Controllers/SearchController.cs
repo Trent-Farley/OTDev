@@ -246,10 +246,29 @@ namespace MealFridge.Controllers
             return commonIngredients;
         }
 
-        //public void EmptyInventory(List<Ingredient> other)
-        //{
-        //    var temp = _db.Fridges.Where(i => i.IngredId == other);
-        //    _db.Fridges.FirstOrDefault(temp).Quantity--;
-        //}
+        public async Task<IActionResult> EmptyInventory(int id, int amount)
+        {
+            //Find the current fridge and user
+            var userId = _user.GetUserId(User);
+            var fridgeIngredient = _db.Fridges.Where(i => i.AccountId == userId).FirstOrDefault() ?? new Fridge()
+            {
+                AccountId = userId,
+                IngredId = id,
+                NeededAmount = 0,
+                Quantity = 0,
+                Shopping = false
+            };  
+            fridgeIngredient.Ingred = _db.Fridges.Where(i => i.IngredId == id).FirstOrDefault().Ingred;
+            fridgeIngredient.Quantity += amount;
+            if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
+                _db.Fridges.Remove(fridgeIngredient);
+                _db.SaveChanges();
+            if (fridgeIngredient.Quantity < fridgeIngredient.NeededAmount)
+                fridgeIngredient.Shopping = true;
+            else
+                fridgeIngredient.Shopping = false;
+            _db.Fridges.Add(fridgeIngredient);
+            return PartialView("RecipeModal");
+        }
     }
 }
