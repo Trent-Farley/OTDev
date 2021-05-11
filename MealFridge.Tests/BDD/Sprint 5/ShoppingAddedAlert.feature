@@ -1,5 +1,6 @@
 ﻿Feature: Added to Shopping list Alert
 	Notification that can take you to your shopping list.
+	https://www.pivotaltracker.com/story/show/177917759
 
 Scenario: A user adds a recipe to their shopping list
 	Given A user wants to add a recipe to their shopping list

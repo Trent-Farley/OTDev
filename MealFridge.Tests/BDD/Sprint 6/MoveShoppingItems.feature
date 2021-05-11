@@ -1,5 +1,6 @@
 ﻿Feature: Move Shopping items
 	After completing a shopping trip, add the items to your inventory with a single button.
+	https://www.pivotaltracker.com/story/show/177689561
 
 Scenario: Add items to you inventory
 	Given there are items to add

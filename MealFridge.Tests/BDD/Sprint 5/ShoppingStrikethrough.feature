@@ -1,5 +1,6 @@
 ﻿Feature: Shopping Strikethrough
 	Strikethrough items as you shop.
+	https://www.pivotaltracker.com/story/show/177917933
 
 Scenario: Strike an item
 	Given the checkbox is clicked
