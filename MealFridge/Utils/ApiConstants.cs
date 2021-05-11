@@ -23,6 +23,6 @@ namespace MealFridge.Utils
         public static string SearchByIngredientEndpoint { get; } = "https://api.spoonacular.com/recipes/findByIngredients";
         public static string SearchByRecipeEndpoint { get; } = "https://api.spoonacular.com/recipes/{id}/information";
         public static string RandomRecipesUrl { get; } = BaseUrl + "recipes/random";
-        public static string RandomRecipeAmount { get; } = "&number=1";
+        public static string RandomRecipeAmount { get; } = "&number=100";
     }
 }
