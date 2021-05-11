@@ -13,6 +13,8 @@ using Moq;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MealFridge.Models.Repositories;
+using System.Threading.Tasks;
+using MealFridge.Tests.Utils;
 
 namespace MealFridge.Tests.Models
 {
@@ -29,7 +31,7 @@ namespace MealFridge.Tests.Models
         }
 
         [Test]
-        public void Diet_LookupDietForUserWhoDoesNotExist()
+        public async Task Diet_LookupDietForUserWhoDoesNotExist()
         {
             List<Diet> diets = new List<Diet>
             {
@@ -39,16 +41,24 @@ namespace MealFridge.Tests.Models
                 new Diet {AccountId = "d", DairyFree=false, GlutenFree= false, Keto=false, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=false }
             };
 
-            Mock<DbSet<Diet>> mockDietDbSet = GetMockDbSet(diets.AsQueryable());
+            Mock<DbSet<Diet>> mockDietDbSet = MockObjects.GetMockDbSet<Diet>(diets.AsQueryable());
+            mockDietDbSet.Setup(d => d.FindAsync(It.IsAny<string>())).ReturnsAsync((string x) =>
+            {
+                string id = (string)x;
+                return diets.Where(f => (f.AccountId == id)).FirstOrDefault();
+            });
             Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
             mockContext.Setup(ctx => ctx.Diets).Returns(mockDietDbSet.Object);
+            mockContext.Setup(ctx => ctx.Set<Diet>()).Returns(mockDietDbSet.Object);
             IDietRepo dietRepo = new DietRepo(mockContext.Object);
 
-            Assert.That(dietRepo.FindByIdAsync("Chris"), Is.Not.Null);
+            var chrisAccount = await dietRepo.FindByIdAsync("Chris");
+
+            Assert.That(chrisAccount, Is.Null);
         }
 
         [Test]
-        public void Diet_LookupDietForUserWhoDoesExist()
+        public async Task Diet_LookupDietForUserWhoDoesExist()
         {
             List<Diet> diets = new List<Diet>
             {
@@ -57,14 +67,23 @@ namespace MealFridge.Tests.Models
                 new Diet {AccountId = "c", DairyFree=false, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=true },
                 new Diet {AccountId = "d", DairyFree=false, GlutenFree= false, Keto=false, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=false }
             };
-
-            Mock<DbSet<Diet>> mockDietDbSet = GetMockDbSet(diets.AsQueryable());
+            
+            Mock<DbSet<Diet>> mockDietDbSet = MockObjects.GetMockDbSet<Diet>(diets.AsQueryable());
+            mockDietDbSet.Setup(d => d.FindAsync(It.IsAny<string>())).ReturnsAsync((string x) =>
+            {
+                string id = (string)x;
+                return diets.Where(f => (f.AccountId == id)).FirstOrDefault();
+            });
             Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
             mockContext.Setup(ctx => ctx.Diets).Returns(mockDietDbSet.Object);
+            mockContext.Setup(ctx => ctx.Set<Diet>()).Returns(mockDietDbSet.Object);
             IDietRepo dietRepo = new DietRepo(mockContext.Object);
 
-            //Assert.That( await dietRepo.FindByIdAsync("a").AccountId == "a");     TODO: FIX these tests
-            //Assert.That(dietRepo.Diet(diets.AsQueryable(), "b").AccountId == "b" && dietRepo.Diet(diets.AsQueryable(), "b").DairyFree == true);
+            var a = await dietRepo.FindByIdAsync("a");
+            var b = await dietRepo.FindByIdAsync("b");
+
+            Assert.That(a.AccountId == "a" && a.GlutenFree == true);    
+            Assert.That(b.AccountId == "b" && b.DairyFree == true);
         }
     }
 }
