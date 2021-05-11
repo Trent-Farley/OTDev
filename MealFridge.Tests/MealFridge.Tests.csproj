@@ -14,6 +14,8 @@
     <SpecFlowFeatureFiles Remove="BDD\Sprint 5\FavoriteMealPlanRecipe.feature" />
     <SpecFlowFeatureFiles Remove="BDD\Sprint 5\RemoveCommonIngredients.feature" />
     <SpecFlowFeatureFiles Remove="BDD\Sprint 5\ShelfMealPlanRecipe.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 6\DietPreferencesMealPlan.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 6\DietPreferencesRecipeSearch.feature" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +26,8 @@
     <Compile Include="BDD\Sprint 5\FavoriteMealPlanRecipe.feature" />
     <Compile Include="BDD\Sprint 5\RemoveCommonIngredients.feature" />
     <Compile Include="BDD\Sprint 5\ShelfMealPlanRecipe.feature" />
+    <Compile Include="BDD\Sprint 6\DietPreferencesMealPlan.feature" />
+    <Compile Include="BDD\Sprint 6\DietPreferencesRecipeSearch.feature" />
   </ItemGroup>
 
   <ItemGroup>
