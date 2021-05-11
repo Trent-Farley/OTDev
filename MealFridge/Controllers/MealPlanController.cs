@@ -20,14 +20,13 @@ namespace MealFridge.Controllers
         private IRestrictionRepo _restrictionRepo;
         private ISavedrecipeRepo _savedrecipeRepo;
 
-        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo, ISavedrecipeRepo savedrecipeRepo)
+        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo)
         {
             _recipeRepo = ctx;
             _user = user;
             _savedRepo = savedrecipe;
             _mealRepo = mealRepo;
             _restrictionRepo = resRepo;
-            _savedrecipeRepo = savedrecipeRepo;
         }
 
         public async Task<IActionResult> Index()
@@ -75,7 +74,6 @@ namespace MealFridge.Controllers
                 Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
                 Lunch = Lunch.OrderBy(d => d.Day).ToList(),
                 Dinner = dinner.OrderBy(d => d.Day).ToList(),
-
             };
             return await Task.FromResult(PartialView("MealPlan", meals));
         }

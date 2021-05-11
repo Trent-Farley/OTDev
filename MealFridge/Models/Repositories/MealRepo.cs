@@ -65,7 +65,7 @@ namespace MealFridge.Models.Repositories
              .ThenInclude(i => i.Ingred)
              .OrderBy(g => Guid.NewGuid())
              .ToList();
-            recipes = recipes.Where(r => r.GetRecipeType() == type).ToList();
+            //recipes = recipes.Where(r => r.GetRecipeType() == type).ToList();
             var meals = FindRelevantMeals(recipes, userId, mealTime);
             foreach (var meal in meals)
                 if (!currentMeals.Contains(meal))
@@ -117,8 +117,8 @@ namespace MealFridge.Models.Repositories
                 };
                 if (!_dbSet.Any(m => m.AccountId == userId && m.Day == temp.Day))
                 {
-                    //_dbSet.Add(temp);
-                    //_context.SaveChanges();
+                    _dbSet.Add(temp);
+                    _context.SaveChanges();
                 }
                 newMeals.Add(temp);
             }

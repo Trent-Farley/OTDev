@@ -28,7 +28,21 @@ namespace MealFridge.Tests.Utils
             return mockSet;
         }
 
-        private static Recipe[] CreateRecipes(int count)
+        public static List<Recipeingred> CreateRecipeIngreds(int count, int recipeId)
+        {
+            var res = new List<Recipeingred>();
+            for (var i = 0; i < count; ++i)
+            {
+                res.Add(new Recipeingred
+                {
+                    IngredId = recipeId,
+                    RecipeId = i
+                });
+            }
+            return res;
+        }
+
+        public static Recipe[] CreateRecipes(int count)
         {
             var recipes = new Recipe[count];
             var titles = Enumerable.Range(0, count)
@@ -42,7 +56,8 @@ namespace MealFridge.Tests.Utils
                     Id = i,
                     Dinner = true,
                     Lunch = true,
-                    Breakfast = true
+                    Breakfast = true,
+                    Recipeingreds = CreateRecipeIngreds(5, i)
                 };
             }
             return recipes;
@@ -125,7 +140,7 @@ namespace MealFridge.Tests.Utils
             mealRepo.Setup(m => m.GetMeals(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(CreateMeals(count));
             mealRepo.Setup(m => m.GetMeal(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>())).Returns(CreateMeals(count)[0]);
             mealRepo.Setup(m => m.GetMeal(It.IsAny<DateTime>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);
-
+            mealRepo.Setup(m => m.GetAllMealsWithRecipes()).Returns(CreateMeals(count));
             return mealRepo;
         }
 

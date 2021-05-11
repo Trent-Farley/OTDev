@@ -58,7 +58,7 @@ html {
 
 body {
     /* Margin bottom by footer height */
-    margin-bottom: 60px;
+    margin-bottom: 20px;
     background-color: #F0F8FF;
 }
 
@@ -73,24 +73,30 @@ body {
 .jumbotron {
     background-color: #FFF;
 }
+
 .biographyCard {
     margin-left: 5%;
     margin-top: 1.5%;
-    margin-right:5%;
+    margin-right: 5%;
     background-color: #e8eded;
 }
-.biographyCard label{
-    margin-left: 3%;
-}
-.biographyCard a{
-    margin-left:1.2%;
-}
-.biographyCard img{
-    margin-left:1.2%;
-}
-.biographyCard h3{
-    margin-left:.5%;
-}
+
+    .biographyCard label {
+        margin-left: 3%;
+    }
+
+    .biographyCard a {
+        margin-left: 1.2%;
+    }
+
+    .biographyCard img {
+        margin-left: 1.2%;
+    }
+
+    .biographyCard h3 {
+        margin-left: .5%;
+    }
+
 #cnhIngredList {
     list-style: none;
     background-color: #FFF;
@@ -152,6 +158,7 @@ body {
 *:focus {
     outline: hidden;
 }
+
 #getStartedButton {
     color: #5cb85c;
 }
