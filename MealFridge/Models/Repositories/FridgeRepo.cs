@@ -94,8 +94,8 @@ namespace MealFridge.Models.Repositories
                 };
                 bool check = false;
                 var test = _context.Set<Diet>().Where(d => d.AccountId == userId).FirstOrDefault();
-                if (test.Metric != null)
-                    if (test.Metric.Value)
+                if (test != null)
+                    if (test.Metric != null && test.Metric.Value)
                         check = true;
                 if (check && UnitConverter.isUs(r.ServingUnit))
                 {
