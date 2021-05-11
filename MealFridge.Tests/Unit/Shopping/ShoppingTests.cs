@@ -211,15 +211,15 @@ namespace MealFridge.Tests.Shopping
             {
                 IngredId = 1,
                 RecipeId = 1,
-                Amount = 1,
-                ServingUnit = "cups"
+                Amount = 16,
+                ServingUnit = "tablespoon"
             };
             //Act
             await fridgeRepo.AddRecipeIngred("1", addItem);
             //Assert
             var item = await fridgeRepo.FindByIdAsync("1", 1);
-            Assert.AreEqual(item.UnitType, "teaspoon");
-            Assert.AreEqual(item.NeededAmount, 48);
+            Assert.AreEqual(item.UnitType, "cup");
+            Assert.AreEqual(item.NeededAmount, 1);
         }
         [Test]
         public async Task ShoppingList_UnitConverterMetricToUsLiquid()
@@ -236,9 +236,8 @@ namespace MealFridge.Tests.Shopping
             await fridgeRepo.AddRecipeIngred("1", addItem);
             //Assert
             var item = await fridgeRepo.FindByIdAsync("1", 1);
-            Assert.AreEqual(item.UnitType, "teaspoon");
-            Assert.IsTrue(item.NeededAmount > 200);
-            Assert.IsTrue(item.NeededAmount < 203);
+            Assert.AreEqual(item.UnitType, "quart");
+            Assert.That(item.NeededAmount, Is.EqualTo(1).Within(.1));
         }
         [Test]
         public async Task ShoppingList_UnitConverterUsMass()
