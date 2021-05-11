@@ -11,6 +11,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\FavoriteMealPlanRecipe.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\RemoveCommonIngredients.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\ShelfMealPlanRecipe.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 6\DietPreferencesMealPlan.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 6\DietPreferencesRecipeSearch.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
     <UpToDateCheckBuild Remove="Business\Features\Example\Calculator.feature.cs" />
   </ItemGroup>
 
