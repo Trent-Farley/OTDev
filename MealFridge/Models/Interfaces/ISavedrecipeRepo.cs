@@ -10,6 +10,7 @@ namespace MealFridge.Models.Interfaces
         List<Savedrecipe> FindAccount(string userId, IQueryable<Savedrecipe> other);
         void RemoveSavedRecipe(Savedrecipe recipe);
         Savedrecipe Savedrecipe(string userId, int recipeid);
+        Savedrecipe CreateNewSavedRecipe(Recipe recipe, string userId);
         List<Savedrecipe> GetShelvedRecipe(string userId, IQueryable<Savedrecipe> other);
         List<Savedrecipe> GetFavoritedRecipe(string userId);
         List<Savedrecipe> GetFavoritedRecipeWithIQueryable(string userId, IQueryable<Savedrecipe> other);

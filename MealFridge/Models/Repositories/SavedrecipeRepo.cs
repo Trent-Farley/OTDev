@@ -59,6 +59,11 @@ namespace MealFridge.Models.Repositories
         {
             return other.Where(a => a.AccountId == userId).Include(r => r.Recipe).ToList();
         }
+
+        public Savedrecipe CreateNewSavedRecipe(Recipe recipe, string userId)
+        {
+            return new Savedrecipe { AccountId = userId, Recipe = recipe, RecipeId = recipe.Id, Favorited = null, Shelved = null };
+        }
        
     }
 }

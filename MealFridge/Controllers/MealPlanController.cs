@@ -18,16 +18,15 @@ namespace MealFridge.Controllers
         private ISavedrecipeRepo _savedRepo;
         private IMealRepo _mealRepo;
         private IRestrictionRepo _restrictionRepo;
-        private ISavedrecipeRepo _savedrecipeRepo;
+        
 
-        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo, ISavedrecipeRepo savedrecipeRepo)
+        public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo)
         {
             _recipeRepo = ctx;
             _user = user;
             _savedRepo = savedrecipe;
             _mealRepo = mealRepo;
             _restrictionRepo = resRepo;
-            _savedrecipeRepo = savedrecipeRepo;
         }
 
         public async Task<IActionResult> Index()
@@ -131,9 +130,9 @@ namespace MealFridge.Controllers
                 recipe.Favorited = true;
                 recipe.Shelved = false;
             }
-            if (!_savedrecipeRepo.GetFavoritedRecipe(userId).Contains(recipe))
+            if (!_savedRepo.GetFavoritedRecipe(userId).Contains(recipe))
             {
-                await _savedrecipeRepo.AddOrUpdateAsync(recipe);
+                await _savedRepo.AddOrUpdateAsync(recipe);
             }
             return StatusCode(200);
         }
