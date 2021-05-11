@@ -12,6 +12,15 @@ document.getElementById('measure-swap').addEventListener('click', e => {
     })
 })
 
+function checkedEvent(id: string): void {
+    let eleRow = "#" + id + "row";
+    let row = $(eleRow);
+    if (row.hasClass("strikeout"))
+        row.removeClass("strikeout");
+    else
+        row.addClass("strikeout");
+}
+
 function updateNeeded(id: string, amount: string): void {
     $.ajax({
         url: "/Shopping/AddItem",
