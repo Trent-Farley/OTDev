@@ -29,6 +29,7 @@ namespace MealFridge.Tests.MealPlan
             var userManagerFake = MockObjects.CreateUserMock();
             var mealRepoFake = MockObjects.CreateMealRepo(10);
             var resRepoFake = MockObjects.CreateRestrictionsRepo(10);
+            var savedRepoFake = MockObjects.CreateSavedRecipes(10);
             var controller = new MealPlanController(recipeRepoFake.Object, userManagerFake.Object, savedRecipesFake.Object, mealRepoFake.Object, resRepoFake.Object)
             {
                 ControllerContext = new ControllerContext

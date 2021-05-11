@@ -18,6 +18,7 @@ namespace MealFridge.Controllers
         private ISavedrecipeRepo _savedRepo;
         private IMealRepo _mealRepo;
         private IRestrictionRepo _restrictionRepo;
+        
 
         public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo)
         {
@@ -70,10 +71,10 @@ namespace MealFridge.Controllers
 
             var meals = new Meals
             {
-                Breakfast = breakfast,
-                Lunch = Lunch,
-                Dinner = dinner,
-                Days = DatesGenerator.GetDays(days)
+                Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
+                Lunch = Lunch.OrderBy(d => d.Day).ToList(),
+                Dinner = dinner.OrderBy(d => d.Day).ToList(),
+
             };
             return await Task.FromResult(PartialView("MealPlan", meals));
         }
@@ -108,6 +109,32 @@ namespace MealFridge.Controllers
             var newMeal = _mealRepo.GetMeal(cday, userId, banned, dislikes);
 
             return await Task.FromResult(PartialView("MealCard", newMeal));
+        }
+
+        public async Task<IActionResult> SavedRecipe(int id, string other)
+        {
+            var userId = _user.GetUserId(User);
+            var favRecipe = await _recipeRepo.FindByIdAsync(id);
+            var recipe = new Savedrecipe
+            {
+                Recipe = favRecipe,
+                AccountId = userId.ToString(),
+            };
+            if (other == "Shelved")
+            {
+                recipe.Favorited = false;
+                recipe.Shelved = true;
+            }
+            if (other == "Favorite")
+            {
+                recipe.Favorited = true;
+                recipe.Shelved = false;
+            }
+            if (!_savedRepo.GetFavoritedRecipe(userId).Contains(recipe))
+            {
+                await _savedRepo.AddOrUpdateAsync(recipe);
+            }
+            return StatusCode(200);
         }
     }
 }

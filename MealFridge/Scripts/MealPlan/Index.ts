@@ -58,36 +58,101 @@ function genSLfromMP(): void {
                 </div>
             `);
             $("#genSLButton").hide();
-
         }
     });
 }
-    function getMealDetails(recipeId) {
-        $.ajax({
-            url: "/MealPlan/MealDetails",
-            method: "POST",
-            data: {
-                QueryValue: recipeId
-            },
-            success: (data) => {
-                $("#modal-container").empty();
-                $("#modal-container").html(data);
-                $('#meal-modal').modal("show");
-            },
-            error: (err) => { console.log(err); }
-        });
-    }
-    function regenerate(mealDay, currentId) {
-        $.ajax({
-            url: "/MealPlan/RegenerateMeal",
-            method: "POST",
-            data: {
-                mealDay: mealDay
-            },
-            success: (data) => {
-                console.log(currentId);
-                $("#" + currentId).html(data);
-            },
-            error: (err) => { console.log(err); }
-        });
-    }
+function getMealDetails(recipeId) {
+    $.ajax({
+        url: "/MealPlan/MealDetails",
+        method: "POST",
+        data: {
+            QueryValue: recipeId
+        },
+        success: (data) => {
+            $("#modal-container").empty();
+            $("#modal-container").html(data);
+            $('#meal-modal').modal("show");
+        },
+        error: (err) => { console.log(err); }
+    });
+}
+function regenerate(mealDay, currentId) {
+    $.ajax({
+        url: "/MealPlan/RegenerateMeal",
+        method: "POST",
+        data: {
+            mealDay: mealDay
+        },
+        success: (data) => {
+            console.log(currentId);
+            $("#" + currentId).html(data);
+        },
+        error: (err) => { console.log(err); }
+    });
+}
+
+function favorite(id: string): void {
+    $.ajax({
+        url: "/MealPlan/SavedRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Favorite"
+        },
+        success: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Added</strong> Recipe has been added to your favorites
+                </div>
+            `);
+        },
+        error: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Error</strong> Something went wrong, maybe this recipe has been favorited already?
+                </div>
+            `);
+        }
+    });
+}
+
+function shelf(id: string): void {
+    $.ajax({
+        url: "/MealPlan/SavedRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id, 10),
+            other: "Shelved"
+        },
+        success: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Removed</strong> Recipe will not be shown again
+                </div>
+            `);
+        },
+        error: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Error</strong> Something went wrong, maybe this recipe has been removed already?
+                </div>
+            `);
+        }
+    });
+}

@@ -49,12 +49,17 @@ else
                 </div>
             </div>
             <div class="col-sm-3 bg-primary" id="@Model.Breakfast[i].Day.DayOfWeek-@Model.Breakfast[i].MealType">
-                <partial name="MealCard" model="@Model.Breakfast[i]" />
+                <div class="container">
+                    <partial name="MealCard" model="@Model.Breakfast[i]" />
+                </div>
+                
             </div>
             <div class="col-sm-3 bg-success" id="@Model.Lunch[i].Day.DayOfWeek-@Model.Lunch[i].MealType">
+                
                 <partial name="MealCard" model="@Model.Lunch[i]" />
             </div>
             <div class="col-sm-3 bg-warning" id="@Model.Dinner[i].Day.DayOfWeek-@Model.Dinner[i].MealType">
+                
                 <partial name="MealCard" model="@Model.Dinner[i]" />
             </div>
         </div>

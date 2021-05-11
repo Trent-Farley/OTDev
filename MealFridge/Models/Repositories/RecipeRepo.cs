@@ -22,6 +22,7 @@ namespace MealFridge.Models.Repositories
                 .Take(6)
                 .ToList();
         }
+
         public virtual List<Recipe> GetRecipesbyNames(List<string> recipes, IQueryable<Recipe> recipeRepo)
         {
             List<Recipe> foundRecipes = new List<Recipe>();
@@ -35,6 +36,7 @@ namespace MealFridge.Models.Repositories
             }
             return foundRecipes;
         }
+
         public virtual async Task SaveListOfRecipes(List<Recipe> recipes)
         {
             foreach (var recipe in recipes)
@@ -66,6 +68,12 @@ namespace MealFridge.Models.Repositories
                         }
                     }
                 }
+        }
+
+        public IQueryable<Recipe> GetRecipesByName(string name)
+        {
+            var temp = _dbSet.Where(t => t.Title.Contains(name));
+            return temp;
         }
     }
 }

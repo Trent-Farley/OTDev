@@ -11,7 +11,7 @@
             </div>
             <div class="modal-body">
                 <div id="modal-main" class="card">
-                    <div id="modal-spinner"></div>
+                    <div id="modal-spinner" class="modal-dialog modal-lg"></div>
                     @if (Model != null)
                     {
                         <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + Model.Recipe.Image)" alt="Recipe details image" />
@@ -48,6 +48,12 @@
             </div>
             <div class="modal-footer" id="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-outline-success " type="button" onclick="favorite('@Model.Recipe.Id')">
+                    <i class="fa fa-heart">  </i> Save it
+                </button>
+                <button class="btn btn-outline-warning " type="button" onclick="shelf('@Model.Recipe.Id')">
+                    <i class="fa fa-heart-broken">  </i> Shelf it
+                </button>
             </div>
         </div>
     </div>
