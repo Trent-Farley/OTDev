@@ -22,7 +22,7 @@
             <tbody>
                 @foreach (var i in Model.Where(x => x.Shopping == true))
                 {
-                    <tr id="@i.IngredId">
+                    <tr id="@(i.IngredId + "row")">
                         <td class="w-25"> @i.Ingred.Name </td>
                         <td class="w-25">
                             <button type="button" title="Remove one" class="btn btn-outline-danger" id="btn-@i.IngredId"
@@ -46,7 +46,7 @@
                                 <i class="fa fa-plus"></i>
                             </button>
                         </td>
-                        <td class="w-25"> <input class="custom-checkbox bg-success" type="checkbox" /></td>
+                        <td class="w-25"> <input id ="@i.IngredId" class="custom-checkbox bg-success" type="checkbox" onchange="checkedEvent(@i.IngredId)" /></td>
                     </tr>
                 }
             </tbody>

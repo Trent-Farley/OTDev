@@ -11,7 +11,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\FavoriteMealPlanRecipe.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\RemoveCommonIngredients.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\ShelfMealPlanRecipe.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
     <UpToDateCheckBuild Remove="Business\Features\Example\Calculator.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="BDD\Sprint 5\FavoriteMealPlanRecipe.feature" />
+    <Compile Include="BDD\Sprint 5\RemoveCommonIngredients.feature" />
+    <Compile Include="BDD\Sprint 5\ShelfMealPlanRecipe.feature" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,5 +42,24 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MealFridge\MealFridge.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 5\ShoppingAddedAlert.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 5\ShoppingStrikethrough.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 6\SearchByCuisine.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 6\MoveShoppingItems.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 </Project>

@@ -18,7 +18,7 @@ namespace MealFridge.Controllers
         private ISavedrecipeRepo _savedRepo;
         private IMealRepo _mealRepo;
         private IRestrictionRepo _restrictionRepo;
-        private ISavedrecipeRepo _savedrecipeRepo;
+        
 
         public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo)
         {
@@ -129,9 +129,9 @@ namespace MealFridge.Controllers
                 recipe.Favorited = true;
                 recipe.Shelved = false;
             }
-            if (!_savedrecipeRepo.GetFavoritedRecipe(userId).Contains(recipe))
+            if (!_savedRepo.GetFavoritedRecipe(userId).Contains(recipe))
             {
-                await _savedrecipeRepo.AddOrUpdateAsync(recipe);
+                await _savedRepo.AddOrUpdateAsync(recipe);
             }
             return StatusCode(200);
         }
