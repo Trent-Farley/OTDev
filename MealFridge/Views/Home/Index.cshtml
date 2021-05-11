@@ -2,6 +2,13 @@
 @{
     ViewBag.Title = "Home";
 }
+<style>
+        body {
+            background: url('@("https://spoonacular.com/recipeImages/" + Model[0].Image)') no-repeat center center fixed;
+            background-size: cover;
+        }
+</style>
+
 <div class="container">
     <div id="main" class="card-columns"></div>
     <div class="jumbotron shadow-lg">
