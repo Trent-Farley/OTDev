@@ -344,3 +344,26 @@ input:checked + .slider:before {
 .li, .ul {
     display: inline-block;
 }
+/*https://stackoverflow.com/questions/4619542/linethrough-strikethrough-a-whole-html-table-row*/
+table #shopping-list {
+    border-collapse: collapse;
+    empty-cells: show;
+}
+
+td {
+    position: relative;
+}
+
+tr.strikeout td:before {
+    content: " ";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    border-bottom: 8px solid #111;
+    width: 100%;
+}
+
+tr.strikeout td:after {
+    content: "\00B7";
+    font-size: 1px;
+}
