@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <CustomAdditionalCompileInputs Remove="Business\Features\Example\Calculator.feature.cs" />
+    <CustomAdditionalCompileInputs Remove="BDD\Features\Example\Calculator.feature.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <UpToDateCheckBuild Remove="Business\Features\Example\Calculator.feature.cs" />
+    <UpToDateCheckBuild Remove="BDD\Features\Example\Calculator.feature.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,21 +1,27 @@
 ﻿@model Meal
 
 <div class="card shadow-lg rounded-lg" id="@Model.Day.DayOfWeek-@Model.MealType">
-    <img src="https://spoonacular.com/recipeImages/@Model.Recipe.Image" alt="Image of recipe" id="img-@Model.Recipe.Id" class="card-image" />
+    <div class="card">
+        <img class="card-img-top" src="https://spoonacular.com/recipeImages/@Model.Recipe.Image" alt="Image of recipe" id="img-@Model.Recipe.Id" />
+        @if (Model.Recipe.Dislike)
+        {
+            <div class="card-img-overlay">
+                <h3 class="text-md-right p-1 text-warning bg-dark d-inline shadow-lg">
+                    <i class="fa fa-flag-usa"></i>
+                </h3>
+            </div>
+        }
+    </div>
+
+  
+
     <div class="card-body">
         <h4 class="card-title" id="title-@Model.Recipe.Id">
             @Model.Recipe.Title
         </h4>
-        @if (Model.Recipe.Dislike)
-        {
-            <div class="card-img-overlay">
-                <div class="card-img-overlay">
-                    <h3 class="text-md-right p-1 text-warning bg-dark d-inline shadow-lg">
-                        <i class="fa fa-flag-usa"></i> Possible disliked ingredient
-                    </h3>
-                </div>
-            </div>
-        }
+
+    </div>
+    <div class="card-footer">
         <div class="button-group w-100">
             <button class="btn btn-outline-danger " id="btn-@Model.Recipe.Id" type="button" title="Swap out for a favorited recipe" onclick="getFavorites('@Model.Recipe.Id')">
                 <i class="fas fa-save"></i> Swap
@@ -29,4 +35,5 @@
             </button>
         </div>
     </div>
+
 </div>

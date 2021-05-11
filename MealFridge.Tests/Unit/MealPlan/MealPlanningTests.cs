@@ -118,7 +118,12 @@ namespace MealFridge.Tests.MealPlan
             Assert.That(data.Count(), Is.EqualTo(0));
         }
 
-        //Test as of: 5/10/2021 - Trent Farley
+        /* ----------------------------------------------- */
+        /// <summary>
+        /// Test as of: Sprint 5 - Trent Farley
+        /// </summary>
+        /* ----------------------------------------------- */
+
         // Was not part of a story, but I did add this functionality
         [Test]
         public async Task TestIndex_WithMeals_ShouldReturnMeals()
