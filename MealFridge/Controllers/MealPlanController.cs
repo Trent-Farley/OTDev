@@ -72,10 +72,10 @@ namespace MealFridge.Controllers
 
             var meals = new Meals
             {
-                Breakfast = breakfast,
-                Lunch = Lunch,
-                Dinner = dinner,
-                Days = DatesGenerator.GetDays(days)
+                Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
+                Lunch = Lunch.OrderBy(d => d.Day).ToList(),
+                Dinner = dinner.OrderBy(d => d.Day).ToList(),
+
             };
             return await Task.FromResult(PartialView("MealPlan", meals));
         }
