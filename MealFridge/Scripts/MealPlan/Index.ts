@@ -100,7 +100,7 @@ function shelf(id: string): void {
         $("#recipe-modal").modal('toggle');
     }
 
-    function GetMealDetails(recipeId) {
+    function getMealDetails(recipeId) {
         $.ajax({
             url: "/MealPlan/MealDetails",
             method: "POST",

@@ -249,7 +249,6 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> EmptyInventory(string list, int amount)
         {
             var userId = _user.GetUserId(User);
-           
             foreach(var i in list.Split(' '))
             {
                 if (i == "")
@@ -278,8 +277,6 @@ namespace MealFridge.Controllers
                     _db.SaveChanges();
                 }
             }
-            
-            //_db.Fridges.Add(fridgeIngredient);
             return await Task.FromResult(StatusCode(200));
         }
     }
