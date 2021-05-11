@@ -8,7 +8,7 @@ Scenario: A logged in user clicks generate meal plan
 	When a user clicks the generate meal plan button
 	Then a meal plan should generate with a flag warning the user if an ingredient is possibly disliked
 
-Scenario: A logged in user clicks generate meal plan
+Scenario: A logged in user does not click generate meal plan
 	Given a user is logged in and on the meal planning page
 	When a user clicks the generate meal plan button
 	Then a meal plan should generate with meals that do not contain banned ingredients
