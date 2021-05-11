@@ -70,13 +70,13 @@ namespace MealFridge.Controllers
                 .Take(10)
                 .ToList();
             var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
-           
+
             if (possibleRecipes.Count < 10)
-            {               
+            {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
-               foreach(var i in await SearchApiAsync(query))
+                foreach (var i in await SearchApiAsync(query))
                 {
                     possibleRecipes.Add(i);
                 }
@@ -141,7 +141,7 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> RecipeDetails(Query query)
         {
             var userId = _user.GetUserId(User);
-            var fridge = _db.Fridges.Where(i=> i.AccountId == userId).Include(n => n.Ingred).ToList();
+            var fridge = _db.Fridges.Where(i => i.AccountId == userId).Include(n => n.Ingred).ToList();
             if (!int.TryParse(query.QueryValue, out var id))
                 return await Task.FromResult(StatusCode(400));
             var recipe = _db.Recipes
@@ -177,7 +177,7 @@ namespace MealFridge.Controllers
                 }
             }
             var commonIngred = CheckInventory(recipe.Recipeingreds.ToList());
-            var viewModel = new FridgeAndRecipeViewModel() { GetFridge = fridge, GetRecipes = recipe, GetIngredients = commonIngred};
+            var viewModel = new FridgeAndRecipeViewModel() { GetFridge = fridge, GetRecipes = recipe, GetIngredients = commonIngred };
             return await Task.FromResult(PartialView("RecipeModal", viewModel));
         }
 
@@ -226,17 +226,17 @@ namespace MealFridge.Controllers
             return StatusCode(200);
         }
 
-        public  List<Ingredient> CheckInventory(List<Recipeingred> recipes)
+        public List<Ingredient> CheckInventory(List<Recipeingred> recipes)
         {
             var userId = _user.GetUserId(User);
             var fridge = _db.Fridges.Where(i => i.AccountId == userId).Include(n => n.Ingred).ToList();
             var commonIngredients = new List<Ingredient>();
 
-            foreach(var i in fridge)
+            foreach (var i in fridge)
             {
-               foreach(var r in recipes)
+                foreach (var r in recipes)
                 {
-                   if(i.Ingred.Id == r.Ingred.Id || i.Ingred.Name == r.Ingred.Name)
+                    if (i.Ingred.Id == r.Ingred.Id || i.Ingred.Name == r.Ingred.Name)
                     {
                         commonIngredients.Add(r.Ingred);
                     }
@@ -249,14 +249,14 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> EmptyInventory(string list, int amount)
         {
             var userId = _user.GetUserId(User);
-           
-            foreach(var i in list.Split(' '))
+
+            foreach (var i in list.Split(' '))
             {
                 if (i == "")
                 {
                     return await Task.FromResult(StatusCode(200));
                 }
-                var id = int.Parse(i);              
+                var id = int.Parse(i);
                 var fridgeIngredient = _db.Fridges.Where(i => i.AccountId == userId).FirstOrDefault() ?? new Fridge()
                 {
                     AccountId = userId,
@@ -274,11 +274,13 @@ namespace MealFridge.Controllers
                 }
                 else
                 {
-                    _db.Fridges.Update(fridgeIngredient);
+                    var temp = _db.Fridges.First(f => f.AccountId == userId && f.IngredId == fridgeIngredient.IngredId);
+                    temp.Quantity += amount;
+                    _db.Fridges.Update(temp);
                     _db.SaveChanges();
                 }
             }
-            
+
             //_db.Fridges.Add(fridgeIngredient);
             return await Task.FromResult(StatusCode(200));
         }

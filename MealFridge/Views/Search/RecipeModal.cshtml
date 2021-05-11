@@ -10,54 +10,65 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="modal-main" class="card" display="inline-block">
-                    <div id="modal-spinner"></div>
-                    @if (Model != null)
-                    {
-                        <h4 class="card-title"> @Model.GetRecipes.Title </h4>
-                        <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + Model.GetRecipes.Image)" alt="Recipe details image" />
-                        <div class="card-body" >
-                            <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
-                            <p>Calories: @Math.Round(Convert.ToDouble(Model.GetRecipes.Calories), 0)  Fat: @Math.Round(Convert.ToDouble(Model.GetRecipes.TotalFat), 0) Carbs: @Math.Round(Convert.ToDouble(Model.GetRecipes.Carbs), 0) Protein: @Math.Round(Convert.ToDouble(Model.GetRecipes.Protein), 0)</p>
-                            <ul class="list-group">
-                                @foreach (var ingredient in Model.GetRecipes.Recipeingreds)
+                <div class="container-fluid">
+
+                    <div class="row">
+                        <div class="col">
+                            <div id="modal-main" class="card">
+                                <div id="modal-spinner"></div>
+                                @if (Model != null)
                                 {
-                                    <li class="list-group-item-light">
-                                        @ingredient.Ingred.Name:  @ingredient.Amount @ingredient.ServingUnit
-                                    </li>
-                                }
-                            </ul>
-                            <div class="card-group">
-                                @if (Model.GetIngredients.Count > 0)
-                                {
-                                <div class="card">
-                                    <p> Common Ingredients:</p>
-                                    @foreach (var i in Model.GetIngredients)
-                                    {
-                                        <ul class="fa-ul">
-                                            <li>
-                                                @i.Name
-                                            </li>
+                                    <h4 class="card-title text-center"> @Model.GetRecipes.Title </h4>
+                                    <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + Model.GetRecipes.Image)" alt="Recipe details image" />
+                                    <div class="card-body">
+                                        <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
+                                        <p>Calories: @Math.Round(Convert.ToDouble(Model.GetRecipes.Calories), 0)  Fat: @Math.Round(Convert.ToDouble(Model.GetRecipes.TotalFat), 0) Carbs: @Math.Round(Convert.ToDouble(Model.GetRecipes.Carbs), 0) Protein: @Math.Round(Convert.ToDouble(Model.GetRecipes.Protein), 0)</p>
+                                        <ul class="list-group">
+                                            @foreach (var ingredient in Model.GetRecipes.Recipeingreds)
+                                            {
+                                                <li class="list-group-item">
+                                                    @ingredient.Ingred.Name:  @ingredient.Amount @ingredient.ServingUnit
+                                                </li>
+                                            }
                                         </ul>
-                                    }
-                                    <button class="btn-outline-success fa fa-utensil-spoon" onclick="commonInventory('@Model.StringIt()', -1)"> Cooked </button>
-                                </div>
+                                    </div>
+                                    <div class="card-footer">
+
+                                        Please check out the recipe <a href="@Model.GetRecipes.Summery" target="_blank"> here </a> for full instructions
+                                    </div>
                                 }
-                               
+                                @if (Model == null)
+                                {
+                                    <h4 class="card-title"> No details availible for this recipe </h4>
+                                    <div class="card-body">
+                                        <h7 class="card-subtitle">Our sincerest apologies for not having details on this scrumptious recipe! </h7>
+                                    </div>
+                                }
                             </div>
                         </div>
-                        <div class="card-footer">
-                            
-                            Please check out the recipe <a href="@Model.GetRecipes.Summery" target="_blank"> here </a> for full instructions
-                        </div>
-                    }
-                    @if (Model == null)
-                    {
-                        <h4 class="card-title"> No details availible for this recipe </h4>
-                        <div class="card-body">
-                            <h7 class="card-subtitle">Our sincerest apologies for not having details on this scrumptious recipe! </h7>
-                        </div>
-                    }
+                        @if (Model.GetIngredients.Count > 0)
+                        {
+                            <div class="col">
+                                <div class="card">
+
+                                    <div class="card">
+                                        <h4 class="card-title">Common Ingredients:</h4>
+                                        @foreach (var i in Model.GetIngredients)
+                                        {
+                                            <ul class="list-group">
+                                                <li class="list-group-item">
+                                                    @i.Name
+                                                </li>
+                                            </ul>
+                                        }
+                                        <div class="btn-group">
+                                            <button class=" w-100 btn btn-outline-success fa fa-utensil-spoon" onclick="commonInventory('@Model.StringIt()', -1)"> Cooked </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" id="modal-footer">

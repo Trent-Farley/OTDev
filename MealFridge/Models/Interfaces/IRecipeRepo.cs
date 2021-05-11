@@ -12,6 +12,8 @@ namespace MealFridge.Models.Interfaces
 
         public Task SaveListOfRecipes(List<Recipe> recipes);
 
+        public List<Recipe> GetRecipesbyNames(List<string> recipes, IQueryable<Recipe> recipeRepo);
+
         public IQueryable<Recipe> GetRecipesByName(string name);
     }
 }
