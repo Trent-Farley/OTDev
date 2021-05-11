@@ -54,7 +54,7 @@ CREATE TABLE [RESTRICTIONS] (
 
 
 CREATE TABLE [RECIPE] (
- [id] int PRIMARY KEY,
+  [id] int PRIMARY KEY,
   [title] nvarchar(255),
   [image] nvarchar(255),
   [servings] int,

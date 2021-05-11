@@ -24,14 +24,16 @@ namespace MealFridge.Controllers
         private readonly IRestrictionRepo _restrictContext;
         private readonly IRecipeIngredRepo _recipeIngredContext;
         private readonly IFridgeRepo _fridgeContext;
+        private readonly IRecipeRepo _recipeContext;
 
-        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext)
+        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext, IRecipeRepo recipeRepo)
         {
             _db = context;
             _config = config;
             _user = user;
             _spnApi = service;
             _restrictContext = restrictContext;
+            _recipeContext = recipeRepo;
             _recipeIngredContext = recipeIngredContext;
             _fridgeContext = fridgeContext;
         }
@@ -67,14 +69,14 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-           
-           
+            var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
+
             if (possibleRecipes.Count < 10)
-            {               
+            {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
-               foreach(var i in await SearchApiAsync(query))
+                foreach (var i in await SearchApiAsync(query))
                 {
                     possibleRecipes.Add(i);
                 }
@@ -138,6 +140,8 @@ namespace MealFridge.Controllers
 
         public async Task<IActionResult> RecipeDetails(Query query)
         {
+            var userId = _user.GetUserId(User);
+            var fridge = _db.Fridges.Where(i => i.AccountId == userId).Include(n => n.Ingred).ToList();
             if (!int.TryParse(query.QueryValue, out var id))
                 return await Task.FromResult(StatusCode(400));
             var recipe = _db.Recipes
@@ -172,7 +176,9 @@ namespace MealFridge.Controllers
                     }
                 }
             }
-            return await Task.FromResult(PartialView("RecipeModal", recipe));
+            var commonIngred = CheckInventory(recipe.Recipeingreds.ToList());
+            var viewModel = new FridgeAndRecipeViewModel() { GetFridge = fridge, GetRecipes = recipe, GetIngredients = commonIngred };
+            return await Task.FromResult(PartialView("RecipeModal", viewModel));
         }
 
         /// <summary>
@@ -218,6 +224,65 @@ namespace MealFridge.Controllers
             await _db.Savedrecipes.AddAsync(savedRecipe);
             await _db.SaveChangesAsync();
             return StatusCode(200);
+        }
+
+        public List<Ingredient> CheckInventory(List<Recipeingred> recipes)
+        {
+            var userId = _user.GetUserId(User);
+            var fridge = _db.Fridges.Where(i => i.AccountId == userId).Include(n => n.Ingred).ToList();
+            var commonIngredients = new List<Ingredient>();
+
+            foreach (var i in fridge)
+            {
+                foreach (var r in recipes)
+                {
+                    if (i.Ingred.Id == r.Ingred.Id || i.Ingred.Name == r.Ingred.Name)
+                    {
+                        commonIngredients.Add(r.Ingred);
+                    }
+                }
+            }
+
+            return commonIngredients;
+        }
+
+        public async Task<IActionResult> EmptyInventory(string list, int amount)
+        {
+            var userId = _user.GetUserId(User);
+
+            foreach (var i in list.Split(' '))
+            {
+                if (i == "")
+                {
+                    return await Task.FromResult(StatusCode(200));
+                }
+                var id = int.Parse(i);
+                var fridgeIngredient = _db.Fridges.Where(i => i.AccountId == userId).FirstOrDefault() ?? new Fridge()
+                {
+                    AccountId = userId,
+                    IngredId = id,
+                    NeededAmount = 0,
+                    Quantity = 0,
+                    Shopping = false
+                };
+                fridgeIngredient.Ingred = _db.Fridges.Where(i => i.IngredId == id).FirstOrDefault().Ingred;
+                fridgeIngredient.Quantity += amount;
+                if (fridgeIngredient.Quantity <= 0)
+                {
+                    _db.Fridges.Remove(fridgeIngredient);
+                    _db.SaveChanges();
+                }
+                else
+                {
+                    var temp = _db.Fridges.First(f => f.AccountId == userId && f.IngredId == fridgeIngredient.IngredId);
+                    temp.Quantity += amount;
+                    _db.Fridges.Update(temp);
+                    _db.SaveChanges();
+                }
+            }
+
+            //_db.Fridges.Add(fridgeIngredient);
+            return await Task.FromResult(StatusCode(200));
         }
     }
 }
