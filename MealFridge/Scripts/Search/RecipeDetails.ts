@@ -6,18 +6,19 @@
         data: {
             'id': id
         },
-        success: (data) => {
-            alert("Added Ingredients to shopping list!")
+        success: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+                <strong>Added</strong> ingredients to your <a href="/Shopping/">Shopping List!</a>
+            </div>
+        `);
         },
         error: (err) => { console.error(err) }
     })
-
-    //document.getElementById("shoppingListTable").innerHTML += `
-    //${ingreds.map(i => {
-    //    return `<tr> <td> ${i} </td> </tr>`
-    //}).join('')}
-    //`;
-    //$("#shoppingList").collapse("show");
 }
 
 function getDetails(id: string): void {
@@ -31,14 +32,7 @@ function getDetails(id: string): void {
             $("#modal-container").empty();
             $("#modal-container").html(data);
             $('#recipe-modal').modal("show");
-            //$("#hidden-ingredients p").each(function () {
-            //    //Add only one. Logic required to add multiple later. Maybe 
-            //    //turn ingredients into a list of objects with the amount needed
-            //    if (!ingredients.includes($(this).text())) {
-            //        //$(this) refers to the text inside of the p tag. 
-            //        ingredients.push($(this).text())
-        
-            
+
             document.getElementById('button-cart').addEventListener('click', () => {
                 addToShoppingList(id);
             })
@@ -46,5 +40,3 @@ function getDetails(id: string): void {
         error: (err) => { console.log(err); }
     });
 }
-
-

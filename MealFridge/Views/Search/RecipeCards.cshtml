@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<Recipe>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 @* Change Model into IEnumerable<Tuple<Recipe, int>> to fix broken fav count *@
 @if (Model != null)
 {
@@ -40,20 +43,24 @@
             </div>
             <div class="card-footer">
                 <div class="btn-group btn-group-lg w-100">
-                    <button type="button"
-                            id="favButton"
-                            class="btn btn-outline-success"
-                            style="display:inline-block"
-                            onclick="addFavorite('@r.Id')" title="Favorite recipe">
-                        <i class="fa fa-heart"> @r.Savedrecipes.Where(f => f.RecipeId == r.Id && f.Favorited != false).Count()</i>
-                    </button>
 
-                    <button type="button"
-                            class="btn btn-outline-danger"
-                            style="display:inline-block"
-                            onclick="addShelf('@r.Id')" title="Shelf recipe">
-                        <i class="fa fa-stop"></i>
-                    </button>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <button type="button"
+                                id="favButton"
+                                class="btn btn-outline-success"
+                                style="display:inline-block"
+                                onclick="addFavorite('@r.Id')" title="Favorite recipe">
+                            <i class="fa fa-heart"> @r.Savedrecipes.Where(f => f.RecipeId == r.Id && f.Favorited != false).Count()</i>
+                        </button>
+                        <button type="button"
+                                class="btn btn-outline-danger"
+                                style="display:inline-block"
+                                onclick="addShelf('@r.Id')" title="Shelf recipe">
+                            <i class="fa fa-stop"></i>
+                        </button>
+
+                    }
                     <button class="btn btn-outline-primary" onclick="getDetails('@r.Id')" type="button" title="Get information">
                         <i class="fa fa-info"> </i>
                     </button>

@@ -149,6 +149,23 @@ function addShelf(id: string): void {
     });
 }
 
+function commonInventory(list: string, amount: string): void {
+    console.log(list)
+    $.ajax({
+        url: "/Search/EmptyInventory",
+        method: "POST",
+        data: {
+            list: list,
+            amount: parseInt(amount)
+        },
+        //success: (data) => {
+        //    $("#fridge-table-main").empty();
+        //    $("#fridge-table-main").html(data);
+        //},
+        error: (err) => { console.log(err); }
+    })
+    alert("Your ingredient has been cooked!");
+}
 const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
 inputSearch.addEventListener("keydown", (e) => {
     //checks whether the pressed key is "Enter"

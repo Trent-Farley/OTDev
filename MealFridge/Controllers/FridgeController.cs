@@ -23,16 +23,18 @@ namespace MealFridge.Controllers
         private readonly IFridgeRepo fridgeRepo;
         private readonly IIngredientRepo ingredientRepo;
         private readonly IRestrictionRepo restrictionRepo;
+        private readonly IRecipeRepo _recipeRepo;
         private readonly ISpnApiService _spnApi;
         private readonly UserManager<IdentityUser> _user;
         private readonly string _ingredientSearchEndpoint = "https://api.spoonacular.com/food/ingredients/search";
 
-        public FridgeController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRestrictionRepo resRepo, UserManager<IdentityUser> user, ISpnApiService service)
+        public FridgeController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRestrictionRepo resRepo, UserManager<IdentityUser> user, ISpnApiService service, IRecipeRepo recipeRepo, ISavedrecipeRepo savedrecipeRepo)
         {
             _configuration = config;
             fridgeRepo = fridge;
             ingredientRepo = ingRepo;
             restrictionRepo = resRepo;
+            _recipeRepo = recipeRepo;
             _user = user;
             _spnApi = service;
         }

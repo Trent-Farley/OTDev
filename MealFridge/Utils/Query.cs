@@ -38,7 +38,7 @@ namespace MealFridge.Utils
                         break;
 
                     case "Random":
-                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + ApiConstants.RandomRecipeAmount;
+                        u = Url + "?apiKey=" + Credentials + $"&type={QueryValue}&sort=random&addRecipeInformation=true&addRecipeNutrition=true&fillIngredients=true" + ApiConstants.RandomRecipeAmount;
                         break;
 
                     default:

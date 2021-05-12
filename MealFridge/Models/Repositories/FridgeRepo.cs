@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MealFridge.Utils; 
 
 namespace MealFridge.Models.Repositories
 {
@@ -58,6 +59,127 @@ namespace MealFridge.Models.Repositories
                 _dbSet.Update(fridgeIngredient);
             else
                 _dbSet.Add(fridgeIngredient);
+            await _context.SaveChangesAsync();
+        }
+        public async Task AddRecipeIngred(string userId, Recipeingred r)
+        {
+            if (await ExistsAsync(userId, r.IngredId))
+            {
+                var item = await FindByIdAsync(userId, r.IngredId);
+                var tempAmount = UnitConverter.Convert(r.Amount ?? 0.0, r.ServingUnit, item.UnitType);
+                if (double.IsNaN(tempAmount))
+                {
+                    //prompt user for input.
+                }
+                var rounded = UnitConverter.RoundedAmount((double)item.NeededAmount + tempAmount, item.UnitType);
+                if(item.Quantity > 0)
+                {
+                    item.Quantity = UnitConverter.Convert((double)item.Quantity, item.UnitType, rounded.Key); 
+                }
+                item.NeededAmount = rounded.Value;
+                item.UnitType = rounded.Key;
+                if (item.NeededAmount > item.Quantity)
+                    item.Shopping = true;
+            }
+            else
+            {
+                var item = new Models.Fridge
+                {
+                    AccountId = userId,
+                    IngredId = r.IngredId,
+                    Quantity = 0,
+                    NeededAmount = r.Amount,
+                    UnitType = r.ServingUnit,
+                    Shopping = true
+                };
+                bool check = false;
+                var test = _context.Set<Diet>().Where(d => d.AccountId == userId).FirstOrDefault();
+                if (test != null)
+                    if (test.Metric != null && test.Metric.Value)
+                        check = true;
+                if (check && UnitConverter.isUs(r.ServingUnit))
+                {
+                    if (UnitConverter.isMass(r.ServingUnit))
+                    {
+                        var val = UnitConverter.Convert((double)r.Amount, r.ServingUnit, "gram");
+                        var pair = UnitConverter.RoundedAmount(val, "gram");
+                        item.NeededAmount = pair.Value;
+                        item.UnitType = pair.Key;
+                    }
+                    else
+                    {
+                        var val = UnitConverter.Convert((double)r.Amount, r.ServingUnit, "milliliter");
+                        var pair = UnitConverter.RoundedAmount(val, "milliliter");
+                        item.NeededAmount = pair.Value;
+                        item.UnitType = pair.Key;
+                    }
+                }
+                else if (!check && UnitConverter.isMetric(r.ServingUnit))
+                {
+                    if (UnitConverter.isMass(r.ServingUnit))
+                    {
+                        var val = UnitConverter.Convert((double)r.Amount, r.ServingUnit, "pound");
+                        var pair = UnitConverter.RoundedAmount(val, "pound");
+                        item.NeededAmount = pair.Value;
+                        item.UnitType = pair.Key;
+                    }
+                    else
+                    {
+                        var val = UnitConverter.Convert((double)r.Amount, r.ServingUnit, "cup");
+                        var pair = UnitConverter.RoundedAmount(val, "cup");
+                        item.NeededAmount = pair.Value;
+                        item.UnitType = pair.Key;
+                    }
+                }
+                await AddFridgeAsync(item);
+            }
+        }
+
+        public async Task Swap(string userId)
+        {
+            var fridge = FindByAccount(userId);
+            foreach (var i in fridge)
+            {
+                if (UnitConverter.isUs(i.UnitType))
+                {
+                    if (UnitConverter.isMass(i.UnitType))
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "gram");
+                        var pair = UnitConverter.RoundedAmount(val, "gram");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                    else
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "milliliter");
+                        var pair = UnitConverter.RoundedAmount(val, "milliliter");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                }
+                else if (UnitConverter.isMetric(i.UnitType))
+                {
+                    if (UnitConverter.isMass(i.UnitType))
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "pound");
+                        var pair = UnitConverter.RoundedAmount(val, "pound");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                    else
+                    {
+                        var val = UnitConverter.Convert((double)i.NeededAmount, i.UnitType, "cup");
+                        var pair = UnitConverter.RoundedAmount(val, "cup");
+                        i.Quantity = UnitConverter.Convert((double)i.Quantity, i.UnitType, pair.Key);
+                        i.NeededAmount = pair.Value;
+                        i.UnitType = pair.Key;
+                    }
+                }
+                await AddFridgeAsync(i);
+            }
             await _context.SaveChangesAsync();
         }
     }

@@ -17,14 +17,16 @@ namespace MealFridge.Controllers
         private readonly IConfiguration _configuration;
         private readonly IFridgeRepo fridgeRepo;
         private readonly IIngredientRepo ingredientRepo;
-        private readonly IRecipeIngredRepo recipeRepo;
+        private readonly IRecipeIngredRepo recipeIngredRepo;
+        private readonly IRecipeRepo recipeRepo;
         private readonly UserManager<IdentityUser> _user;
 
-        public ShoppingController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRecipeIngredRepo resRepo, UserManager<IdentityUser> user)
+        public ShoppingController(IConfiguration config, IFridgeRepo fridge, IIngredientRepo ingRepo, IRecipeIngredRepo resIngredRepo,IRecipeRepo resRepo ,UserManager<IdentityUser> user)
         {
             _configuration = config;
             fridgeRepo = fridge;
             ingredientRepo = ingRepo;
+            recipeIngredRepo = resIngredRepo;
             recipeRepo = resRepo;
             _user = user;
         }
@@ -104,29 +106,40 @@ namespace MealFridge.Controllers
             if (!int.TryParse(id, out var recipeId) || !User.Identity.IsAuthenticated)
                 return await Task.FromResult(StatusCode(400));
             var userId = _user.GetUserId(User);
-            var recipeIngreds = recipeRepo.GetIngredients(recipeId);
+            var recipeIngreds = recipeIngredRepo.GetIngredients(recipeId);
             foreach (var r in recipeIngreds)
             {
-                if (await fridgeRepo.ExistsAsync(userId, r.IngredId))
-                {
-                    var item = await fridgeRepo.FindByIdAsync(userId, r.IngredId);
-                    item.NeededAmount += r.Amount;
-                    if (item.NeededAmount > item.Quantity)
-                        item.Shopping = true;
-                }
-                else
-                {
-                    await fridgeRepo.AddFridgeAsync(new Models.Fridge
-                    {
-                        AccountId = userId,
-                        IngredId = r.IngredId,
-                        Quantity = 0,
-                        NeededAmount = r.Amount,
-                        Shopping = true
-                    });
-                }
+                await fridgeRepo.AddRecipeIngred(userId, r);
             }
             return await Task.FromResult(StatusCode(201));
+        }
+        [HttpPost]
+        public async Task AddFromMealPlan(List<string> values)
+        {
+            foreach (var recipe in values)
+            {
+                if (recipeRepo.ExistsAsync(Convert.ToInt32(recipe)).Result)
+                {
+                    await AddRecipeIngredients(recipe);
+                }
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Swap()
+        {
+            //Get userid
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //Interact with repo
+            await fridgeRepo.Swap(userId);
+            //Get updated inventory
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
+            //Return the updated inventory
+            return PartialView("ShoppingList", userInventory);
+            
         }
     }
 }

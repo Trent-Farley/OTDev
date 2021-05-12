@@ -62,6 +62,8 @@ namespace MealFridge.Utils
         public static ICollection<Recipeingred> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
         {
             var retingredients = new List<Recipeingred>();
+            if (ingredients == null)
+                return GetIngredientsForRandom(recipeId, list);
             foreach (var ing in ingredients)
             {
                 if (!int.TryParse(ing["id"].ToString(), out int ingId))
@@ -75,12 +77,28 @@ namespace MealFridge.Utils
                 {
                     RecipeId = recipeId,
                     IngredId = ingId,
-                    Amount = ing["amount"]?.Value<double>(),
-                    ServingUnit = ing["unit"]?.Value<string>(),
+                    Amount = ing["amount"]?.Value<double>() ?? null,
+                    ServingUnit = ing["unit"]?.Value<string>() ?? null,
                     Ingred = list.FirstOrDefault(i => i.Id == ingId)
                 };
                 var nutrients = ing["nutrients"].ToList();
-                JsonParser.ParseNutrition(nutrients, newRI);
+                ParseNutrition(nutrients, newRI);
+                retingredients.Add(newRI);
+            }
+            return retingredients;
+        }
+
+        private static ICollection<Recipeingred> GetIngredientsForRandom(int recipeId, List<Ingredient> list)
+        {
+            var retingredients = new List<Recipeingred>();
+            foreach (var ing in list)
+            {
+                var newRI = new Recipeingred
+                {
+                    RecipeId = recipeId,
+                    IngredId = ing.Id,
+                    Ingred = list.FirstOrDefault(i => i.Id == ing.Id)
+                };
                 retingredients.Add(newRI);
             }
             return retingredients;
@@ -133,5 +151,6 @@ namespace MealFridge.Utils
             }
             return result;
         }
+
     }
 }

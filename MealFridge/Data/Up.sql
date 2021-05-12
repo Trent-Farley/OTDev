@@ -1,6 +1,7 @@
 CREATE TABLE [FRIDGE] (
   [account_id] NVARCHAR(255),
   [ingred_id] int,
+  [unit_type] NVARCHAR(255),
   [quantity] float,
   [shopping] bit,
   [needed_amount] float,
@@ -9,8 +10,18 @@ CREATE TABLE [FRIDGE] (
 
 CREATE TABLE [DIET] (
   [account_id] NVARCHAR(255) PRIMARY KEY,
-  [diet] nvarchar(64)
-
+  [vegetarian] bit,
+  [vegen] bit,
+  [gluten_free] bit,
+  [dairy_free] bit,
+  [keto] bit,
+  [lacto-veg] bit,
+  [ovo-veg] bit,
+  [pescetarian] bit,
+  [paleo] bit,
+  [primal] bit,
+  [whole30] bit,
+  [metric] bit
 )
 
 CREATE TABLE [INGREDIENTS] (
@@ -42,7 +53,7 @@ CREATE TABLE [RESTRICTIONS] (
 )
 
 
-CREATE TABLE [RECIPES] (
+CREATE TABLE [RECIPE] (
   [id] int PRIMARY KEY,
   [title] nvarchar(255),
   [image] nvarchar(255),
@@ -66,7 +77,20 @@ CREATE TABLE [RECIPES] (
   [lunch] bit,
   [dinner] bit,
   [dessert] bit,
-  [snack] bit
+  [snack] bit,
+  [very_healthy] bit,
+  [cheap] bit,
+  [vegetarian] bit,
+  [vegen] bit,
+  [gluten_free] bit,
+  [dairy_free] bit,
+  [keto] bit,
+  [lacto-veg] bit,
+  [ovo-veg] bit,
+  [pescetarian] bit,
+  [paleo] bit,
+  [primal] bit,
+  [whole30] bit
 )
 
 
@@ -102,7 +126,7 @@ CREATE TABLE [MEAL] (
   [account_id] NVARCHAR(255),
   [day] datetime,
   [recipe_id] int,
-  [meal] nvarchar(255),
+  [MealType] nvarchar(255),
   PRIMARY KEY ([account_id], [day])
 )
 
@@ -110,10 +134,10 @@ ALTER TABLE [FRIDGE] ADD CONSTRAINT [Fridge_FK_Ingred] FOREIGN KEY ([ingred_id])
 
 ALTER TABLE [RESTRICTIONS] ADD CONSTRAINT [Restrictions_FK_Ingred] FOREIGN KEY ([ingred_id]) REFERENCES [INGREDIENTS] ([id])
 
-ALTER TABLE [RECIPEINGRED] ADD CONSTRAINT [RecipeIngred_FK_Recipe] FOREIGN KEY ([recipe_id]) REFERENCES [RECIPES] ([id])
+ALTER TABLE [RECIPEINGRED] ADD CONSTRAINT [RecipeIngred_FK_Recipe] FOREIGN KEY ([recipe_id]) REFERENCES [RECIPE] ([id])
 
 ALTER TABLE [RECIPEINGRED] ADD CONSTRAINT [RecipeIngred_FK_Ingred] FOREIGN KEY ([ingred_id]) REFERENCES [INGREDIENTS] ([id])
 
-ALTER TABLE [SAVEDRECIPES] ADD CONSTRAINT [SavedRecipes_FK_Recipes] FOREIGN KEY ([recipe_id]) REFERENCES [RECIPES] ([id])
+ALTER TABLE [SAVEDRECIPES] ADD CONSTRAINT [SavedRecipes_FK_Recipes] FOREIGN KEY ([recipe_id]) REFERENCES [RECIPE] ([id])
 
-ALTER TABLE [MEAL] ADD CONSTRAINT [Meal_FK_Recipe] FOREIGN KEY ([recipe_id]) REFERENCES [RECIPES] ([id])
+ALTER TABLE [MEAL] ADD CONSTRAINT [Meal_FK_Recipe] FOREIGN KEY ([recipe_id]) REFERENCES [RECIPE] ([id])
