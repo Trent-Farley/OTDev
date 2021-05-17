@@ -1,6 +1,7 @@
 ﻿using Castle.Core.Logging;
 using MealFridge.Models;
 using MealFridge.Models.Interfaces;
+using MealFridge.Models.ViewModels;
 using MealFridge.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -136,7 +137,7 @@ namespace MealFridge.Tests.Utils
         {
             var mealRepo = new Mock<IMealRepo>();
             mealRepo.Setup(m => m.GetAll()).Returns(CreateMeals(count).AsQueryable());
-            mealRepo.Setup(m => m.GetMeals(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(CreateMeals(count));
+            mealRepo.Setup(m => m.GetMeals(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<MealFilter>())).Returns(CreateMeals(count));
             mealRepo.Setup(m => m.GetMeals(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(CreateMeals(count));
             mealRepo.Setup(m => m.GetMeal(It.IsAny<DateTime>(), It.IsAny<string>(), It.IsAny<List<Ingredient>>(), It.IsAny<List<Ingredient>>())).Returns(CreateMeals(count)[0]);
             mealRepo.Setup(m => m.GetMeal(It.IsAny<DateTime>(), It.IsAny<string>())).Returns(CreateMeals(count)[0]);

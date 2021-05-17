@@ -19,9 +19,10 @@ namespace MealFridge.Models.Repositories
 
         public Meal GetMeal(DateTime mealTime, string userId, List<Ingredient> bans, List<Ingredient> dislikes)
         {
-            var currentMeals = FindCurrentMeals(mealTime, userId);
+            var currentMeals = new List<Meal>();
+            currentMeals = FindCurrentMeals(mealTime, userId);
             var oldMeal = _dbSet.FirstOrDefault(m => m.AccountId == userId && m.Day == mealTime);
-            if (!oldMeal.Equals(default))
+            if (oldMeal != null)
             {
                 _dbSet.Remove(oldMeal);
                 _context.SaveChanges();
@@ -36,7 +37,28 @@ namespace MealFridge.Models.Repositories
             var meals = FindRelevantMeals(recipes, userId, mealTime);
             meals = FindSafeMeals(bans, dislikes, meals);
             foreach (var meal in meals.AsEnumerable().OrderBy(g => Guid.NewGuid()).Reverse().ToList())
-                if (!currentMeals.Select(m => m.RecipeId).ToList().Contains(meal.Id) && meal.Id != oldMeal.RecipeId)
+                if (currentMeals.Count() != 0)
+                {
+                    if (!currentMeals.Select(m => m.RecipeId).ToList().Contains(meal.Id) && meal.Id != oldMeal.RecipeId)
+                    {
+                        var m = new Meal()
+                        {
+                            AccountId = userId,
+                            Recipe = _recipeSet.FirstOrDefault(r => r.Id == meal.Id),
+                            RecipeId = meal.Id,
+                            MealType = type,
+                            Day = mealTime
+                        };
+                        if (!_dbSet.Any(m => m.AccountId == userId && m.Day == mealTime))
+                            _dbSet.Add(m);
+                        else
+                            _dbSet.Update(m);
+
+                        _context.SaveChanges();
+                        return m;
+                    }
+                }
+                else
                 {
                     var m = new Meal()
                     {
@@ -50,17 +72,16 @@ namespace MealFridge.Models.Repositories
                         _dbSet.Add(m);
                     else
                         _dbSet.Update(m);
-
-                    _context.SaveChanges();
                     return m;
                 }
+
             return null;
         }
 
         public Meal GetMeal(DateTime mealTime, string userId)
         {
             var currentMeals = FindCurrentMeals(mealTime, userId);
-            var oldMeal = _dbSet.First(m => m.AccountId == userId && m.Day == mealTime);
+            var oldMeal = _dbSet.FirstOrDefault(m => m.AccountId == userId && m.Day == mealTime);
 
             if (currentMeals.Count > 1)
             {
@@ -137,9 +158,10 @@ namespace MealFridge.Models.Repositories
                             _context.SaveChanges();
                         }
                         newMeals.Add(temp);
+                        ++i;
+
                         if (i == days)
                             return newMeals;
-                        ++i;
                     }
                 }
             }
@@ -181,9 +203,9 @@ namespace MealFridge.Models.Repositories
                         _context.SaveChanges();
                     }
                     newMeals.Add(temp);
+                    ++i;
                     if (i == days)
                         return newMeals;
-                    ++i;
                 }
             }
             return newMeals;
@@ -236,11 +258,11 @@ namespace MealFridge.Models.Repositories
         private static List<Recipe> Filter(List<Recipe> recipes, string type, MealFilter filter)
         {
             return recipes
-                  .Where((s => (s.Servings ?? 0) <= (filter.Servings)))
+                  .Where(s => (s.Servings ?? 0) <= (filter.Servings))
                   .Where(m => (m.Minutes ?? 0) <= (filter.Minutes))
                   .Where(c => (c.Calories ?? 0) <= (filter.Calories))
                   .Where(t => (t.TotalFat ?? 0) <= (filter.TotalFat))
-                  .Where(s => (s.SatFat ?? 0) <= (filter.SatFat))
+                  .Where(s => (s.SatFat ?? 10000) <= (filter.SatFat))
                   .Where(ca => (ca.Carbs ?? 0) <= (filter.SatFat))
                   .Where(n => (n.NetCarbs ?? 0) <= (filter.NetCarbs))
                   .Where(s => (s.Sugar ?? 0) <= (filter.Sugar))
