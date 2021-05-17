@@ -1,6 +1,25 @@
 ﻿document.getElementById('print-list-button').addEventListener('click', e => {
     window.print();
 })
+document.getElementById('measure-swap').addEventListener('click', e => {
+    $.ajax({
+        url: "/Shopping/Swap",
+        method: "POST",
+        success: (data) => {
+            $("#innerShopping").empty();
+            $("#innerShopping").html(data);
+        }
+    })
+})
+
+function checkedEvent(id: string): void {
+    let eleRow = "#" + id + "row";
+    let row = $(eleRow);
+    if (row.hasClass("strikeout"))
+        row.removeClass("strikeout");
+    else
+        row.addClass("strikeout");
+}
 
 function updateNeeded(id: string, amount: string): void {
     $.ajax({

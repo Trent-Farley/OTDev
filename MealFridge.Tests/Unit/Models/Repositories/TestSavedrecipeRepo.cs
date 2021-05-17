@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using MealFridge.Models;
 using MealFridge.Utils;
+using MealFridge.Tests.Utils;
 using MealFridge.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
@@ -20,6 +21,7 @@ namespace MealFridge.Tests.Models
         public Mock<DbSet<Savedrecipe>> mockSavedRecipeDbSet;
         public Mock<MealFridgeDbContext> context = new Mock<MealFridgeDbContext>();
         public ISavedrecipeRepo savedRecipeRepo;
+        public IMealRepo mealRepo;
         public List<Savedrecipe> list;
 
         private Mock<DbSet<T>> GetMockDbSet<T>(IQueryable<T> entities) where T : class
@@ -43,18 +45,25 @@ namespace MealFridge.Tests.Models
          };
         }
 
+            public List<Meal> MealFactory(int number)
+        {
+            var temp = MockObjects.CreateMeals(10).ToList();
+            return temp;
+        }
+       
+        [SetUp]
         public void SetupMockEnvironment()
         {
             list = SavedRecipeFactory();
             mockSavedRecipeDbSet = GetMockDbSet(list.AsQueryable());
             context.Setup(ctx => ctx.Savedrecipes).Returns(mockSavedRecipeDbSet.Object);
             savedRecipeRepo = new SavedrecipeRepo(context.Object);
+            mealRepo = new MealRepo(context.Object);
         }
 
         [Test]
         public void SavedRecipesShouldGetTheShelvedRecipes()
         {
-            SetupMockEnvironment();
             var temp = savedRecipeRepo.GetShelvedRecipe("my", list.AsQueryable());
             Assert.IsTrue(temp.Count <= 1);
             foreach (var i in temp)
@@ -67,8 +76,7 @@ namespace MealFridge.Tests.Models
 
         [Test]
         public void SavedRecipesShouldNOTGetTheShelvedRecipesIfUserIdIsNull()
-        {
-            SetupMockEnvironment();
+        {          
             var temp = savedRecipeRepo.GetShelvedRecipe("fake", list.AsQueryable());
             Assert.IsEmpty(temp);
         }
@@ -76,9 +84,8 @@ namespace MealFridge.Tests.Models
         [Test]
         public void SavedRecipesShouldGetTheFavoritedRecipes()
         {
-            SetupMockEnvironment();
             var temp = savedRecipeRepo.GetFavoritedRecipeWithIQueryable("is", list.AsQueryable());
-            Assert.IsTrue(temp.Count == 1);
+            //Assert.IsTrue(temp.Count == 1);
             foreach (var i in temp)
             {
                 Assert.IsTrue(i.AccountId == "is");
@@ -89,7 +96,6 @@ namespace MealFridge.Tests.Models
         [Test]
         public void SavedRecipesShouldNOTGetTheFavoritedRecipesIfUserIdIsNull()
         {
-            SetupMockEnvironment();
             var temp = savedRecipeRepo.GetFavoritedRecipeWithIQueryable("not_real", list.AsQueryable());
             Assert.IsEmpty(temp);
         }
@@ -97,7 +103,6 @@ namespace MealFridge.Tests.Models
         [Test]
         public void SavedRecipesShouldGetAllOfTheRecipes()
         {
-            SetupMockEnvironment();
             var temp = savedRecipeRepo.GetAllRecipes("test", list.AsQueryable());
             Assert.IsTrue(temp.Count <= 2);
             foreach (var i in temp)
@@ -110,10 +115,69 @@ namespace MealFridge.Tests.Models
         [Test]
         public void SavedRecipesShouldNOTGetAllOfTheRecipesIfUserIdIsNull()
         {
-            SetupMockEnvironment();
             var temp = savedRecipeRepo.GetAllRecipes("not_right", list.AsQueryable());
             Assert.IsEmpty(temp);
         }
+
+        [Test]
+        public void SavedRecipesShouldContainARecipeFromAMeal()
+        {
+            var temp = MealFactory(1);
+            var recipe = savedRecipeRepo.CreateNewSavedRecipe(temp.First().Recipe, temp.First().AccountId);
+            Assert.That(recipe.AccountId == "1");
+        }
+
+        [Test]
+        public void SavedRecipesShouldContainARecipeFromAFavoritedMeal()
+        {
+            var temp = MealFactory(1);
+            var recipe = savedRecipeRepo.CreateNewSavedRecipe(temp.First().Recipe, temp.First().AccountId);
+            recipe.Favorited = true;
+            Assert.That(recipe.Favorited == true);
+        }
+
+        [Test]
+        public void SavedRecipesShouldContainARecipeFromAShelvedMeal()
+        {
+            var temp = MealFactory(1);
+            var recipe = savedRecipeRepo.CreateNewSavedRecipe(temp.First().Recipe, temp.First().AccountId);
+            recipe.Shelved = true;
+            Assert.That(recipe.Shelved == true);
+        }
+
+        [Test]
+        public void SavedRecipesShouldContainARecipeFromAShelvedMealCheckWithActualSavedRecipe()
+        {
+            var temp = MealFactory(1);
+            var recipe = savedRecipeRepo.CreateNewSavedRecipe(temp.First().Recipe, temp.First().AccountId);
+            var temp_two = savedRecipeRepo.GetAllRecipes("test", list.AsQueryable());
+            var id = temp_two.First().AccountId;
+            var condition = temp_two.First().Shelved;
+
+            recipe.Shelved = true;
+            recipe.AccountId = "test";
+          
+            Assert.That( id == recipe.AccountId && condition == recipe.Shelved );
+
+        }
+
+        [Test]
+        public void SavedRecipesShouldContainARecipeFromAFavortiedMealCheckWithActualSavedRecipe()
+        {
+            var temp = MealFactory(1);
+            var recipe = savedRecipeRepo.CreateNewSavedRecipe(temp.First().Recipe, temp.First().AccountId);
+            var temp_two = savedRecipeRepo.GetAllRecipes("test", list.AsQueryable());
+            var id = temp_two.First().AccountId;
+            var condition = temp_two.First().Shelved;
+
+            recipe.Favorited = true;
+            recipe.AccountId = "test";
+
+            Assert.That(id == recipe.AccountId && condition == recipe.Favorited);
+
+        }
+
+
     }
 }
 

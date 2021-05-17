@@ -28,23 +28,19 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div id="main-main" class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    <div id="loading-screen" class="d-none">
-        <div class="spinner-grow" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
+    <div class="d-none hide" id="loading">
+        <img id="loading-image" src="~/img/ajax-loader.gif" alt="Loading..." />
     </div>
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - MealFridge
-        </div>
-    </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js">
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

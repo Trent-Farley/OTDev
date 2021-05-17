@@ -7,19 +7,55 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
-    <PackageReference Include="Moq" Version="4.16.1" />
-    <PackageReference Include="NUnit" Version="3.12.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.16.1" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <CustomAdditionalCompileInputs Remove="BDD\Features\Example\Calculator.feature.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Fridge\" />
-    <Folder Include="Search\" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\FavoriteMealPlanRecipe.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\RemoveCommonIngredients.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 5\ShelfMealPlanRecipe.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 6\DietPreferencesMealPlan.feature" />
+    <SpecFlowFeatureFiles Remove="BDD\Sprint 6\DietPreferencesRecipeSearch.feature" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckBuild Remove="BDD\Features\Example\Calculator.feature.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LiquidTestReports.Markdown" Version="1.0.9" />
+    <PackageReference Include="Moq" Version="4.16.1" />
+    <PackageReference Include="NUnit" Version="3.13.2" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.17.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+    <PackageReference Include="SpecFlow" Version="3.7.38" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.7.38" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Unit\Fridge\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MealFridge\MealFridge.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 5\ShoppingAddedAlert.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 5\ShoppingStrikethrough.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 6\SearchByCuisine.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
+    <SpecFlowFeatureFiles Update="BDD\Sprint 6\MoveShoppingItems.feature">
+      <Visible>$(UsingMicrosoftNETSdk)</Visible>
+      <CodeBehindFile>%(RelativeDir)%(Filename).feature$(DefaultLanguageSourceExtension)</CodeBehindFile>
+    </SpecFlowFeatureFiles>
   </ItemGroup>
 </Project>

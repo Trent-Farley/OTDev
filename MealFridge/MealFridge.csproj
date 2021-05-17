@@ -49,13 +49,6 @@
     <Watch Include="**/*.css" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Remove="Scripts\Preferences\Index.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Watch Remove="Scripts\Preferences\Index.ts" />
-    <Watch Remove="Views\Shopping\ShoppingList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Scripts\Preferences\Index.ts" />
     <None Include="Views\Shopping\ShoppingList.cshtml" />
   </ItemGroup>

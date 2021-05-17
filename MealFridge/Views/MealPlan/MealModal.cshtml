@@ -1,0 +1,57 @@
+﻿@model Meal
+
+<div class="modal show" id="meal-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable w-100" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal_title">Meal details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="modal-main" class="card">
+                    <div id="modal-spinner" class="modal-dialog modal-lg"></div>
+                    @if (Model != null)
+                    {
+                        <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + Model.Recipe.Image)" alt="Recipe details image" />
+                        <div class="card-body">
+                            <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
+                            <p>Calories: @Math.Round(Convert.ToDouble(Model.Recipe.Calories), 0)  Fat: @Math.Round(Convert.ToDouble(Model.Recipe.TotalFat), 0) Carbs: @Math.Round(Convert.ToDouble(Model.Recipe.Carbs), 0) Protein: @Math.Round(Convert.ToDouble(Model.Recipe.Protein), 0)</p>
+                            <ul class="list-group">
+                                @foreach (var ingredient in Model.Recipe.Recipeingreds)
+                                {
+                                    <li class="list-group-item-light">
+                                        @ingredient.Ingred.Name:  @ingredient.Amount @ingredient.ServingUnit
+                                    </li>
+                                }
+                            </ul>
+                            <div class="card-footer">
+                                Please check out the recipe <a href="@Model.Recipe.Summery" target="_blank"> here </a> for full instructions
+                            </div>
+                        </div>
+                    }
+                    @if (Model == null)
+                    {
+                        <h4 class="card-title"> No details availible for this recipe </h4>
+                        <div class="card-body">
+                            <h7 class="card-subtitle">Our sincerest apologies for not having details on this scrumptious recipe! </h7>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                @if (Model != null)
+                {
+                    <button class="btn btn-outline-success " type="button" onclick="favorite('@Model.Recipe.Id')">
+                        <i class="fa fa-heart">  </i> Save it
+                    </button>
+                    <button class="btn btn-outline-warning " type="button" onclick="shelf('@Model.Recipe.Id')">
+                        <i class="fa fa-heart-broken">  </i> Shelf it
+                    </button>
+                }
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
