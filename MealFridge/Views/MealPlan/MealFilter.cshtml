@@ -1,0 +1,136 @@
+﻿@model MealFridge.Models.ViewModels.MealFilter
+<button class="btn btn-outline-danger float-right rounded-circle " id="close-button" type="button" data-toggle="collapse" data-target="#advanced-filters" aria-expanded="false" aria-controls="advanced-filters">
+    <i class="fa fa-times"></i>
+</button>
+<form class="p-lg-3" method="post" asp-controller="MealPlan" asp-action="MealPlanFiltered">
+    <div class="form-group ">
+        <div class="row">
+            <div class="col">
+                <div class="row">
+                    <div class="col text-center">
+                        <label class="w-100 " for="#Days"> How many days? </label>
+                        @Html.DropDownListFor(d => d.Days, Enumerable.Range(1, 14).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "w-100 custom-select text-center mb-1" })
+                    </div>
+                    <div class="col text-center">
+                        <label class=" w-100 text-center" for="#b">Breakfast</label>
+                        <input class=" w-100" type="checkbox" id="b" asp-for="Breakfast" />
+                    </div>
+                    <div class="col text-center">
+                        <label class="w-100 text-center" for="#l">Lunch</label>
+                        <input class="w-100 text-center" type="checkbox" id="l" asp-for="Lunch" />
+                    </div>
+                    <div class="col text-center">
+                        <label class="w-100" for="#d">Dinner</label>
+                        <input class="w-100" type="checkbox" id="d" asp-for="Dinner" />
+                    </div>
+                </div>
+                <div class="row" style="overflow-y: scroll; overflow-x:hidden; height: 30vh;">
+                    <div class="col">
+                        <div class="list-group-item">
+                            <label class="w-75" for="#vhealthy">Very healthy:</label>
+                            <input type="checkbox" title="Warning! This may get unexpected recipes due to classification!" id="vhealthy" class="custom-checkbox" asp-for="VeryHealthy" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#cheap">Cheap:</label>
+                            <input type="checkbox" title="Warning! This may get unexpected recipes due to classification!" id="cheap" class="custom-checkbox" asp-for="Cheap" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#veg">Vegetarian:</label>
+                            <input type="checkbox" id="veg" class="custom-checkbox" asp-for="Vegetarian" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#paleo">Paleo:</label>
+                            <input type="checkbox" id="paleo" class="custom-checkbox" asp-for="Paleo" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#primal">Primal:</label>
+                            <input type="checkbox" id="primal" class="custom-checkbox" asp-for="Primal" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#whole-30">Whole30:</label>
+                            <input type="checkbox" id="whole-30" class="custom-checkbox" asp-for="Primal" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="list-group-item">
+                            <label class="w-75" for="#veg">Vegen:</label>
+                            <input type="checkbox" id="veg" class="custom-checkbox" asp-for="Vegen" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#gluten-free">Gluten free:</label>
+                            <input type="checkbox" id="gluten-free" class="custom-checkbox" asp-for="GlutenFree" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#dairy-free">Dairy Free:</label>
+                            <input type="checkbox" id="dairy-free" class="custom-checkbox" asp-for="DairyFree" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#keto">Keto:</label>
+                            <input type="checkbox" id="keto" class="custom-checkbox" asp-for="Keto" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#lactose">Lactose Free:</label>
+                            <input type="checkbox" id="lactose" style="width:fit-content();" asp-for="LactoVeg" />
+                        </div>
+                        <div class="list-group-item">
+                            <label class="w-75" for="#pescatarian">Pescatarian:</label>
+                            <input type="checkbox" id="pescatarian" class=" custom-checkbox" asp-for="Pescetarian" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <h4 class="text-center card-title">Please input the max amount <strong>per meal</strong></h4>
+                <div class="list-group w-100" style="overflow-y: scroll; overflow-x:hidden; height: 30vh;">
+                    <div class="list-group-item">
+                        <label class="w-25" for="#servings">Servings: </label>
+                        <input class="w-50 text-center" id="servings" min="0" max="10" type="number" asp-for="Servings" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="maxCalories">Calories: </label>
+                        <input class="w-50 text-center" min="0" max="2000" step="25" type="number" asp-for="Calories" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#minutes">Minutes:</label>
+                        <input id="minutes" class="w-50 text-center" max="200" min="0" type="number" step="10" asp-for="Minutes" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#total-fat">Tatal fat:</label>
+                        <input id="total-fat" class="w-50 text-center" max="30" min="0" type="number" step="2" asp-for="TotalFat" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#sat-fat">Saturated fat:</label>
+                        <input id="sat-fat" class="w-50 text-center" max="30" min="0" type="number" step="2" asp-for="SatFat" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#carbs">Carbs:</label>
+                        <input id="carbs" class="w-50 text-center" max="100" min="0" type="number" step="2" asp-for="Carbs" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#net-carbs">Net Carbs:</label>
+                        <input id="netCarbs" class="w-50 text-center" max="100" min="0" type="number" step="2" asp-for="NetCarbs" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#sugar">Sugar:</label>
+                        <input id="sugar" class="w-50 text-center" max="200" min="0" step="2" type="number" asp-for="Sugar" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#cholesterol">Cholesterol:</label>
+                        <input id="cholesterol" class="w-50 text-center" max="200" min="0" step="2" type="number" asp-for="Cholesterol" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#sodium">Sodium:</label>
+                        <input id="sodium" class="w-50 text-center" max="200" min="0" step="2" type="number" asp-for="Sodium" />
+                    </div>
+                    <div class="list-group-item">
+                        <label class="w-25" for="#protein">Protein:</label>
+                        <input id="protein" class="w-50 text-center" max="200" min="0" step="2" type="number" asp-for="Protein" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-lg-5">
+            <button class="btn btn-outline-success rounded-pill w-100" type="submit"> Generate meal plan </button>
+        </div>
+    </div>
+</form>

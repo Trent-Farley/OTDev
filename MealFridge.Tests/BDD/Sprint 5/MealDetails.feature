@@ -3,8 +3,10 @@
 	Link here: https://www.pivotaltracker.com/story/show/177916812
 	Testing/Implementation done by: Trent Farley
 
+# Break	into another and
 Scenario: A logged in user wants to see the details of a meal
-	Given a user is logged in and on the meal planning page
+	Given a user is logged in
+	And on the meal planning page
 	And a meal plan is generated
 	When a user clicks the info button
 	Then a modal should appear with the meal's details

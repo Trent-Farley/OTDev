@@ -5,6 +5,25 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
 }
+/*https://codepen.io/devstreak/pen/dMYgeO --- Inspired by here -- */
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
+    background-color: #F5F5F5;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: #FFF;
+    background-image: -webkit-linear-gradient(top, #7ad8ff 0%, #26bfff 50%, #166f93 51%, #005e89 100%);
+}
 
 /* Provide sufficient contrast against white background */
 
