@@ -58,19 +58,7 @@ namespace MealFridge.Controllers
             }
             return await Task.FromResult(RedirectToAction("Index", "Home"));
         }
-        public async Task<IActionResult> RemoveSavedRecipe(int id)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                var userId = _user.GetUserId(User);
-                var temp = _savedRecipeContext.Savedrecipe(userId, id);
-                if (temp != null)
-                {
-                    await _savedRecipeContext.DeleteAsync(temp);
-                }
-            }
-            return await Task.FromResult(RedirectToAction("DietaryRestrictions"));
-        }
+
         public async Task<IActionResult> RemoveRestrictedIngredient(int id)
         {
             if (User.Identity.IsAuthenticated)
