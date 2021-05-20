@@ -272,7 +272,7 @@ namespace MealFridge.Models.Repositories
                   .Where(v => (v.VeryHealthy ?? false) == filter.VeryHealthy)
                   .Where(c => (c.Cheap ?? false) == filter.Cheap)
                   .Where(ve => (ve.Vegetarian ?? false) == filter.Vegetarian)
-                  .Where(vg => (vg.Vegen ?? false) == filter.Vegen)
+                  .Where(vg => (vg.Vegan ?? false) == filter.Vegan)
                   .Where(gl => (gl.GlutenFree ?? false) == filter.GlutenFree)
                   .Where(df => (df.DairyFree ?? false) == filter.DairyFree)
                   .Where(k => (k.Keto ?? false) == filter.Keto)

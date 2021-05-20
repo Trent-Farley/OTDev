@@ -55,22 +55,34 @@ namespace MealFridge.Controllers
             return await Task.FromResult(View());
         }
 
+        [NonAction]
+        private bool CheckIntersect(string r, string intersect)
+        {
+            if (r == null || r == "")
+                return false;
+            return r.Split(',').Intersect(intersect.Split(',')).Any();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchByName(Query query)
         {
             var userId = _user.GetUserId(User);
             var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
-
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
+                .ToList();
+            if (query.CuisineInclude != null)
+                possibleRecipes.RemoveAll(r => !CheckIntersect(r.Cuisine, query.CuisineInclude));
+            if (query.CuisineExclude != null)
+                possibleRecipes.RemoveAll(r => CheckIntersect(r.Cuisine, query.CuisineExclude));
+
+            possibleRecipes = possibleRecipes
                 .OrderBy(p => p.Id)
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-            var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
-
             if (possibleRecipes.Count < 10)
             {
                 query.Credentials = _config["SApiKey"];
@@ -156,6 +168,7 @@ namespace MealFridge.Controllers
                 var recipes = await SearchApiAsync(query);
                 recipe.UpdateRecipe(recipes.FirstOrDefault());
                 _db.Recipes.Update(recipe);
+                _db.SaveChanges();
                 _db.ChangeTracker.Clear();
                 recipe.Recipeingreds = recipes.FirstOrDefault().Recipeingreds;
                 foreach (var ingred in recipe.Recipeingreds)

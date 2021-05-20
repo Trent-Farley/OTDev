@@ -9,7 +9,7 @@ namespace MealFridge.Models
     {
         public string AccountId { get; set; }
         public bool? Vegetarian { get; set; }
-        public bool? Vegen { get; set; }
+        public bool? Vegan { get; set; }
         public bool? GlutenFree { get; set; }
         public bool? DairyFree { get; set; }
         public bool? Keto { get; set; }

@@ -67,7 +67,7 @@ namespace MealFridge.Models
 
                 entity.Property(e => e.Primal).HasColumnName("primal");
 
-                entity.Property(e => e.Vegen).HasColumnName("vegen");
+                entity.Property(e => e.Vegan).HasColumnName("vegan");
 
                 entity.Property(e => e.Vegetarian).HasColumnName("vegetarian");
 
@@ -200,6 +200,10 @@ namespace MealFridge.Models
                     .HasColumnType("money")
                     .HasColumnName("cost");
 
+                entity.Property(e => e.Cuisine)
+                    .HasMaxLength(255)
+                    .HasColumnName("cuisine");
+
                 entity.Property(e => e.DairyFree).HasColumnName("dairy_free");
 
                 entity.Property(e => e.Dessert).HasColumnName("dessert");
@@ -262,7 +266,7 @@ namespace MealFridge.Models
 
                 entity.Property(e => e.TotalFat).HasColumnName("total_fat");
 
-                entity.Property(e => e.Vegen).HasColumnName("vegen");
+                entity.Property(e => e.Vegan).HasColumnName("vegan");
 
                 entity.Property(e => e.Vegetarian).HasColumnName("vegetarian");
 
