@@ -1,4 +1,4 @@
-﻿using MealFridge.Models.Interfaces;
+using MealFridge.Models.Interfaces;
 using MealFridge.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;

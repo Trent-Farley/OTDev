@@ -123,6 +123,37 @@ function searchByName(): void {
         }
     })
 }
+function undoFavorite(id: string): void {
+    $.ajax({
+        url: "/AccountManagement/DeleteRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id)
+        },
+        success: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Favorite Undone</strong> Recipe has been removed to your favorites
+                </div>
+            `);
+        },
+        error: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Error</strong> Something went wrong.
+                </div>
+            `);
+        }
+    });
+}
 function addFavorite(id: string): void {
     $.ajax({
         url: "/Search/SavedRecipe",
@@ -138,7 +169,8 @@ function addFavorite(id: string): void {
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                  <strong>Added</strong> Recipe has been added to your favorites
+                  <strong>Added to Favorites</strong> Click here to undo
+                  <button id="undoFavButton" class="btn btn-danger" onclick=undoFavorite(${id}) title="Undo Favorite"><i class="fas fa-undo"></i></button>
                 </div>
             `);
         },
