@@ -95,7 +95,7 @@ namespace MealFridge.Controllers
                     MealFilter = new MealFilter(),
                     Meals = meals
                 };
-                return await Task.FromResult(RedirectToAction("Index"));
+                return await Task.FromResult(View("Index", temp));
             }
 
             return await Task.FromResult(View("Index", new MealRestrictions { MealFilter = filter }));

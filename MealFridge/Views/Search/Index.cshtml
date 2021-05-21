@@ -30,6 +30,54 @@
                 </select>
             </div>
             <input id="sbn" type="text" required class="w-auto border-0 form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
+            <div class="dropdown-menu-left">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                    Cuisines
+                    <span class="caret"></span>
+                </button>
+                <table class="dropdown-menu">
+                    <tr>
+                        <td>
+                            <input title="African" id="African" type="button" value="&#x2753;" onclick="stateChange(this)" /> African<br />
+                            <input title="American" id="American" type="button" value="&#x2753;" onclick="stateChange(this)" />American<br />
+                            <input title="British" id="British" type="button" value="&#x2753;" onclick="stateChange(this)" />British<br />
+                            <input title="Cajun" id="Cajun" type="button" value="&#x2753;" onclick="stateChange(this)" />Cajun<br />
+                            <input title="Caribbean" id="Caribbean" type="button" value="&#x2753;" onclick="stateChange(this)" />Caribbean<br />
+                        </td>
+                        <td>
+                            <input title="Chinese" id="Chinese" type="button" value="&#x2753;" onclick="stateChange(this)" />Chinese<br />
+                            <input title="European" id="European" type="button" value="&#x2753;" onclick="stateChange(this)" />European<br />
+                            <input title="French" id="French" type="button" value="&#x2753;" onclick="stateChange(this)" />French<br />
+                            <input title="German" id="German" type="button" value="&#x2753;" onclick="stateChange(this)" />German<br />
+
+                            <input title="Greek" id="Greek" type="button" value="&#x2753;" onclick="stateChange(this)" />Greek<br />
+                        </td>
+                        <td>
+                            <input title="Indian" id="Indian" type="button" value="&#x2753;" onclick="stateChange(this)" />Indian<br />
+                            <input title="Irish" id="Irish" type="button" value="&#x2753;" onclick="stateChange(this)" />Irish<br />
+                            <input title="Italian" id="Italian" type="button" value="&#x2753;" onclick="stateChange(this)" />Italian<br />
+                            <input title="Japanese" id="Japanese" type="button" value="&#x2753;" onclick="stateChange(this)" />Japanese<br />
+
+                            <input title="Jewish" id="Jewish" type="button" value="&#x2753;" onclick="stateChange(this)" />Jewish<br />
+                        </td>
+                        <td>
+                            <input title="Korean" id="Korean" type="button" value="&#x2753;" onclick="stateChange(this)" />Korean<br />
+                            <input title="Latin American" id="Latin American" type="button" value="&#x2753;" onclick="stateChange(this)" />Latin American<br />
+                            <input title="Mediterranean" id="Mediterranean" type="button" value="&#x2753;" onclick="stateChange(this)" />Mediterranean<br />
+                            <input title="Mexican" id="Mexican" type="button" value="&#x2753;" onclick="stateChange(this)" />Mexican<br />
+
+                            <input title="Middle Eastern" id="Middle Eastern" type="button" value="&#x2753;" onclick="stateChange(this)" />Middle Eastern<br />
+                        </td>
+                        <td>
+                            <input title="Nordic" id="Nordic" type="button" value="&#x2753;" onclick="stateChange(this)" />Nordic<br />
+                            <input title="Southern" id="Southern" type="button" value="&#x2753;" onclick="stateChange(this)" />Southern<br />
+                            <input title="Spanish" id="Spanish" type="button" value="&#x2753;" onclick="stateChange(this)" />Spanish<br />
+                            <input title="Thai" id="Thai" type="button" value="&#x2753;" onclick="stateChange(this)" />Thai<br />
+                            <input title="Vietnamese" id="Vietnamese" type="button" value="&#x2753;" onclick="stateChange(this)" />Vietnamese<br />
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <div class="input-group-append">
                 <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName()" type="button">
                     <i class="fa fa-search" aria-hidden="true"></i>

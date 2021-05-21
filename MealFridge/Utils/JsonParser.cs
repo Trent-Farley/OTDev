@@ -152,5 +152,56 @@ namespace MealFridge.Utils
             return result;
         }
 
+        internal static string ParseCuisine(List<JToken> jTokens)
+        {
+            string cuisine = "";
+            foreach (var c in jTokens)
+            {
+                cuisine += c.Value<string>() + ",";
+            }
+            return cuisine.Trim(',');
+        }
+
+        internal static void ParseDiets(JObject recipeDetails, Recipe detailedRecipe)
+        {
+            detailedRecipe.DairyFree = recipeDetails["dairyFree"].Value<bool>();
+            detailedRecipe.GlutenFree = recipeDetails["glutenFree"].Value<bool>();
+            detailedRecipe.Cheap = recipeDetails["cheap"].Value<bool>();
+            detailedRecipe.Vegan = recipeDetails["vegan"].Value<bool>();
+            detailedRecipe.Vegetarian = recipeDetails["vegetarian"].Value<bool>();
+            detailedRecipe.VeryHealthy = recipeDetails["veryHealthy"].Value<bool>();
+
+            detailedRecipe.Keto = false;
+            detailedRecipe.Whole30 = false;
+            detailedRecipe.Pescetarian = false;
+            detailedRecipe.Paleo = false;
+            detailedRecipe.Primal = false;
+            detailedRecipe.OvoVeg = false;
+            detailedRecipe.LactoVeg = false;
+            foreach (var d in recipeDetails["diets"].Values<string>())
+            {
+                switch (d.ToLower())
+                {
+                    case "pescetarian" :
+                        detailedRecipe.Pescetarian = true;
+                        break;
+                    case "paleolithic": 
+                        detailedRecipe.Paleo = true;
+                        break;
+                    case "ovo vegetarian":
+                        detailedRecipe.OvoVeg = true;
+                        break;
+                    case "lacto vegetarian":
+                        detailedRecipe.LactoVeg = true;
+                        break;
+                    case "primal":
+                        detailedRecipe.Primal = true;
+                        break;
+                } 
+            }
+            detailedRecipe.Keto = recipeDetails["ketogenic"].Value<bool>();
+            detailedRecipe.Whole30 = recipeDetails["whole30"].Value<bool>();
+            
+        }
     }
 }

@@ -10,6 +10,26 @@ window.onload = () => {
 
 let pageNumber: number = 0;
 let searchparam: string = "";
+
+function stateChange(control) {
+    switch (control.value.charAt(0)) {
+        case '\u2753': //Question mark
+            control.value = '\u2705'
+            control.setAttribute("incuisine", "true")
+            break;
+
+        case '\u2705': //Check Mark
+            control.value = '\u274C'
+            control.removeAttribute("incuisine")
+            control.setAttribute("excuisine", "true")
+            break;
+
+        case '\u274C': //X Mark
+            control.value = '\u2753'
+            control.removeAttribute("excuisine")
+            break;
+    }
+}
 function inventorySearch(): void {
     let search = $("#inventorySearch");
     let refine: HTMLInputElement = <HTMLInputElement>document.getElementById("panCheck");
@@ -18,6 +38,14 @@ function inventorySearch(): void {
         $("#main").append("You have no saved ingredients. Visit the Inventory page to add ingredients to your fridge.")
         return;
     }
+    let inCuisine = "";
+    $("[inCuisine]").each(function (i, el) {
+        inCuisine += el.id + ',';
+    });
+    let exCuisine = "";
+    $("[exCuisine]").each(function (i, el) {
+        exCuisine += el.id + ',';
+    });
     $.ajax({
         url: "/Search/SearchByIngredient",
         type: "POST",
@@ -25,7 +53,9 @@ function inventorySearch(): void {
             QueryValue: search.val(),
             SearchType: "Ingredient",
             Refine: refine.checked,
-            PageNumber: pageNumber
+            PageNumber: pageNumber,
+            CuisineInclude: inCuisine,
+            CuisineExclude: exCuisine
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
@@ -55,13 +85,23 @@ function searchByName(): void {
         $(".toast").toast('show');
         return;
     }
+    let inCuisine = "";
+    $("[inCuisine]").each(function (i, el) {
+        inCuisine += el.id + ',';
+    });
+    let exCuisine = "";
+    $("[exCuisine]").each(function (i, el) {
+        exCuisine += el.id + ',';
+    });
     $.ajax({
         url: "/Search/SearchByName",
         type: "POST",
         data: {
             QueryValue: search.value,
             SearchType: type.value,
-            PageNumber: pageNumber
+            PageNumber: pageNumber,
+            CuisineInclude: inCuisine,
+            CuisineExclude: exCuisine
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
