@@ -38,8 +38,8 @@ namespace MealFridge.Models.ViewModels
         [Range(0, 100)]
         public double? Cholesterol { get; set; } = 100;
 
-        [Range(0, 200)]
-        public double? Sodium { get; set; } = 200;
+        [Range(0, 2000)]
+        public double? Sodium { get; set; } = 2000;
 
         [Range(0, 200)]
         public double? Protein { get; set; } = 200;
