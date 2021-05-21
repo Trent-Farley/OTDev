@@ -142,12 +142,15 @@ namespace MealFridge.Models.Repositories
                 detailedRecipe.Image = recipeDetails["id"].Value<int>() + "-556x370." + recipeDetails["imageType"].Value<string>();
                 detailedRecipe.Summery = recipeDetails["sourceUrl"].Value<string>();
                 detailedRecipe.Servings = recipeDetails["servings"].Value<int>();
+                detailedRecipe.VeryHealthy = recipeDetails["veryHealthy"].Value<bool>();
+                
                 JsonParser.ParseDishType(recipeDetails["dishTypes"].ToObject<List<JToken>>(), detailedRecipe);
-
+                detailedRecipe.Cuisine = JsonParser.ParseCuisine(recipeDetails["cuisines"].ToObject<List<JToken>>());
                 detailedRecipe.Recipeingreds = JsonParser.GetIngredients(recipeDetails["nutrition"]["ingredients"].Value<JArray>(), recipeDetails["id"].Value<int>(), list);
-
+                
                 var nutrients = recipeDetails["nutrition"]["nutrients"].ToList();
                 JsonParser.ParseNutrition(nutrients, detailedRecipe);
+                JsonParser.ParseDiets(recipeDetails, detailedRecipe);
             }
             catch
             {

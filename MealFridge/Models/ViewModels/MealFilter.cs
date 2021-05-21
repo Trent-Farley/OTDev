@@ -50,7 +50,7 @@ namespace MealFridge.Models.ViewModels
         public bool VeryHealthy { get; set; } = false;
         public bool Cheap { get; set; } = false;
         public bool Vegetarian { get; set; } = false;
-        public bool Vegen { get; set; } = false;
+        public bool Vegan { get; set; } = false;
         public bool GlutenFree { get; set; } = false;
         public bool DairyFree { get; set; } = false;
         public bool Keto { get; set; } = false;
