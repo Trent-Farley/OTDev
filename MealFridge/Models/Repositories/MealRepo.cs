@@ -27,7 +27,7 @@ namespace MealFridge.Models.Repositories
                 _dbSet.Remove(oldMeal);
                 _context.SaveChanges();
             }
-            var type = GetType(mealTime);
+            var type = GetMealType(mealTime);
 
             var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
                 .Include(ri => ri.Recipeingreds)
@@ -89,7 +89,7 @@ namespace MealFridge.Models.Repositories
                 _context.SaveChanges();
             }
 
-            var type = GetType(mealTime);
+            var type = GetMealType(mealTime);
             var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
              .Include(ri => ri.Recipeingreds)
              .ThenInclude(i => i.Ingred)
@@ -126,7 +126,7 @@ namespace MealFridge.Models.Repositories
             if (!forceRefresh)
                 return currentMeals.OrderBy(m => m.Recipe.Id).ToList();
 
-            var type = GetType(mealTime);
+            var type = GetMealType(mealTime);
 
             var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
              .Include(ri => ri.Recipeingreds)
@@ -174,7 +174,7 @@ namespace MealFridge.Models.Repositories
             if (!forceRefresh)
                 return currentMeals;
 
-            var type = GetType(mealTime);
+            var type = GetMealType(mealTime);
 
             var recipes = _recipeSet.Where(r => r.Recipeingreds.Count > 0)
                 .Include(ri => ri.Recipeingreds)
@@ -200,10 +200,10 @@ namespace MealFridge.Models.Repositories
                     if (!_dbSet.Any(m => m.AccountId == userId && m.Day == temp.Day))
                     {
                         _dbSet.Add(temp);
-                        _context.SaveChanges();
                     }
                     newMeals.Add(temp);
                     ++i;
+                    _context.SaveChanges();
                     if (i == days)
                         return newMeals;
                 }
@@ -219,13 +219,12 @@ namespace MealFridge.Models.Repositories
 
         private List<Recipe> FindRelevantMeals(List<Recipe> recipes, string userId, DateTime mealTime, MealFilter filter = null)
         {
-            var type = GetType(mealTime);
+            var type = GetMealType(mealTime);
             if (filter == null)
                 recipes = FindRelevantMeals(recipes, type);
             else
                 recipes = FindFilteredtMeals(recipes, type, filter);
 
-            var meals = new List<Meal>();
             return recipes;
         }
 
@@ -263,7 +262,7 @@ namespace MealFridge.Models.Repositories
                   .Where(c => (c.Calories ?? 0) <= (filter.Calories))
                   .Where(t => (t.TotalFat ?? 0) <= (filter.TotalFat))
                   .Where(s => (s.SatFat ?? 10000) <= (filter.SatFat))
-                  .Where(ca => (ca.Carbs ?? 0) <= (filter.SatFat))
+                  .Where(ca => (ca.Carbs ?? 0) <= (filter.Carbs))
                   .Where(n => (n.NetCarbs ?? 0) <= (filter.NetCarbs))
                   .Where(s => (s.Sugar ?? 0) <= (filter.Sugar))
                   .Where(ch => (ch.Cholesterol ?? 0) <= (filter.Cholesterol))
@@ -311,7 +310,7 @@ namespace MealFridge.Models.Repositories
         /// <param name="mealTime">MealTime needs to have 3 specific times: 08 AM for Breakfast, 12 for lunch and 5 for dinner. Everything
         /// else will be deemed as a snack</param>
         /// <returns>A string with the current meal</returns>
-        private string GetType(DateTime mealTime)   // Super fragile
+        private string GetMealType(DateTime mealTime)   // Super fragile
         {
             return mealTime.ToString("hh") switch
             {
@@ -331,8 +330,9 @@ namespace MealFridge.Models.Repositories
         /// <returns>A list of current meals</returns>
         private List<Meal> FindCurrentMeals(DateTime currentDay, string userId)
         {
+            var type = GetMealType(currentDay);
             var allUserMeals = _dbSet
-              .Where(i => i.AccountId == userId && i.Day > currentDay && i.Day.Hour == currentDay.Hour)
+              .Where(i => i.AccountId == userId && i.MealType == type)
               .Include(r => r.Recipe)
               .ToList();
             if (allUserMeals.Count < 1)
@@ -346,10 +346,7 @@ namespace MealFridge.Models.Repositories
                     _context.SaveChanges();
                 }
             }
-            return _dbSet
-              .Where(i => i.AccountId == userId && i.Day > currentDay && i.Day.Hour == currentDay.Hour)
-              .Include(r => r.Recipe)
-              .ToList();
+            return allUserMeals;
         }
 
         private static List<Recipe> FindSafeMeals(List<Ingredient> bans, List<Ingredient> dislikes, List<Recipe> recipes)
