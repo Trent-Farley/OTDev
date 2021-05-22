@@ -109,6 +109,10 @@ namespace MealFridge.Controllers
                     }
                 }
             }
+            if (query.Cheap)
+            {
+                possibleRecipes.OrderBy(r => r.Cost);
+            }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
 
@@ -146,6 +150,10 @@ namespace MealFridge.Controllers
                     i.Savedrecipes = _db.Savedrecipes.ToList();
                     possibleRecipes.Add(i);
                 }
+            }
+            if(query.Cheap)
+            {
+                possibleRecipes.OrderBy(r => r.Cost);
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }

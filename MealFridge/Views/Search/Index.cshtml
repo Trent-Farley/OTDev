@@ -11,17 +11,9 @@
 
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <div class="dropdown">
                         <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
                             <i class="fas fa-box"></i>
                         </button>
-                        <div class="dropdown-content bg-dark text-light" id="pantryTool">
-                            <label class="switch" id="pSlider" title="Ignore common food items such as salt and water to improve search results when searching by ingredients in your inventory.">
-                                <input type="checkbox" id="panCheck">
-                                <span class="slider"><label id="pToolLabel">Refine</label></span>
-                            </label>
-                        </div>
-                    </div>
                 }
                 <input id="inventorySearch" value="@Model" hidden />
                 <select id="searchType" class="w-auto custom-select border-0 text-dark">
@@ -32,10 +24,15 @@
             <input id="sbn" type="text" required class="w-auto border-0 form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="dropdown-menu-left">
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                    Cuisines
+                    Options
                     <span class="caret"></span>
                 </button>
                 <table class="dropdown-menu">
+                    <tr>
+                        <td>
+                            <h5>Cuisines</h5>
+                        </td>
+                    </tr>
                     <tr>
                         <td>
                             <input title="African" id="African" type="button" value="&#x2753;" onclick="stateChange(this)" /> African<br />
@@ -74,6 +71,21 @@
                             <input title="Spanish" id="Spanish" type="button" value="&#x2753;" onclick="stateChange(this)" />Spanish<br />
                             <input title="Thai" id="Thai" type="button" value="&#x2753;" onclick="stateChange(this)" />Thai<br />
                             <input title="Vietnamese" id="Vietnamese" type="button" value="&#x2753;" onclick="stateChange(this)" />Vietnamese<br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5>More Options</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="checkbox" id="cheapCheck" />
+                            <label for="cheapMealsCheck">Order By Cost</label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="panCheck" />
+                            <label for="panCheck">Refine Inventory Search</label>
                         </td>
                     </tr>
                 </table>
