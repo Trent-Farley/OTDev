@@ -9,7 +9,7 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
 {
     class ShoppingPageObject
     {
-        private const string ShoppingUrl = "https://localhost:44346/Shopping";
+        private const string ShoppingUrl = "https://localhost:5001/Shopping";
 
         private readonly IWebDriver _webDriver;
         public const int DefaultWaitInSeconds = 1;
@@ -18,7 +18,6 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
         {
             _webDriver = webDriver;
         }
-
         
         private IWebElement AddObtainEle => _webDriver.FindElement(By.Id("add-obtained"));
         private IWebElement RemoveObtainEle => _webDriver.FindElement(By.Id("remove-obtained"));
@@ -55,6 +54,13 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
                 clicker.Current.Click();
         }
 
+        public void EnsureShoppingListIsOpen()
+        {
+            if(_webDriver.Url != ShoppingUrl)
+            {
+                _webDriver.Navigate().GoToUrl(ShoppingUrl);
+            }
+        }
         public int WaitForResult()
         {
             var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));

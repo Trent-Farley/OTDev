@@ -1,4 +1,5 @@
-﻿Feature: Move Shopping items
+﻿@ShoppingList
+Feature: Move Shopping items 
 	After completing a shopping trip, add the items to your inventory with a single button.
 	https://www.pivotaltracker.com/story/show/177689561
 
