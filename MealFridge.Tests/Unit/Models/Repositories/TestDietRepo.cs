@@ -35,10 +35,10 @@ namespace MealFridge.Tests.Models
         {
             List<Diet> diets = new List<Diet>
             {
-                new Diet {AccountId = "a", DairyFree=true, GlutenFree= true, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=true },
-                new Diet {AccountId = "b", DairyFree=true, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=true, Vegen=false, Vegetarian=false,Whole30=true },
-                new Diet {AccountId = "c", DairyFree=false, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=true },
-                new Diet {AccountId = "d", DairyFree=false, GlutenFree= false, Keto=false, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=false }
+                new Diet {AccountId = "a", DairyFree=true, GlutenFree= true, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegan=false, Vegetarian=false,Whole30=true },
+                new Diet {AccountId = "b", DairyFree=true, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=true, Vegan=false, Vegetarian=false,Whole30=true },
+                new Diet {AccountId = "c", DairyFree=false, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegan=false, Vegetarian=false,Whole30=true },
+                new Diet {AccountId = "d", DairyFree=false, GlutenFree= false, Keto=false, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegan=false, Vegetarian=false,Whole30=false }
             };
 
             Mock<DbSet<Diet>> mockDietDbSet = MockObjects.GetMockDbSet<Diet>(diets.AsQueryable());
@@ -62,12 +62,12 @@ namespace MealFridge.Tests.Models
         {
             List<Diet> diets = new List<Diet>
             {
-                new Diet {AccountId = "a", DairyFree=true, GlutenFree= true, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=true },
-                new Diet {AccountId = "b", DairyFree=true, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=true, Vegen=false, Vegetarian=false,Whole30=true },
-                new Diet {AccountId = "c", DairyFree=false, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=true },
-                new Diet {AccountId = "d", DairyFree=false, GlutenFree= false, Keto=false, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegen=false, Vegetarian=false,Whole30=false }
+                new Diet {AccountId = "a", DairyFree=true, GlutenFree= true, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegan=false, Vegetarian=false,Whole30=true },
+                new Diet {AccountId = "b", DairyFree=true, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=true, Vegan=false, Vegetarian=false,Whole30=true },
+                new Diet {AccountId = "c", DairyFree=false, GlutenFree= false, Keto=true, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegan=false, Vegetarian=false,Whole30=true },
+                new Diet {AccountId = "d", DairyFree=false, GlutenFree= false, Keto=false, LactoVeg=false, OvoVeg=false, Paleo=false, Pescetarian=false, Primal=false, Vegan=false, Vegetarian=false,Whole30=false }
             };
-            
+
             Mock<DbSet<Diet>> mockDietDbSet = MockObjects.GetMockDbSet<Diet>(diets.AsQueryable());
             mockDietDbSet.Setup(d => d.FindAsync(It.IsAny<string>())).ReturnsAsync((string x) =>
             {
@@ -82,7 +82,7 @@ namespace MealFridge.Tests.Models
             var a = await dietRepo.FindByIdAsync("a");
             var b = await dietRepo.FindByIdAsync("b");
 
-            Assert.That(a.AccountId == "a" && a.GlutenFree == true);    
+            Assert.That(a.AccountId == "a" && a.GlutenFree == true);
             Assert.That(b.AccountId == "b" && b.DairyFree == true);
         }
     }

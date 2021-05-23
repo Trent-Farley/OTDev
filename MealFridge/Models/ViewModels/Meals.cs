@@ -2,6 +2,8 @@
 
 namespace MealFridge.Models.ViewModels
 {
+#nullable enable
+
     public class Meals
     {
         public List<Meal> Breakfast { get; set; } = new List<Meal>();

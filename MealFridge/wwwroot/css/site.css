@@ -25,6 +25,18 @@ a.navbar-brand {
     background-image: -webkit-linear-gradient(top, #7ad8ff 0%, #26bfff 50%, #166f93 51%, #005e89 100%);
 }
 
+table.table-fit {
+    width: auto !important;
+    table-layout: auto !important;
+}
+
+    table.table-fit thead th, table.table-fit tfoot th {
+        width: 100% !important;
+    }
+
+    table.table-fit tbody td, table.table-fit tfoot td {
+        width: 100% !important;
+    }
 /* Provide sufficient contrast against white background */
 
 .btn-primary {
@@ -202,7 +214,7 @@ body {
     background-color: #Ffff;
     min-width: 160px;
     color: black;
-    box-shadow: 0px 8px 16px 0px rgba(12,167,137,.75);
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,.75);
     z-index: 1;
 }
 

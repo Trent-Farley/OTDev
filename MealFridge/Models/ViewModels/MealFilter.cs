@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace MealFridge.Models.ViewModels
 {
+#nullable enable
+
     public class MealFilter
     {
         [Range(0, 14)]
@@ -14,34 +16,34 @@ namespace MealFridge.Models.ViewModels
         [Range(0, 100)]
         public int? Servings { get; set; } = 10;
 
-        [Range(15, 200)]
+        [Range(10, 200)]
         public int? Minutes { get; set; } = 200;
 
         [Range(25, 2000)]
         public double? Calories { get; set; } = 2000;
 
-        [Range(0, 30)]
-        public double? TotalFat { get; set; } = 30;
+        [Range(0, 78)]
+        public double? TotalFat { get; set; } = 78;
 
-        [Range(0, 30)]
-        public double? SatFat { get; set; } = 30;
+        [Range(0, 20)]
+        public double? SatFat { get; set; } = 20;
 
-        [Range(0, 100)]
-        public double? Carbs { get; set; } = 100;
+        [Range(0, 275)]
+        public double? Carbs { get; set; } = 275;
 
-        [Range(0, 100)]
-        public double? NetCarbs { get; set; } = 100;
+        [Range(0, 275)]
+        public double? NetCarbs { get; set; } = 275;
 
-        [Range(0, 200)]
+        [Range(0, 200)]     // FDA Recommends capping at 50
         public double? Sugar { get; set; } = 200;
 
-        [Range(0, 100)]
-        public double? Cholesterol { get; set; } = 100;
+        [Range(0, 300)]
+        public double? Cholesterol { get; set; } = 300;
 
-        [Range(0, 2000)]
-        public double? Sodium { get; set; } = 2000;
+        [Range(0, 2300)]
+        public double? Sodium { get; set; } = 2300;
 
-        [Range(0, 200)]
+        [Range(0, 200)]  // FDA recommends ~50, but not harmful if more
         public double? Protein { get; set; } = 200;
 
         public bool Breakfast { get; set; } = true;
