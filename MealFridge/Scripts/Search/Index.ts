@@ -79,6 +79,7 @@ function inventorySearch(): void {
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
+    let cheap: HTMLInputElement = <HTMLInputElement>document.getElementById("cheapCheck");
     if (!search.value) {
         $("#warning-toast-body").empty();
         $("#warning-toast-body").append("Search can not be empty!");
@@ -99,6 +100,7 @@ function searchByName(): void {
         data: {
             QueryValue: search.value,
             SearchType: type.value,
+            Cheap: cheap.checked,
             PageNumber: pageNumber,
             CuisineInclude: inCuisine,
             CuisineExclude: exCuisine

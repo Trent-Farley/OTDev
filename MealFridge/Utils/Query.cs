@@ -15,6 +15,7 @@ namespace MealFridge.Utils
         public string CuisineInclude { get; set; }
         public string CuisineExclude { get; set; }
         public bool Refine { get; set; }
+        public bool Cheap { get; set; }
         public int PageNumber { get; set; } = 0;
 
         private readonly string Number = "10";
