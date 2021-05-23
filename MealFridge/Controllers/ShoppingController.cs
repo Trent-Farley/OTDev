@@ -43,6 +43,63 @@ namespace MealFridge.Controllers
             else
                 return await Task.FromResult(RedirectToAction("Index", "Home"));
         }
+        /// <summary>
+        /// Turns a string of ids seperated by commas into a list of ints
+        /// </summary>
+        /// <param name="ids">Comma seperated list of ids</param>
+        /// <returns>list of ids as ints</returns>
+        [NonAction]
+        private List<int> MakeIds(string ids) 
+        {
+            var list = new List<int>();
+            var vals = ids.Split(',');
+            foreach (var v in vals)
+            {
+                if (int.TryParse(v, out int x))
+                {
+                    list.Add(x);
+                }
+                else
+                    Console.Error.WriteLine(x + " is not a number");
+            }
+            return list;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Obtained(string ids, bool obtain)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var list = MakeIds(ids);
+            foreach (var l in list)
+            {
+                await fridgeRepo.AddObtained(await fridgeRepo.FindByIdAsync(userId, l), obtain);
+            }
+            var userInventory = fridgeRepo.FindByAccount(userId);
+            foreach (var i in userInventory)
+            {
+                i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+            }
+            //Return the current inventory
+            return PartialView("ShoppingList", userInventory);
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> RemoveObtained(string ids)
+        //{
+        //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var list = MakeIds(ids);
+        //    foreach (var l in list)
+        //    {
+        //        await fridgeRepo.DeleteAsync(await fridgeRepo.FindByIdAsync(userId, l));
+        //    }
+        //    var userInventory = fridgeRepo.FindByAccount(userId);
+        //    foreach (var i in userInventory)
+        //    {
+        //        i.Ingred = await ingredientRepo.FindByIdAsync(i.IngredId);
+        //    }
+        //    //Return the current inventory
+        //    return PartialView("ShoppingList", userInventory);
+        //}
 
         [HttpPost]
         public async Task<IActionResult> AddFridgeItem(int id, int amount)

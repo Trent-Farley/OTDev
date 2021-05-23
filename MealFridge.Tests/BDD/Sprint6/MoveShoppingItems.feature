@@ -2,12 +2,12 @@
 	After completing a shopping trip, add the items to your inventory with a single button.
 	https://www.pivotaltracker.com/story/show/177689561
 
-Scenario: Add items to you inventory
-	Given there are items to add
-	When a user clicks the button
+Scenario: Add items from shopping list
+	Given there are items clicked in the list
+	When a user clicks the add button
 	Then the items are added to the inventory and removed from the shopping list.
 
-Scenario: Want to clear old shopping list
-	Given there are items
-	When a user clicks the button
+Scenario: Remove items from shopping list
+	Given there are items clicked in the list
+	When a user clicks the remove button
 	Then all items are removed from the shopping list.
