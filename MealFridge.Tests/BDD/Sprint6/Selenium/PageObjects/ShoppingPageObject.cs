@@ -10,9 +10,10 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
     class ShoppingPageObject
     {
         private const string ShoppingUrl = "https://localhost:5001/Shopping";
+        
 
         private readonly IWebDriver _webDriver;
-        public const int DefaultWaitInSeconds = 1;
+        public const int DefaultWaitInSeconds = 5;
 
         public ShoppingPageObject(IWebDriver webDriver)
         {
@@ -22,6 +23,13 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
         private IWebElement AddObtainEle => _webDriver.FindElement(By.Id("add-obtained"));
         private IWebElement RemoveObtainEle => _webDriver.FindElement(By.Id("remove-obtained"));
         private IReadOnlyCollection<IWebElement> Checkboxes => _webDriver.FindElements(By.ClassName("custom-checkbox"));
+
+        internal void AddItems()
+        {
+            new SearchPageObject(_webDriver).AddRecipeToShoppingList();
+            EnsureShoppingListIsOpen();
+        }
+
         private int ItemAmount = 0;
         public void ClickAdd()
         {
@@ -40,10 +48,11 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
         {
             ItemAmount = Checkboxes.Count;
             var clicker = Checkboxes.GetEnumerator();
-            do
-            {
-                clicker.Current.Click();
-            } while (clicker.MoveNext());
+       
+            while(clicker.MoveNext())
+            { 
+                clicker.Current.Click();   
+            }
         }
 
         public void ClickFirstTwoCheckboxs()
@@ -60,18 +69,25 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
             {
                 _webDriver.Navigate().GoToUrl(ShoppingUrl);
             }
+            if(_webDriver.Url != ShoppingUrl)
+            {
+                var login = new LoginPageObject(_webDriver);
+                login.Login();
+                _webDriver.Navigate().GoToUrl(ShoppingUrl);
+            }
+            new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5)).Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
         }
         public int WaitForResult()
         {
             var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
-            return wait.Until(driver =>
+            wait.Until(driver =>
             {
-                var result = Checkboxes.Count;
-                if (result >= ItemAmount)
-                    return default;
+                if (Checkboxes.Count >= ItemAmount)
+                    return false;
 
-                return result;
+                return true;
             });
+            return Checkboxes.Count; 
         }
 
     }

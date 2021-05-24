@@ -23,7 +23,7 @@
                                     <div class="card-body">
                                         <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
                                         <p>Calories: @Math.Round(Convert.ToDouble(Model.GetRecipes.Calories), 0)  Fat: @Math.Round(Convert.ToDouble(Model.GetRecipes.TotalFat), 0) Carbs: @Math.Round(Convert.ToDouble(Model.GetRecipes.Carbs), 0) Protein: @Math.Round(Convert.ToDouble(Model.GetRecipes.Protein), 0)</p>
-                                        <p>Cuisines: @Model.GetRecipes.Cuisine</p>
+                                        <p id="cuisineList">Cuisines: @Model.GetRecipes.Cuisine</p>
                                         <ul class="list-group">
                                             @foreach (var ingredient in Model.GetRecipes.Recipeingreds)
                                             {

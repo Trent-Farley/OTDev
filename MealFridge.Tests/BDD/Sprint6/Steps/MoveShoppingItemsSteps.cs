@@ -24,6 +24,12 @@ namespace MealFridge.Tests.BDD.Sprint6.Steps
         {
             if (_shoppingPage.CheckList())
                 _shoppingPage.ClickAllCheckboxes();
+            else
+            {
+                _shoppingPage.AddItems();
+                _shoppingPage.ClickAllCheckboxes();
+            }
+            
         }
         
         [When(@"a user clicks the add button")]
@@ -41,6 +47,7 @@ namespace MealFridge.Tests.BDD.Sprint6.Steps
         [Then(@"the items are added to the inventory and removed from the shopping list\.")]
         public void ThenTheItemsAreAddedToTheInventoryAndRemovedFromTheShoppingList_()
         {
+            //Need another PageObject for fridge to see they were added to it.
             var actualResult = _shoppingPage.WaitForResult();
             Assert.AreEqual(0, actualResult);
         }
