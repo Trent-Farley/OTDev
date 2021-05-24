@@ -16,6 +16,7 @@
                     {
                         <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + Model.Recipe.Image)" alt="Recipe details image" />
                         <div class="card-body">
+                            <h1 class="card-title text-center">@Model.Recipe.Title</h1>
                             <h7 class="card-subtitle">Required Ingredients and amounts per serving </h7>
                             <p>Calories: @Math.Round(Convert.ToDouble(Model.Recipe.Calories), 0)  Fat: @Math.Round(Convert.ToDouble(Model.Recipe.TotalFat), 0) Carbs: @Math.Round(Convert.ToDouble(Model.Recipe.Carbs), 0) Protein: @Math.Round(Convert.ToDouble(Model.Recipe.Protein), 0)</p>
                             <ul class="list-group">

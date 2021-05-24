@@ -131,7 +131,7 @@ namespace MealFridge.Tests.MealPlan
             var result = await _mealPlanController.Index();
             var data = (result as ViewResult).Model as Meals;
 
-            Assert.That(data, Is.Not.Null);
+            Assert.That(data, Is.Null);
         }
 
         //For story: #177689443 Regenerate a new meal

@@ -1,16 +1,8 @@
 ﻿@model MealFridge.Models.ViewModels.Meals
 
-@if (Model.DaysCount == 0)
-{
-
-}
-else if (Model == null)
-{
-    <p>Unable to generate meals at this time</p>
-}
-else
-{
-    <div class="row m-lg-2 mb-lg-4 shadow-lg bg-secondary">
+<div class="row m-lg-2 mb-lg-4 shadow-lg bg-secondary">
+    @if (Model.Breakfast.Count() > 0 || Model.Lunch.Count() > 0 || Model.Dinner.Count() > 0)
+    {
         <div class="col bg-secondary">
             <div class="card shadow-lg rounded-lg">
                 <h3 class="card-title text-center">
@@ -18,117 +10,130 @@ else
                 </h3>
             </div>
         </div>
-        @if (Model.Breakfast.Count() > 0)
-        {
-
-            <div class="col bg-primary">
-                <div class="card shadow-lg rounded-lg">
-                    <h3 class="card-title text-center">
-                        Breakfast
-                    </h3>
-                </div>
-            </div>
-        }
-        @if (Model.Lunch.Count() > 0)
-        {
-            <div class="col bg-success">
-                <div class="card shadow-lg rounded-lg">
-                    <h3 class="card-title text-center">
-                        Lunch
-                    </h3>
-                </div>
-            </div>
-        }
-        @if (Model.Dinner.Count() > 0)
-        {
-            <div class="col bg-warning">
-                <div class="card shadow-lg rounded-lg">
-                    <h3 class="card-title text-center">
-                        Dinner
-                    </h3>
-                </div>
-            </div>
-        }
-    </div>
-
-    @for (var i = 0; i < Model.DaysCount; ++i)
+    }
+    @if (Model.Breakfast.Count() > 0)
     {
 
-        <div class="row m-lg-2 mb-lg-4">
-            <div class="col bg-secondary">
-                <div class="card shadow-lg rounded-lg">
-                    <h4 class="card-title text-center" style="border-width:thick; border-bottom:solid">
-                        @if (Model.Breakfast.Count() > 0)
-                        {
-                            @Model.Breakfast[i].Day.DayOfWeek
+        <div class="col bg-primary">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Breakfast
+                </h3>
+            </div>
+        </div>
+    }
+    @if (Model.Lunch.Count() > 0)
+    {
+        <div class="col bg-success">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Lunch
+                </h3>
+            </div>
+        </div>
+    }
+    @if (Model.Dinner.Count() > 0)
+    {
+        <div class="col bg-warning">
+            <div class="card shadow-lg rounded-lg">
+                <h3 class="card-title text-center">
+                    Dinner
+                </h3>
+            </div>
+        </div>
+    }
+</div>
 
-                        }
-                        else if (Model.Lunch.Count() > 0)
-                        {
-                            @Model.Lunch[i].Day.DayOfWeek;
-                        }
-                        else
-                        {
-                            @Model.Dinner[i].Day.DayOfWeek;
-                        }
-                    </h4>
-                    @{
-                        var b = new Recipe();
-                        var l = new Recipe();
-                        var d = new Recipe();
-                        if (i < Model.Breakfast.Count())
-                            b = Model.Breakfast[i].Recipe;
-                        if (i < Model.Lunch.Count())
-                            l = Model.Lunch[i].Recipe;
-                        if (i < Model.Dinner.Count())
-                            d = Model.Dinner[i].Recipe;
-                        var total = Recipe.GetTotalDay(b, l, d);
+@for (var i = 0; i < Model.DaysCount; ++i)
+{
+
+    <div class="row m-lg-2 mb-lg-4">
+        <div class="col bg-secondary">
+            <div class="card shadow-lg rounded-lg">
+                <h4 class="card-title text-center" style="border-width:thick; border-bottom:solid">
+                    @{var day = ""; }
+                    @if (Model.Breakfast.Count() > i)
+                    {
+                        day = Model.Breakfast[i].Day.DayOfWeek.ToString();
                     }
-                    <div class="card-body p-0 m-0">
-                        <h5 class="text-center">Nutrition facts</h5>
-                        <table class="table table-borderless p-0 m-0 table-hover table-sm">
-                            <tr>
-                                <td>Calories</td>
-                                <td>@total.Calories</td>
-                            </tr>
-                            <tr>
-                                <td>Total Fat</td>
-                                <td>@total.TotalFat</td>
-                            </tr>
-                            <tr>
-                                <td>Saturated Fat</td>
-                                <td>@total.SatFat</td>
-                            </tr>
-                            <tr>
-                                <td>Carbs</td>
-                                <td>@total.Carbs</td>
-                            </tr>
-                            <tr>
-                                <td>Net Carbs</td>
-                                <td>@total.NetCarbs</td>
-                            </tr>
-                            <tr>
-                                <td>Sugar</td>
-                                <td>@total.Sugar</td>
-                            </tr>
-                            <tr>
-                                <td>Cholesterol</td>
-                                <td>@total.Cholesterol</td>
-                            </tr>
-                            <tr>
-                                <td>Sodium</td>
-                                <td>@total.Sodium</td>
-                            </tr>
-                            <tr>
-                                <td>Protein</td>
-                                <td>@total.Protein</td>
-                            </tr>
-                        </table>
-                        <div class="card-footer"><i>* estimation of (1) serving per meal</i></div>
-                    </div>
+                    @if (Model.Lunch.Count() > i)
+                    {
+                        day = Model.Lunch[i].Day.DayOfWeek.ToString();
+                    }
+                    @if (Model.Dinner.Count() > i)
+                    {
+                        day = Model.Dinner[i].Day.DayOfWeek.ToString();
+                    }
+                    @day
+                </h4>
+                @{
+                    var b = new Recipe();
+                    var l = new Recipe();
+                    var d = new Recipe();
+                    if (i < Model.Breakfast.Count())
+                        b = Model.Breakfast[i].Recipe;
+                    if (i < Model.Lunch.Count())
+                        l = Model.Lunch[i].Recipe;
+                    if (i < Model.Dinner.Count())
+                        d = Model.Dinner[i].Recipe;
+                    var total = Recipe.GetTotalDay(b, l, d);
+                }
+                <div class="card-body p-0 m-0">
+                    <h5 class="text-center">Nutrition facts</h5>
+                    <table class="table table-borderless p-0 m-0 table-hover table-sm">
+                        <tr>
+                            <td>Calories</td>
+                            <td>@total.Calories</td>
+                        </tr>
+                        <tr>
+                            <td>Total Fat</td>
+                            <td>@total.TotalFat</td>
+                        </tr>
+                        <tr>
+                            <td>Saturated Fat</td>
+                            <td>@total.SatFat</td>
+                        </tr>
+                        <tr>
+                            <td>Carbs</td>
+                            <td>@total.Carbs</td>
+                        </tr>
+                        <tr>
+                            <td>Net Carbs</td>
+                            <td>@total.NetCarbs</td>
+                        </tr>
+                        <tr>
+                            <td>Sugar</td>
+                            <td>@total.Sugar</td>
+                        </tr>
+                        <tr>
+                            <td>Cholesterol</td>
+                            <td>@total.Cholesterol</td>
+                        </tr>
+                        <tr>
+                            <td>Sodium</td>
+                            <td>@total.Sodium</td>
+                        </tr>
+                        <tr>
+                            <td>Protein</td>
+                            <td>@total.Protein</td>
+                        </tr>
+                    </table>
+                    <div class="card-footer"><i>* estimation of (1) serving per meal</i></div>
                 </div>
             </div>
-            @if (Model.Breakfast.Count() > 0)
+        </div>
+        @if (Model.Breakfast.Count() > 0)
+        {
+            @if (Model.Breakfast.Count() <= i)
+            {
+
+                <div class="col bg-primary" id="@Model.Breakfast[i].Day.DayOfWeek-@Model.Breakfast[i].MealType">
+                    <div class="container">
+                        <partial name="MealCard" model="@Model.Breakfast[i]" />
+                    </div>
+                </div>
+            }
+            else
             {
                 <div class="col bg-primary" id="@Model.Breakfast[i].Day.DayOfWeek-@Model.Breakfast[i].MealType">
                     <div class="container">
@@ -136,23 +141,51 @@ else
                     </div>
                 </div>
             }
-            @if (Model.Lunch.Count() > 0)
+        }
+        @if (Model.Lunch.Count() > 0)
+        {
+            @if (Model.Lunch.Count() <= i)
+            {
+                <div class="col bg-primary">
+                    <div class="container">
+                        <div class="card  h-100 w-100">
+                            <h5 class="card-title  h-100 w-100"><i>Unable to generate lunch</i></h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
             {
                 <div class="col bg-success" id="@Model.Lunch[i].Day.DayOfWeek-@Model.Lunch[i].MealType">
+
                     <partial name="MealCard" model="@Model.Lunch[i]" />
                 </div>
             }
-            @if (Model.Dinner.Count() > 0)
+
+        }
+        @if (Model.Dinner.Count() > 0)
+        {
+            @if (Model.Dinner.Count() <= i)
+            {
+                <div class="col bg-primary">
+                    <div class="container">
+                        <div class="card w-100 h-100">
+                            <h5 class="card-title h-100 w-100"><i>Unable to generate dinner</i></h5>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
             {
                 <div class="col bg-warning" id="@Model.Dinner[i].Day.DayOfWeek-@Model.Dinner[i].MealType">
-
                     <partial name="MealCard" model="@Model.Dinner[i]" />
                 </div>
             }
-        </div>
 
-    }
-    <div class="container">
-        <button onclick="genSLfromMP()" id="genSLButton" class="w-100 btn btn-outline-dark rounded-pill shadow-lg">Add Recipes to Shopping List</button>
+        }
     </div>
+
 }
+<div class="container">
+    <button onclick="genSLfromMP()" id="genSLButton" class="w-100 btn btn-outline-dark rounded-pill shadow-lg">Add Recipes to Shopping List</button>
+</div>
