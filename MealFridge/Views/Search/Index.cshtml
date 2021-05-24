@@ -11,17 +11,9 @@
 
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <div class="dropdown">
-                        <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
-                            <i class="fas fa-box"></i>
-                        </button>
-                        <div class="dropdown-content bg-dark text-light" id="pantryTool">
-                            <label class="switch" id="pSlider" title="Ignore common food items such as salt and water to improve search results when searching by ingredients in your inventory.">
-                                <input type="checkbox" id="panCheck">
-                                <span class="slider"><label id="pToolLabel">Refine</label></span>
-                            </label>
-                        </div>
-                    </div>
+                    <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
+                        <i class="fas fa-box"></i>
+                    </button>
                 }
                 <input id="inventorySearch" value="@Model" hidden />
                 <select id="searchType" class="w-auto custom-select border-0 text-dark">
@@ -29,11 +21,11 @@
                     <option class="bg-dark text-light" value="Ingredient">Ingredient</option>
                 </select>
                 <div class="dropdown-menu-left">
-                    <button class="btn border-right dropdown-toggle" type="button" data-toggle="dropdown">
+                    <button id="dropbtn" class="btn w-auto border-0 text-dark dropdown-toggle" type="button" data-toggle="dropdown">
                         Options
                         <span class="caret"></span>
                     </button>
-                    <table class="dropdown-menu ">
+                    <table class="dropdown-menu">
                         <tr>
                             <td>
                                 <h5>Cuisines</h5>
@@ -98,7 +90,6 @@
                 </div>
             </div>
             <input id="sbn" type="text" required class="w-auto border-0 form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
-
             <div class="input-group-append">
                 <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName()" type="button">
                     <i class="fa fa-search" aria-hidden="true"></i>
@@ -109,7 +100,7 @@
     <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
     <div id="main" class="card-columns"></div>
     <div id="search-button" class="d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-dark  d-none w-50 mt-4 mb-5" id="morebutton" onclick="searchByName()">
+        <button type="button" class="btn btn-primary  d-none w-50 mt-4 mb-5" id="morebutton" onclick="searchByName()">
             Get more recipes!
         </button>
     </div>

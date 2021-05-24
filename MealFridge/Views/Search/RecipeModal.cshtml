@@ -1,5 +1,6 @@
 ﻿@model FridgeAndRecipeViewModel
-
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<IdentityUser> signInManager;
 <div class="modal show" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable w-100" role="document">
         <div class="modal-content">
@@ -74,7 +75,10 @@
             </div>
             <div class="modal-footer" id="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-                <button type="button" id="button-cart" class="btn btn-outline-success" data-dismiss="modal"><i class="fa fa-shopping-basket"></i></button>
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <button type="button" title="Add these ingredients to your shopping list" id="button-cart" class="btn btn-outline-success" data-dismiss="modal"><i class="fa fa-shopping-basket"></i></button>
+                }
             </div>
         </div>
     </div>
