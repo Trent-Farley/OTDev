@@ -14,78 +14,108 @@
     </ul>
 </div>
 <p> </p>
-<div id="cnhIngredList">
-    <h1>Diet Settings</h1>
-    <ul>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Whole30.Value" id="Whole30">
-            <label> Whole30 </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.DairyFree.Value" id="DairyFree">
-            <label> DairyFree </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.GlutenFree.Value" id="GlutenFree">
-            <label> Gluten Free </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Keto.Value" id="Keto">
-            <label> Keto </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Vegen.Value" id="Vegen">
-            <label> Vegen </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Vegetarian.Value" id="Vegetarian">
-            <label> Vegetarian </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.LactoVeg.Value" id="LactoVeg">
-            <label> Lacto Vegetarian </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.OvoVeg.Value" id="OvoVeg">
-            <label> Ovo Vegetarian </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Paleo.Value" id="Paleo">
-            <label> Paleo </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Pescetarian.Value" id="Pescetarian">
-            <label> Pescetarian </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Primal.Value" id="Primal">
-            <label> Primal </label>
-        </li>
-        <li>
-            <input type="checkbox" checked="@Model.Diet.Metric.Value" id="Metric">
-            <label> Default to Metric Measurements </label>
-        </li>
-    </ul>
-    <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
-</div>
 
-<div id="cnhIngredList">
-    <h1>Restricted Ingredients</h1>
-    <p>Ingredients Flagged as "Cannot Have"</p>
-    @if (Model.userRestrictions.Count() > 0)
-    {
-<ul>
-    @foreach (var i in Model.userRestrictions)
-    {
-<li id="cnhIngredItem">
-    <label>@i.Ingred.Name</label>
-    <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
-        <i class="far fa-times-circle"></i>
-    </button>
-</li>}
-</ul>}
-    @if (Model.userRestrictions.Count() < 1)
-    {<p>--Nothing to show--</p>}
+<div class="row">
+    <div class="col" style="box-shadow:10px 10px 5px grey; padding-bottom:10px">
+        @*<div id="cnhIngredList">*@
+        <h1>Diet Settings</h1>
+        <table class="table table-bordered table-striped table-sm">
+            <thead>
+                <tr>
+                    <th>Diet Setting</th>
+                    <th> Yes / No </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th> <label> Whole30 </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Whole30.Value" id="Whole30"> </th>
+                </tr>
+                <tr>
+                    <th> <label> DairyFree </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.DairyFree.Value" id="DairyFree"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Gluten Free </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.GlutenFree.Value" id="GlutenFree"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Keto </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Keto.Value" id="Keto"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Vegan </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Vegan.Value" id="Vegen"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Vegetarian </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Vegetarian.Value" id="Vegetarian"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Lacto Vegetarian </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.LactoVeg.Value" id="LactoVeg"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Ovo Vegetarian </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.OvoVeg.Value" id="OvoVeg"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Paleo </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Paleo.Value" id="Paleo"> </th>
+                </tr>
+                <tr>
+                    <th> <label> Pescetarian </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Pescetarian.Value" id="Pescetarian"> </th>
+                </tr>
+                <tr>
+                    <th> <label>  Primal </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Primal.Value" id="Primal"> </th>
+                </tr>
+                <tr>
+                    <th> <label>  Metric </label> </th>
+                    <th> <input type="checkbox" checked="@Model.Diet.Metric.Value" id="Metric"> </th>
+                </tr>   
+                <tr>
+                    <td></td>
+                    <th> <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()">Update</button></th>
+                </tr>
+            </tbody>
+        </table>
+        @*</div>*@
+       
+    </div>
+    <div class="col">
+        <div id="cnhIngredList">
+            <h1>Restricted Ingredients</h1>
+            <p>Ingredients Flagged as "Cannot Have"</p>
+            @if (Model.userRestrictions.Count() > 0)
+            {
+                
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>
+                                Ingredient Name
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in Model.userRestrictions)
+                        {
+                            <tr>
+                                <td>@i.Ingred.Name </td>
+                                <td> <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
+                                    <i class="far fa-times-circle"></i>
+                                </button> </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                }
+            @if (Model.userRestrictions.Count() < 1)
+            {<p>--Nothing to show--</p>}
+        </div>
+    </div>
 </div>
 <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
 @section Scripts{

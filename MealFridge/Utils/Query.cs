@@ -16,6 +16,8 @@ namespace MealFridge.Utils
         public int PageNumber { get; set; } = 0;
 
         private readonly string Number = "10";
+        public string QueryDiet { get; set; }
+        public string DietStatus { get; set; }
 
         public string GetUrl
         {
@@ -42,7 +44,7 @@ namespace MealFridge.Utils
                         break;
 
                     default:
-                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber);
+                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber) + DietStatus + QueryDiet;
                         break;
                 }
                 return u;

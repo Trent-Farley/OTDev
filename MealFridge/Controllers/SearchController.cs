@@ -61,6 +61,7 @@ namespace MealFridge.Controllers
             var userId = _user.GetUserId(User);
             var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
+            var diet = _db.Diets.Where(a => a.AccountId == userId).ToList();
 
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
@@ -69,13 +70,59 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-            var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
-
+            //var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
+            
             if (possibleRecipes.Count < 10)
             {
+               if(diet.First() == null)
+                {
+                    query.DietStatus = "";
+                    query.QueryDiet = "";
+                }
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
+                foreach (var i in diet)
+                {
+                    if (i.DairyFree == true)
+                    {
+                        query.DietStatus = "&intolerences=";
+                        query.QueryDiet = "dairy_free";
+                    }
+                    query.DietStatus = "&diet";
+                    if(i.Vegan == true)
+                    {
+                        query.QueryDiet += "vegan";
+                    }
+                    if (i.Vegetarian == true)
+                    {
+                        query.QueryDiet += "vegetarian";
+                    }
+                    if (i.LactoVeg == true)
+                    {
+                        query.QueryDiet += "lacto_vegatarian";
+                    }
+                    if (i.OvoVeg == true)
+                    {
+                        query.QueryDiet += "ovo_vegatarian";
+                    }
+                    if (i.GlutenFree == true)
+                    {
+                        query.QueryDiet += "gluten_free";
+                    }
+                    if (i.Primal == true)
+                    {
+                        query.QueryDiet += "primal";
+                    }
+                    if (i.Paleo == true)
+                    {
+                        query.QueryDiet += "paleo";
+                    }
+                    if (i.Whole30 == true)
+                    {
+                        query.QueryDiet += "whole_30";
+                    }
+                }
                 foreach (var i in await SearchApiAsync(query))
                 {
                     possibleRecipes.Add(i);

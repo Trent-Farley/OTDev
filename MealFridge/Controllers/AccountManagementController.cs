@@ -44,7 +44,7 @@ namespace MealFridge.Controllers
                     DairyFree = dairyFree,
                     GlutenFree = glutenFree,
                     Keto = keto,
-                    Vegen = vegen,
+                    Vegan = vegen,
                     Vegetarian = vegetarian,
                     LactoVeg = lactoVeg,
                     OvoVeg = ovoVeg,
@@ -98,7 +98,7 @@ namespace MealFridge.Controllers
                         Paleo = false,
                         Pescetarian = false,
                         Primal = false,
-                        Vegen = false,
+                        Vegan = false,
                         Vegetarian = false,
                         Whole30 = false,
                         Metric = false

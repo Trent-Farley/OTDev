@@ -109,6 +109,7 @@ body {
 #dietUpdateButton {
     margin-left: 9%;
     margin-top: -6%;
+    display:inline-block;
 }
 
 #cnhIngredList ul {

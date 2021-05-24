@@ -11,7 +11,7 @@ CREATE TABLE [FRIDGE] (
 CREATE TABLE [DIET] (
   [account_id] NVARCHAR(255) PRIMARY KEY,
   [vegetarian] bit,
-  [vegen] bit,
+  [vegan] bit,
   [gluten_free] bit,
   [dairy_free] bit,
   [keto] bit,
@@ -81,7 +81,7 @@ CREATE TABLE [RECIPE] (
   [very_healthy] bit,
   [cheap] bit,
   [vegetarian] bit,
-  [vegen] bit,
+  [vegan] bit,
   [gluten_free] bit,
   [dairy_free] bit,
   [keto] bit,
