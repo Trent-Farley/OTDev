@@ -1,10 +1,49 @@
 ﻿document.getElementById('print-list-button').addEventListener('click', e => {
     window.print();
 })
+
 document.getElementById('measure-swap').addEventListener('click', e => {
     $.ajax({
         url: "/Shopping/Swap",
         method: "POST",
+        success: (data) => {
+            $("#innerShopping").empty();
+            $("#innerShopping").html(data);
+        }
+    })
+})
+
+document.getElementById('remove-obtained').addEventListener('click', e => {
+    let obtained = "";
+    $(".strikeout").each(function (i, el) {
+        obtained += el.id.substring(0, el.id.length - 3) + ',';
+    })
+    $.ajax({
+        url: "/Shopping/Obtained",
+        method: "POST",
+        data: {
+            ids: obtained,
+            obtain: false
+        },
+        success: (data) => {
+            $("#innerShopping").empty();
+            $("#innerShopping").html(data);
+        }
+    })
+})
+
+document.getElementById('add-obtained').addEventListener('click', e => {
+    let obtained = "";
+    $(".strikeout").each(function (i, el) {
+        obtained += el.id.substring(0, el.id.length - 3) + ',';
+    })
+    $.ajax({
+        url: "/Shopping/Obtained",
+        method: "POST",
+        data: {
+            ids: obtained,
+            obtain: true
+        },
         success: (data) => {
             $("#innerShopping").empty();
             $("#innerShopping").html(data);

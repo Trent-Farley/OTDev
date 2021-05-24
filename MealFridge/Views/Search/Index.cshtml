@@ -11,9 +11,9 @@
 
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
-                        <i class="fas fa-box"></i>
-                    </button>
+                        <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
+                            <i class="fas fa-box"></i>
+                        </button>
                 }
                 <input id="inventorySearch" value="@Model" hidden />
                 <select id="searchType" class="w-auto custom-select border-0 text-dark">
