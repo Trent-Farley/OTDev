@@ -182,5 +182,13 @@ namespace MealFridge.Models.Repositories
             }
             await _context.SaveChangesAsync();
         }
+
+        public async Task AddObtained(Fridge item, bool obtained)
+        {
+            if(obtained)
+                item.Quantity += item.NeededAmount;
+            item.NeededAmount = 0;
+            await AddFridgeAsync(item);
+        }
     }
 }

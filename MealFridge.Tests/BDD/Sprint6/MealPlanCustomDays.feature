@@ -4,7 +4,8 @@
 	Testing/Implementation done by: Trent Farley
 
 Scenario Outline: A user requests for any amount of days' worth of meals, up to 14 days
-	Given a user is logged in and on the meal planning page
+	Given a user is logged in
+	And on the meal planning page
 	When a user specifies <days> worth of days to generate
 	Then a meal plan should be generated with <days> worth of meals
 

@@ -17,7 +17,7 @@ function updateDiet(): void {
     let DairyFree: HTMLInputElement = <HTMLInputElement>document.getElementById("DairyFree");
     let GlutenFree: HTMLInputElement = <HTMLInputElement>document.getElementById("GlutenFree");
     let Keto: HTMLInputElement = <HTMLInputElement>document.getElementById("Keto");
-    let Vegen: HTMLInputElement = <HTMLInputElement>document.getElementById("Vegen");
+    let Vegan: HTMLInputElement = <HTMLInputElement>document.getElementById("Vegan");
     let Vegetarian: HTMLInputElement = <HTMLInputElement>document.getElementById("Vegetarian");
     let LactoVeg: HTMLInputElement = <HTMLInputElement>document.getElementById("LactoVeg");
     let OvoVeg: HTMLInputElement = <HTMLInputElement>document.getElementById("OvoVeg");
@@ -33,7 +33,7 @@ function updateDiet(): void {
             dairyFree: DairyFree.checked,
             glutenFree: GlutenFree.checked,
             keto: Keto.checked,
-            vegen: Vegen.checked,
+            Vegan: Vegan.checked,
             vegetarian: Vegetarian.checked,
             lactoVeg: LactoVeg.checked,
             ovoVeg: OvoVeg.checked,

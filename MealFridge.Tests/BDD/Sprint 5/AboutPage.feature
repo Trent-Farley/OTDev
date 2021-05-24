@@ -9,6 +9,7 @@ Scenario: User visits the About Us page from the Get Started page
 	When they click to get more information on the project
 	Then they are brought to the About Us Page
 
+# Split the then into an and
 Scenario: First time user visits Get Started
 	Given the user is not logged in
 	When they click Get Started on the home page

@@ -4,12 +4,10 @@
 
 Scenario: A user wants to search for a cuisine
 	Given A user is on the recipe search page
-	And they have search cuisine selected
-	When They enter the cuisine 
-	Then Recipes of that type should result
+	When they select a single cuisine 
+	Then recipes of that type should be the only result
 
 Scenario: A user wants to exlude a Cuisine
 	Given A user is on the recipe search page
-	And they have search cuisine selected
-	When They enter the cuisine as an exclusion
-	Then Recipes of that type should not show.
+	When They select a cuisine as an exclusion
+	Then recipes of that type should not show.

@@ -10,6 +10,26 @@ window.onload = () => {
 
 let pageNumber: number = 0;
 let searchparam: string = "";
+
+function stateChange(control) {
+    switch (control.value.charAt(0)) {
+        case '\u2753': //Question mark
+            control.value = '\u2705'
+            control.setAttribute("incuisine", "true")
+            break;
+
+        case '\u2705': //Check Mark
+            control.value = '\u274C'
+            control.removeAttribute("incuisine")
+            control.setAttribute("excuisine", "true")
+            break;
+
+        case '\u274C': //X Mark
+            control.value = '\u2753'
+            control.removeAttribute("excuisine")
+            break;
+    }
+}
 function inventorySearch(): void {
     let search = $("#inventorySearch");
     let refine: HTMLInputElement = <HTMLInputElement>document.getElementById("panCheck");
@@ -18,6 +38,14 @@ function inventorySearch(): void {
         $("#main").append("You have no saved ingredients. Visit the Inventory page to add ingredients to your fridge.")
         return;
     }
+    let inCuisine = "";
+    $("[inCuisine]").each(function (i, el) {
+        inCuisine += el.id + ',';
+    });
+    let exCuisine = "";
+    $("[exCuisine]").each(function (i, el) {
+        exCuisine += el.id + ',';
+    });
     $.ajax({
         url: "/Search/SearchByIngredient",
         type: "POST",
@@ -25,7 +53,9 @@ function inventorySearch(): void {
             QueryValue: search.val(),
             SearchType: "Ingredient",
             Refine: refine.checked,
-            PageNumber: pageNumber
+            PageNumber: pageNumber,
+            CuisineInclude: inCuisine,
+            CuisineExclude: exCuisine
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
@@ -49,19 +79,31 @@ function inventorySearch(): void {
 function searchByName(): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
+    let cheap: HTMLInputElement = <HTMLInputElement>document.getElementById("cheapCheck");
     if (!search.value) {
         $("#warning-toast-body").empty();
         $("#warning-toast-body").append("Search can not be empty!");
         $(".toast").toast('show');
         return;
     }
+    let inCuisine = "";
+    $("[inCuisine]").each(function (i, el) {
+        inCuisine += el.id + ',';
+    });
+    let exCuisine = "";
+    $("[exCuisine]").each(function (i, el) {
+        exCuisine += el.id + ',';
+    });
     $.ajax({
         url: "/Search/SearchByName",
         type: "POST",
         data: {
             QueryValue: search.value,
             SearchType: type.value,
-            PageNumber: pageNumber
+            Cheap: cheap.checked,
+            PageNumber: pageNumber,
+            CuisineInclude: inCuisine,
+            CuisineExclude: exCuisine
         },
         error: (err) => { console.log(err); },
         success: (recipeCards) => {
@@ -83,6 +125,37 @@ function searchByName(): void {
         }
     })
 }
+function undoFavorite(id: string): void {
+    $.ajax({
+        url: "/AccountManagement/DeleteRecipe",
+        method: "POST",
+        data: {
+            id: parseInt(id)
+        },
+        success: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Favorite Undone</strong> Recipe has been removed to your favorites
+                </div>
+            `);
+        },
+        error: _ => {
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  <strong>Error</strong> Something went wrong.
+                </div>
+            `);
+        }
+    });
+}
 function addFavorite(id: string): void {
     $.ajax({
         url: "/Search/SavedRecipe",
@@ -98,7 +171,8 @@ function addFavorite(id: string): void {
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
-                  <strong>Added</strong> Recipe has been added to your favorites
+                  <strong>Added to Favorites</strong> Click here to undo
+                  <button id="undoFavButton" class="btn btn-danger" onclick=undoFavorite(${id}) title="Undo Favorite"><i class="fas fa-undo"></i></button>
                 </div>
             `);
         },

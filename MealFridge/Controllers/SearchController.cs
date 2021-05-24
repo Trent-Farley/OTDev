@@ -55,74 +55,39 @@ namespace MealFridge.Controllers
             return await Task.FromResult(View());
         }
 
+        [NonAction]
+        private bool CheckIntersect(string r, string intersect)
+        {
+            if (r == null || r == "")
+                return false;
+            return r.Split(',').Intersect(intersect.Split(',')).Any();
+        }
+
         [HttpPost]
         public async Task<IActionResult> SearchByName(Query query)
         {
             var userId = _user.GetUserId(User);
             var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
-            var diet = _db.Diets.Where(a => a.AccountId == userId).ToList();
-
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
+                .ToList();
+            if (query.CuisineInclude != null)
+                possibleRecipes.RemoveAll(r => !CheckIntersect(r.Cuisine, query.CuisineInclude));
+            if (query.CuisineExclude != null)
+                possibleRecipes.RemoveAll(r => CheckIntersect(r.Cuisine, query.CuisineExclude));
+
+            possibleRecipes = possibleRecipes
                 .OrderBy(p => p.Id)
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-            //var testTemp = _recipeContext.GetRecipesByName(query.QueryValue).Include(s => s.Savedrecipes.Where(s => s.AccountId == userId)).OrderBy(p => p.Id).Skip(10 * query.PageNumber).Take(10).ToList(); ;
-            
             if (possibleRecipes.Count < 10)
             {
-               if(diet.First() == null)
-                {
-                    query.DietStatus = "";
-                    query.QueryDiet = "";
-                }
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
-                foreach (var i in diet)
-                {
-                    if (i.DairyFree == true)
-                    {
-                        query.DietStatus = "&intolerences=";
-                        query.QueryDiet = "dairy_free";
-                    }
-                    query.DietStatus = "&diet";
-                    if(i.Vegan == true)
-                    {
-                        query.QueryDiet += "vegan";
-                    }
-                    if (i.Vegetarian == true)
-                    {
-                        query.QueryDiet += "vegetarian";
-                    }
-                    if (i.LactoVeg == true)
-                    {
-                        query.QueryDiet += "lacto_vegatarian";
-                    }
-                    if (i.OvoVeg == true)
-                    {
-                        query.QueryDiet += "ovo_vegatarian";
-                    }
-                    if (i.GlutenFree == true)
-                    {
-                        query.QueryDiet += "gluten_free";
-                    }
-                    if (i.Primal == true)
-                    {
-                        query.QueryDiet += "primal";
-                    }
-                    if (i.Paleo == true)
-                    {
-                        query.QueryDiet += "paleo";
-                    }
-                    if (i.Whole30 == true)
-                    {
-                        query.QueryDiet += "whole_30";
-                    }
-                }
                 foreach (var i in await SearchApiAsync(query))
                 {
                     possibleRecipes.Add(i);
@@ -143,6 +108,10 @@ namespace MealFridge.Controllers
                         i.Dislike = true;
                     }
                 }
+            }
+            if (query.Cheap)
+            {
+                return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r=> r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
@@ -182,6 +151,10 @@ namespace MealFridge.Controllers
                     possibleRecipes.Add(i);
                 }
             }
+            if(query.Cheap)
+            {
+                return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r => r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
+            }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
 
@@ -203,6 +176,7 @@ namespace MealFridge.Controllers
                 var recipes = await SearchApiAsync(query);
                 recipe.UpdateRecipe(recipes.FirstOrDefault());
                 _db.Recipes.Update(recipe);
+                _db.SaveChanges();
                 _db.ChangeTracker.Clear();
                 recipe.Recipeingreds = recipes.FirstOrDefault().Recipeingreds;
                 foreach (var ingred in recipe.Recipeingreds)

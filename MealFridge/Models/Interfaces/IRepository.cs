@@ -16,5 +16,6 @@ namespace MealFridge.Models.Interfaces
 
         Task DeleteAsync(TEntity entity);
         Task DeleteByIdAsync(int id);
+
     }
 }

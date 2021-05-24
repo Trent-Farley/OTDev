@@ -24,6 +24,7 @@ namespace MealFridge.Models
         public decimal? Cost { get; set; }
         public double? ServingSize { get; set; }
         public string ServingUnit { get; set; }
+        public string Cuisine { get; set; }
         public double? Calories { get; set; }
         public double? TotalFat { get; set; }
         public double? SatFat { get; set; }

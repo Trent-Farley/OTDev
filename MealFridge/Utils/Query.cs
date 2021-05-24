@@ -12,12 +12,13 @@ namespace MealFridge.Utils
         public string QueryValue { get; set; }
         public string Credentials { get; set; }
         public string SearchType { get; set; }
+        public string CuisineInclude { get; set; }
+        public string CuisineExclude { get; set; }
         public bool Refine { get; set; }
+        public bool Cheap { get; set; }
         public int PageNumber { get; set; } = 0;
 
         private readonly string Number = "10";
-        public string QueryDiet { get; set; }
-        public string DietStatus { get; set; }
 
         public string GetUrl
         {
@@ -44,7 +45,15 @@ namespace MealFridge.Utils
                         break;
 
                     default:
-                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber) + DietStatus + QueryDiet;
+                        u = Url + "?apiKey=" + Credentials + "&" + QueryName + "=" + QueryValue + "&number=" + Number + "&offset=" + (10 * PageNumber);
+                        if (CuisineInclude != null)
+                        {
+                            u += "&cuisine=" + CuisineInclude.Trim(',').ToLower();
+                        }
+                        if (CuisineExclude != null)
+                        {
+                            u += "&excludeCuisine=" + CuisineExclude.Trim(',').ToLower();
+                        }
                         break;
                 }
                 return u;

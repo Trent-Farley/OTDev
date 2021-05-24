@@ -32,7 +32,7 @@ namespace MealFridge.Controllers
             return View();
         }
 
-        public async Task<IActionResult> UpdateDiet(bool whole30, bool dairyFree, bool glutenFree, bool keto, bool vegen, bool vegetarian, bool lactoVeg, bool ovoVeg, bool paleo, bool pescetarian, bool primal, bool metric)
+        public async Task<IActionResult> UpdateDiet(bool whole30, bool dairyFree, bool glutenFree, bool keto, bool vegan, bool vegetarian, bool lactoVeg, bool ovoVeg, bool paleo, bool pescetarian, bool primal, bool metric)
         {
             if (User.Identity.IsAuthenticated)
             {
@@ -44,7 +44,7 @@ namespace MealFridge.Controllers
                     DairyFree = dairyFree,
                     GlutenFree = glutenFree,
                     Keto = keto,
-                    Vegan = vegen,
+                    Vegan = vegan,
                     Vegetarian = vegetarian,
                     LactoVeg = lactoVeg,
                     OvoVeg = ovoVeg,

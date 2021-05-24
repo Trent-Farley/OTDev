@@ -10,7 +10,8 @@ Scenario: A logged in user wants to regenerate a meal
 	Then a new meal should appear
 
 Scenario: A logged in users does not want to regenerate a meal
-	Given a user is logged in and on the meal planning page
+	Given a user is logged in
+	And on the meal planning page
 	And a meal plan is generated
 	When a user does not click the regenerate button
 	Then a new meal should not appear

@@ -30,6 +30,20 @@ namespace MealFridge.Models
             Dinner = r.Dinner;
             Dessert = r.Dessert;
             Snack = r.Snack;
+            Cuisine = r.Cuisine;
+            GlutenFree = r.GlutenFree;
+            DairyFree = r.DairyFree;
+            VeryHealthy = r.VeryHealthy;
+            Cheap = r.Cheap;
+            Vegan = r.Vegan;
+            Vegetarian = r.Vegetarian;
+            LactoVeg = r.LactoVeg;
+            OvoVeg = r.OvoVeg;
+            Keto = r.Keto;
+            Pescetarian = r.Pescetarian;
+            Primal = r.Primal;
+            Paleo = r.Paleo;
+            Whole30 = r.Whole30;
         }
     }
 }

@@ -64,6 +64,7 @@ CREATE TABLE [RECIPE] (
   [cost] money,
   [serving_size] float,
   [serving_unit] nvarchar(255),
+  [cuisine] nvarchar(255),
   [calories] float,
   [total_fat] float,
   [sat_fat] float,

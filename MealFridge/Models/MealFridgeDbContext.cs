@@ -200,6 +200,10 @@ namespace MealFridge.Models
                     .HasColumnType("money")
                     .HasColumnName("cost");
 
+                entity.Property(e => e.Cuisine)
+                    .HasMaxLength(255)
+                    .HasColumnName("cuisine");
+
                 entity.Property(e => e.DairyFree).HasColumnName("dairy_free");
 
                 entity.Property(e => e.Dessert).HasColumnName("dessert");

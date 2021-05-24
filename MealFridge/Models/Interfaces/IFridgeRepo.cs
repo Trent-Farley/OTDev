@@ -13,6 +13,7 @@ namespace MealFridge.Models.Interfaces
         List<Ingredient> FindByIngredient(int ingredId);
         Task AddFridgeAsync(Fridge fridgeIngredient);
         Task AddRecipeIngred(string userId, Recipeingred r);
+        Task AddObtained(Fridge item, bool obtained);
         Task Swap(string userId);
     }
 }
