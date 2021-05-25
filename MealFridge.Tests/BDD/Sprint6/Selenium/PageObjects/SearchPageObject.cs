@@ -15,6 +15,7 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
         private IWebElement RecipeInfo => _webDriver.FindElement(By.ClassName("btn-outline-primary"));
         private IWebElement CartButton => _webDriver.FindElement(By.Id("button-cart"));
         private IWebElement CuisineString => _webDriver.FindElement(By.Id("cuisineList"));
+        private IWebElement OptionDrop => _webDriver.FindElement(By.Id("dropbtn"));
         private IWebElement CuisineButton;
         public SearchPageObject(IWebDriver webDriver)
         {
@@ -31,12 +32,14 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
 
         internal void AddCuisine(string v)
         {
+            OptionDrop.Click();
             CuisineButton = _webDriver.FindElement(By.Id(v));
             CuisineButton.Click();
         }
 
         internal void ExcludeCuisine(string v)
         {
+            OptionDrop.Click();
             CuisineButton = _webDriver.FindElement(By.Id(v));
             CuisineButton.Click();
             CuisineButton.Click();

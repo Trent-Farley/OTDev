@@ -46,13 +46,14 @@ namespace MealFridge.Controllers
                 Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
                 Lunch = Lunch.OrderBy(d => d.Day).ToList(),
                 Dinner = dinner.OrderBy(d => d.Day).ToList(),
-                DaysCount = breakfast.Count() > 0 ? breakfast.Count() : Lunch.Count() > 0 ? Lunch.Count() : dinner.Count()
             };
+            meals.DaysCount = FindLargest(meals);
             var temp = new MealRestrictions
             {
                 Meals = meals,
                 MealFilter = new MealFilter()
             };
+
             return await Task.FromResult(View("Index", temp));
         }
 
@@ -66,7 +67,6 @@ namespace MealFridge.Controllers
                 var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
                 var cDay = DateTime.Now;
                 var meals = new Meals();
-                meals.DaysCount = filter.Days;
                 _mealRepo.RemoveOldMeals();
                 if (filter.Breakfast)
                 {
@@ -89,16 +89,29 @@ namespace MealFridge.Controllers
                         .OrderBy(d => d.Day)
                         .ToList();
                 }
+                meals.DaysCount = FindLargest(meals);
 
                 var temp = new MealRestrictions
                 {
                     MealFilter = new MealFilter(),
                     Meals = meals
                 };
-                return await Task.FromResult(View("Index", temp));
+                return await Task.FromResult(RedirectToAction("Index"));
             }
 
             return await Task.FromResult(View("Index", new MealRestrictions { MealFilter = filter }));
+        }
+
+        private int FindLargest(Meals meals)
+        {
+            var max = 0;
+            if (meals.Breakfast.Count() > max)
+                max = meals.Breakfast.Count();
+            if (meals.Lunch.Count() > max)
+                max = meals.Lunch.Count();
+            if (meals.Dinner.Count() > max)
+                max = meals.Dinner.Count();
+            return max;
         }
 
         [HttpPost]
@@ -127,7 +140,7 @@ namespace MealFridge.Controllers
                 .ToList();
 
             if (meals.Breakfast.Count < days || meals.Lunch.Count < days || meals.Dinner.Count < days)
-                return await Task.FromResult(PartialView("MealPlan", null));
+                return await Task.FromResult(PartialView("MealPlan", new Meals()));
 
             return await Task.FromResult(PartialView("MealPlan", meals));
         }
@@ -154,26 +167,14 @@ namespace MealFridge.Controllers
         [HttpPost]
         public async Task<IActionResult> RegenerateMeal(string mealDay)
         {
-            var swapDay = DateTime.Parse(mealDay);
+            var cday = DateTime.Parse(mealDay);
+
             var userId = _user.GetUserId(User);
             var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
             var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
-            var newMeal = _mealRepo.GetMeal(swapDay, userId, banned, dislikes);
-            var cDay = DateTime.Now;
-            cDay = cDay.Date + TimeSpan.FromHours(8);
-            var breakfast = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
-            cDay = cDay.Date + TimeSpan.FromHours(12);
-            var Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
-            cDay = cDay.Date + TimeSpan.FromHours(17);
-            var dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
-            var meals = new Meals
-            {
-                Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
-                Lunch = Lunch.OrderBy(d => d.Day).ToList(),
-                Dinner = dinner.OrderBy(d => d.Day).ToList(),
-                DaysCount = breakfast.Count() > 0 ? breakfast.Count() : Lunch.Count() > 0 ? Lunch.Count() : dinner.Count()
-            };
-            return await Task.FromResult(PartialView("MealPlan", meals));
+            var newMeal = _mealRepo.GetMeal(cday, userId, banned, dislikes);
+
+            return await Task.FromResult(PartialView("MealCard", newMeal));
         }
 
         [HttpPost]

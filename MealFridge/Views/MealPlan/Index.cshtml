@@ -23,9 +23,16 @@
     <div class="meal-plan-main"></div>
 
     <div class="m-lg-3" id="meals">
-        @if (Model.Meals != null)
+
+        @if (Model.Meals.Breakfast.Count() > 0 || Model.Meals.Lunch.Count() > 0 || Model.Meals.Dinner.Count() > 0)
         {
             <partial name="MealPlan" model="@Model.Meals" />
+        }
+        else
+        {
+            <div class="card w-25 p-0 m-0 shadow-lg rounded-pill">
+                <h7><i> Nothing to show!</i></h7>
+            </div>
         }
     </div>
     <div id="modal-container"></div>

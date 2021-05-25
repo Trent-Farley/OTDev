@@ -30,7 +30,7 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
             EnsureShoppingListIsOpen();
         }
 
-        private int ItemAmount = 0;
+        public int ItemAmount { get; set; }
         public void ClickAdd()
         {
             AddObtainEle.Click();
@@ -55,12 +55,15 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
             }
         }
 
-        public void ClickFirstTwoCheckboxs()
+        public void ClickFirstTwoCheckboxes()
         {
+            ItemAmount = Checkboxes.Count;
             var clicker = Checkboxes.GetEnumerator();
-            clicker.Current.Click();
-            if (clicker.MoveNext())
-                clicker.Current.Click();
+            for (int i = 0; i < 2; ++i)
+            {
+                if (clicker.MoveNext())
+                    clicker.Current.Click();
+            }
         }
 
         public void EnsureShoppingListIsOpen()
@@ -75,7 +78,6 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
                 login.Login();
                 _webDriver.Navigate().GoToUrl(ShoppingUrl);
             }
-            new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5)).Until(d => ((IJavaScriptExecutor)d).ExecuteScript("return document.readyState").Equals("complete"));
         }
         public int WaitForResult()
         {

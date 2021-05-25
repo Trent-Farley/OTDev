@@ -2,11 +2,16 @@
     $('#generate').addClass("d-none");
     $('#filter-button').addClass("d-none");
     $('#delete-button').addClass("d-none");
-})
+});
 $("#close-button").on('click', () => {
     $('#generate').removeClass("d-none");
     $('#filter-button').removeClass("d-none");
     $('#delete-button').removeClass("d-none");
+});
+$(document).ready(() => {
+    try {
+        $("#dialog").modal('show');
+    } catch { }
 })
 let RECIPEID: string = "";
 function getMealPlan(): void {
@@ -93,11 +98,9 @@ function regenerate(mealDay, currentId) {
         data: {
             mealDay: mealDay
         },
-        success: (generatedMeals) => {
-            $("#genSLButton").show();
-            $("#meals").html(generatedMeals);
+        success: (data) => {
+            $("#" + currentId).html(data);
         },
-
         error: (err) => { console.log(err); }
     });
 }
