@@ -25,6 +25,7 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.Driver
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
 
             var chromeOptions = new ChromeOptions();
+            chromeOptions.AcceptInsecureCertificates = true;
 
             var chromeDriver = new ChromeDriver(chromeDriverService, chromeOptions);
 
