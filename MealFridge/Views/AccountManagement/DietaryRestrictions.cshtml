@@ -17,58 +17,60 @@
 <div class="container">
     <div class="row">
         <div class="col" style="box-shadow:10px 10px 5px grey">
-            <h1>Diet Settings</h1>
-            <ul>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Whole30.Value" id="Whole30">
-                    <label> Whole30 </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.DairyFree.Value" id="DairyFree">
-                    <label> DairyFree </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.GlutenFree.Value" id="GlutenFree">
-                    <label> Gluten Free </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Keto.Value" id="Keto">
-                    <label> Keto </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Vegan.Value" id="Vegan">
-                    <label> Vegan </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Vegetarian.Value" id="Vegetarian">
-                    <label> Vegetarian </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.LactoVeg.Value" id="LactoVeg">
-                    <label> Lacto Vegetarian </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.OvoVeg.Value" id="OvoVeg">
-                    <label> Ovo Vegetarian </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Paleo.Value" id="Paleo">
-                    <label> Paleo </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Pescetarian.Value" id="Pescetarian">
-                    <label> Pescetarian </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Primal.Value" id="Primal">
-                    <label> Primal </label>
-                </li>
-                <li>
-                    <input type="checkbox" checked="@Model.Diet.Metric.Value" id="Metric">
-                    <label> Default to Metric Measurements </label>
-                </li>
-            </ul>
-            <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
+            <div id="cnhIngredList">
+                <h1>Diet Settings</h1>
+                <ul>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Whole30.Value" id="Whole30">
+                        <label> Whole30 </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.DairyFree.Value" id="DairyFree">
+                        <label> DairyFree </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.GlutenFree.Value" id="GlutenFree">
+                        <label> Gluten Free </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Keto.Value" id="Keto">
+                        <label> Keto </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Vegan.Value" id="Vegan">
+                        <label> Vegan </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Vegetarian.Value" id="Vegetarian">
+                        <label> Vegetarian </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.LactoVeg.Value" id="LactoVeg">
+                        <label> Lacto Vegetarian </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.OvoVeg.Value" id="OvoVeg">
+                        <label> Ovo Vegetarian </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Paleo.Value" id="Paleo">
+                        <label> Paleo </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Pescetarian.Value" id="Pescetarian">
+                        <label> Pescetarian </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Primal.Value" id="Primal">
+                        <label> Primal </label>
+                    </li>
+                    <li>
+                        <input type="checkbox" checked="@Model.Diet.Metric.Value" id="Metric">
+                        <label> Default to Metric Measurements </label>
+                    </li>
+                </ul>
+                <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
+            </div>
         </div>
         <div class="col" style="box-shadow:10px 10px 5px grey">
             <div id="cnhIngredList">
