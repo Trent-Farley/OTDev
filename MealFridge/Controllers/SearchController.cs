@@ -69,7 +69,6 @@ namespace MealFridge.Controllers
             var userId = _user.GetUserId(User);
             var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
-            var diets = _db.Diets.Where(a => a.AccountId == userId);
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
@@ -84,7 +83,6 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-            query = SetDiets(query);
             if (possibleRecipes.Count < 10)
             {
                 query.Credentials = _config["SApiKey"];
@@ -308,68 +306,6 @@ namespace MealFridge.Controllers
 
             //_db.Fridges.Add(fridgeIngredient);
             return await Task.FromResult(StatusCode(200));
-        }
-        public Query SetDiets(Query query)
-        {
-            var userId = _user.GetUserId(User);
-            var diets = _db.Diets.Where(a => a.AccountId == userId);
-            if (diets.FirstOrDefault().DairyFree == true)
-            {
-                query.Intolerances = true;
-                query.DietInclude += "dairy-free";
-            }
-            if (diets.FirstOrDefault().Vegan == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "vegan,";
-            }
-            if (diets.FirstOrDefault().Vegetarian == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "vegetarian";
-            }
-            if (diets.FirstOrDefault().Keto == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "ketogenic";
-            }
-            if (diets.FirstOrDefault().GlutenFree == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "gluten-free";
-            }
-            if (diets.FirstOrDefault().OvoVeg == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "ovo-vegetarian";
-            }
-            if (diets.FirstOrDefault().LactoVeg == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "lacto-vegetarian";
-            }
-            if (diets.FirstOrDefault().Pescetarian == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "pescetarian";
-            }
-            if (diets.FirstOrDefault().Paleo == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "pescetarian";
-            }
-            if (diets.FirstOrDefault().Primal == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "primal";
-            }
-            if (diets.FirstOrDefault().Whole30 == true)
-            {
-                query.Diet = true;
-                query.DietInclude += "whole30";
-            }
-            query.DietInclude = query.DietInclude.Trim(',');
-            return query;
         }
     }
 }

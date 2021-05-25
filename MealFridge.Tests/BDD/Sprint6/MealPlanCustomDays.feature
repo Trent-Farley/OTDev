@@ -3,15 +3,14 @@
 	Link here: https://www.pivotaltracker.com/story/show/177689443
 	Testing/Implementation done by: Trent Farley
 
-Scenario Outline: A user requests for any amount of days' worth of meals, up to 14 days
-	Given a user is logged in
-	And on the meal planning page
-	When a user specifies <days> worth of days to generate
-	Then a meal plan should be generated with <days> worth of meals
+Scenario: A user requests a meal plan for 5 days worth of meals
+	Given the meal planner page is active
+	When the add filters button is clicked
+	And a user specifies 5 worth of days to generate
+	Then a meal plan should be generated with 5 worth of meals
 
-	Examples:
-		| days |
-		| 5    |
-		| 11   |
-		| 2    |
-		| 14   |
+Scenario: A user requests a meal plan for 14 days worth of meals
+	Given the meal planner page is active
+	When the add filters button is clicked
+	When a user specifies 14 worth of days to generate
+	Then a meal plan should be generated with 14 worth of meals

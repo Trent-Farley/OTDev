@@ -47,7 +47,7 @@
 @for (var i = 0; i < Model.DaysCount; ++i)
 {
 
-    <div class="row m-lg-2 mb-lg-4">
+    <div class="row  m-lg-2 mb-lg-4" id="meals">
         <div class="col bg-secondary">
             <div class="card shadow-lg rounded-lg">
                 <h4 class="card-title text-center" style="border-width:thick; border-bottom:solid">
@@ -83,39 +83,39 @@
                     <table class="table table-borderless p-0 m-0 table-hover table-sm">
                         <tr>
                             <td>Calories</td>
-                            <td>@total.Calories</td>
+                            <td id="totalCalories">@total.Calories</td>
                         </tr>
                         <tr>
                             <td>Total Fat</td>
-                            <td>@total.TotalFat</td>
+                            <td id="totalFat">@total.TotalFat</td>
                         </tr>
                         <tr>
                             <td>Saturated Fat</td>
-                            <td>@total.SatFat</td>
+                            <td id="totalSatFat">@total.SatFat</td>
                         </tr>
                         <tr>
                             <td>Carbs</td>
-                            <td>@total.Carbs</td>
+                            <td id="totalCarbs">@total.Carbs</td>
                         </tr>
                         <tr>
                             <td>Net Carbs</td>
-                            <td>@total.NetCarbs</td>
+                            <td id="totalNetCarbs">@total.NetCarbs</td>
                         </tr>
                         <tr>
                             <td>Sugar</td>
-                            <td>@total.Sugar</td>
+                            <td id="totalSugar">@total.Sugar</td>
                         </tr>
                         <tr>
                             <td>Cholesterol</td>
-                            <td>@total.Cholesterol</td>
+                            <td id="totalCholesterol">@total.Cholesterol</td>
                         </tr>
                         <tr>
                             <td>Sodium</td>
-                            <td>@total.Sodium</td>
+                            <td id="totalSodium">@total.Sodium</td>
                         </tr>
                         <tr>
                             <td>Protein</td>
-                            <td>@total.Protein</td>
+                            <td id="totalProtein">@total.Protein</td>
                         </tr>
                     </table>
                     <div class="card-footer"><i>* estimation of (1) serving per meal</i></div>
@@ -127,7 +127,7 @@
             @if (Model.Breakfast.Count() <= i)
             {
 
-                <div class="col bg-primary" id="@Model.Breakfast[i].Day.DayOfWeek-@Model.Breakfast[i].MealType">
+                <div class="col bg-primary " id="@Model.Breakfast[i].Day.DayOfWeek-@Model.Breakfast[i].MealType">
                     <div class="container">
                         <partial name="MealCard" model="@Model.Breakfast[i]" />
                     </div>
@@ -146,7 +146,7 @@
         {
             @if (Model.Lunch.Count() <= i)
             {
-                <div class="col bg-primary">
+                <div class="col bg-success">
                     <div class="container">
                         <div class="card  h-100 w-100">
                             <h5 class="card-title  h-100 w-100"><i>Unable to generate lunch</i></h5>
@@ -167,7 +167,7 @@
         {
             @if (Model.Dinner.Count() <= i)
             {
-                <div class="col bg-primary">
+                <div class="col bg-warning">
                     <div class="container">
                         <div class="card w-100 h-100">
                             <h5 class="card-title h-100 w-100"><i>Unable to generate dinner</i></h5>

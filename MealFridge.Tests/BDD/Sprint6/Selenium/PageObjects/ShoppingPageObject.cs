@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using System.Threading;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
@@ -27,6 +27,7 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
         internal void AddItems()
         {
             new SearchPageObject(_webDriver).AddRecipeToShoppingList();
+            Thread.Sleep(1000);
             EnsureShoppingListIsOpen();
         }
 
