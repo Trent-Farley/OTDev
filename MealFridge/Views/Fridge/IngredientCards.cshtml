@@ -38,13 +38,15 @@
                     <button type="button"
                             class="btn btn-outline-danger btn-sm"
                             style="display:inline-block"
-                            onclick="banIngred('@ingredient.Id')">
+                            onclick="banIngred('@ingredient.Id')"
+                            id="banIngredBtn">
                         Cannot Have
                     </button>
                     <button type="button"
                             class="btn btn-outline-warning btn-sm"
                             style="display:inline-block"
-                            onclick="hideIngred('@ingredient.Id')">
+                            onclick="hideIngred('@ingredient.Id')"
+                            id="hideIngredBtn">
                         Dislike
                     </button>
                     <button type="button"

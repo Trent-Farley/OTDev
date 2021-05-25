@@ -135,7 +135,7 @@ function undoFavorite(id: string): void {
         success: _ => {
             $("#alert").empty();
             $("#alert").html(`
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert" id="favUndoSuccess">
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -167,7 +167,7 @@ function addFavorite(id: string): void {
         success: _ => {
             $("#alert").empty();
             $("#alert").html(`
-                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert" id="FavoriteSuccess">
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>

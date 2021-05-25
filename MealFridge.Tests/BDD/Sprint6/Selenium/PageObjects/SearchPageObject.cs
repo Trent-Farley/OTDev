@@ -16,6 +16,11 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
         private IWebElement CartButton => _webDriver.FindElement(By.Id("button-cart"));
         private IWebElement CuisineString => _webDriver.FindElement(By.Id("cuisineList"));
         private IWebElement OptionDrop => _webDriver.FindElement(By.Id("dropbtn"));
+        private IWebElement FavButton => _webDriver.FindElement(By.Id("favButton"));
+        private IWebElement UndoButton => _webDriver.FindElement(By.Id("undoFavButton"));
+        private IWebElement FavSuccess => _webDriver.FindElement(By.Id("FavoriteSuccess"));
+        private IWebElement UndoFavButtonSuccess => _webDriver.FindElement(By.Id("favUndoSuccess"));
+
         private IWebElement CuisineButton;
         public SearchPageObject(IWebDriver webDriver)
         {
@@ -29,7 +34,36 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
                 _webDriver.Navigate().GoToUrl(Url);
             }
         }
+        public void SearchForRecipe()
+        {
+            EnsureSearchIsOpen();
+            SearchInput.SendKeys("Steak" + Keys.Enter);
+            var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5));
+            wait.Until(driver =>
+            {
+                return RecipeInfo.Displayed;
+            });
+        }
+        public void FavClick()
+        {
+            FavButton.Click();
+        }
+        public bool UndoFavSuccess()
+        {
+            return UndoFavButtonSuccess != null;
+        }
 
+        public void UndoFavClick()
+        {
+            var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(5));
+            wait.Until(driver =>
+            {
+                if (FavSuccess == null)
+                    return false;
+                return true;
+            });
+            UndoButton.Click();
+        }
         internal void AddCuisine(string v)
         {
             OptionDrop.Click();
