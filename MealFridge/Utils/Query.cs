@@ -18,8 +18,8 @@ namespace MealFridge.Utils
         public bool Cheap { get; set; }
         public int PageNumber { get; set; } = 0;
 
-        public bool Diet { get; set; }
-        public bool Intolerances { get; set; }
+        public bool Diet = false;
+        public bool Intolerances = false;
         public string DietInclude { get; set; }
 
         private readonly string Number = "10";
