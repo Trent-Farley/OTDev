@@ -71,24 +71,27 @@
             <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
         </div>
         <div class="col" style="box-shadow:10px 10px 5px grey">
-            <h1>Restricted Ingredients</h1>
-            <p>Ingredients Flagged as "Cannot Have"</p>
-            @if (Model.userRestrictions.Count() > 0)
-            {
-                <ul>
-                    @foreach (var i in Model.userRestrictions)
-                    {
-                        <li id="cnhIngredItem">
-                            <label>@i.Ingred.Name</label>
-                            <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
-                                <i class="far fa-times-circle"></i>
-                            </button>
-                        </li>
-                    }
-                </ul>}
-            @if (Model.userRestrictions.Count() < 1)
-            {<p>--Nothing to show--</p>}
-        </div>
+            <div id="cnhIngredList">
+                <h1>Restricted Ingredients</h1>
+                <p>Ingredients Flagged as "Cannot Have"</p>
+                @if (Model.userRestrictions.Count() > 0)
+                {
+                    <ul>
+                        @foreach (var i in Model.userRestrictions)
+                        {
+                            <li id="cnhIngredItem" style="display:inline-block">
+                                <label>@i.Ingred.Name</label>
+                                <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
+                                    <i class="far fa-times-circle"></i>
+                                </button>
+                            </li>
+                        }
+                    </ul>
+                }
+                @if (Model.userRestrictions.Count() < 1)
+                {<p>--Nothing to show--</p>}
+                </div>  
+           </div>
     </div>
 </div>
 
