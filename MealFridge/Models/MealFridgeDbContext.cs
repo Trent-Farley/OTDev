@@ -41,7 +41,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Diet>(entity =>
             {
                 entity.HasKey(e => e.AccountId)
-                    .HasName("PK__DIET__46A222CD24779C3E");
+                    .HasName("PK__DIET__46A222CDD7D79E9A");
 
                 entity.ToTable("DIET");
 
@@ -77,7 +77,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Fridge>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.IngredId })
-                    .HasName("PK__FRIDGE__9100B6D18B322F56");
+                    .HasName("PK__FRIDGE__9100B6D19AFB4113");
 
                 entity.ToTable("FRIDGE");
 
@@ -156,7 +156,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Meal>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.Day })
-                    .HasName("PK__MEAL__4B255BFF1A2DB6B0");
+                    .HasName("PK__MEAL__4B255BFF2AEBDE43");
 
                 entity.ToTable("MEAL");
 
@@ -278,7 +278,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Recipeingred>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeId, e.IngredId })
-                    .HasName("PK__RECIPEIN__E2D37987DF23F2FE");
+                    .HasName("PK__RECIPEIN__E2D37987BF60EECB");
 
                 entity.ToTable("RECIPEINGRED");
 
@@ -330,7 +330,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Restriction>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.IngredId })
-                    .HasName("PK__RESTRICT__9100B6D1B126012E");
+                    .HasName("PK__RESTRICT__9100B6D1A4051865");
 
                 entity.ToTable("RESTRICTIONS");
 
@@ -354,7 +354,7 @@ namespace MealFridge.Models
             modelBuilder.Entity<Savedrecipe>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.RecipeId })
-                    .HasName("PK__SAVEDREC__E5F53C14E87CFE14");
+                    .HasName("PK__SAVEDREC__E5F53C1459AEA173");
 
                 entity.ToTable("SAVEDRECIPES");
 

@@ -18,6 +18,10 @@ namespace MealFridge.Utils
         public bool Cheap { get; set; }
         public int PageNumber { get; set; } = 0;
 
+        public bool Diet = false;
+        public bool Intolerances = false;
+        public string DietInclude { get; set; }
+
         private readonly string Number = "10";
 
         public string GetUrl
@@ -53,6 +57,18 @@ namespace MealFridge.Utils
                         if (CuisineExclude != null)
                         {
                             u += "&excludeCuisine=" + CuisineExclude.Trim(',').ToLower();
+                        }
+                        if (Diet == true && Intolerances == true)
+                        {
+                            u += "&diet=" + DietInclude + "&intolerances=" + "dairy";
+                        }
+                        if (Diet == true && Intolerances == false)
+                        {
+                            u += "&diet=" + DietInclude;
+                        }
+                        if (Diet == false && Intolerances == true)
+                        {
+                            u += "&intolerances=" + "dairy";
                         }
                         break;
                 }
