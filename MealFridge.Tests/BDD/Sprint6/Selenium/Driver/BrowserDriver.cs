@@ -9,7 +9,6 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.Driver
 {
     public class BrowserDriver : IDisposable
     {
-
         private readonly Lazy<IWebDriver> _currentWebDriverLazy;
         private bool _isDisposed;
 
@@ -25,11 +24,13 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.Driver
             var chromeDriverService = ChromeDriverService.CreateDefaultService();
 
             var chromeOptions = new ChromeOptions();
+            chromeOptions.AcceptInsecureCertificates = true;
 
             var chromeDriver = new ChromeDriver(chromeDriverService, chromeOptions);
 
             return chromeDriver;
         }
+
         public void Dispose()
         {
             if (_isDisposed)
