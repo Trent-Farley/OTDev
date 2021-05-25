@@ -67,9 +67,7 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> SearchByName(Query query)
         {
             var userId = _user.GetUserId(User);
-            var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
-            var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
-            var diets = _db.Diets.Where(a => a.AccountId == userId);
+            
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
@@ -78,13 +76,19 @@ namespace MealFridge.Controllers
                 possibleRecipes.RemoveAll(r => !CheckIntersect(r.Cuisine, query.CuisineInclude));
             if (query.CuisineExclude != null)
                 possibleRecipes.RemoveAll(r => CheckIntersect(r.Cuisine, query.CuisineExclude));
-
+            if (query.Cheap)
+            {
+                possibleRecipes = possibleRecipes.Where(r => r.Cheap.Value && r.Cost != null).OrderBy(r => r.Cost).ToList();
+            }
+            else
+            {
+                possibleRecipes = possibleRecipes.OrderBy(p => p.Id).ToList();
+            }
             possibleRecipes = possibleRecipes
-                .OrderBy(p => p.Id)
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-            query = SetDiets(query);
+           
             if (possibleRecipes.Count < 10)
             {
                 query.Credentials = _config["SApiKey"];
@@ -95,26 +99,32 @@ namespace MealFridge.Controllers
                     possibleRecipes.Add(i);
                 }
             }
-            foreach (var i in possibleRecipes)
+            if (userId != null)
             {
-                var other = _recipeIngredContext.GetIngredients(i.Id);
-                foreach (var j in other)
+                query = SetDiets(query);
+                var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
+                var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
+                foreach (var i in possibleRecipes)
                 {
-                    var temp = _restrictContext.Restriction(_restrictContext.GetAll(), userId, j.IngredId);
-                    if (banned.Contains(temp))
+                    var other = _recipeIngredContext.GetIngredients(i.Id);
+                    foreach (var j in other)
                     {
-                        i.Banned = true;
-                    }
-                    if (dislikes.Contains(temp))
-                    {
-                        i.Dislike = true;
+                        var temp = _restrictContext.Restriction(_restrictContext.GetAll(), userId, j.IngredId);
+                        if (banned.Contains(temp))
+                        {
+                            i.Banned = true;
+                        }
+                        if (dislikes.Contains(temp))
+                        {
+                            i.Dislike = true;
+                        }
                     }
                 }
             }
-            if (query.Cheap)
-            {
-                return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r => r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
-            }
+            //if (query.Cheap)
+            //{
+            //    return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r => r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
+            //}
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
 
@@ -313,6 +323,8 @@ namespace MealFridge.Controllers
         {
             var userId = _user.GetUserId(User);
             var diets = _db.Diets.Where(a => a.AccountId == userId);
+            if (!diets.Any())
+                return query;
             if (diets.FirstOrDefault().DairyFree == true)
             {
                 query.Intolerances = true;
