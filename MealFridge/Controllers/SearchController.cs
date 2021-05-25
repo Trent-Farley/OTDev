@@ -70,7 +70,6 @@ namespace MealFridge.Controllers
             var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var diets = _db.Diets.Where(a => a.AccountId == userId);
-
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
@@ -79,18 +78,18 @@ namespace MealFridge.Controllers
                 possibleRecipes.RemoveAll(r => !CheckIntersect(r.Cuisine, query.CuisineInclude));
             if (query.CuisineExclude != null)
                 possibleRecipes.RemoveAll(r => CheckIntersect(r.Cuisine, query.CuisineExclude));
+
             possibleRecipes = possibleRecipes
                 .OrderBy(p => p.Id)
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
             query = SetDiets(query);
-            if (possibleRecipes.Count <= 10)
+            if (possibleRecipes.Count < 10)
             {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
-                
                 foreach (var i in await SearchApiAsync(query))
                 {
                     possibleRecipes.Add(i);
@@ -114,7 +113,7 @@ namespace MealFridge.Controllers
             }
             if (query.Cheap)
             {
-                return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r=> r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
+                return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r => r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
             }
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
@@ -154,7 +153,7 @@ namespace MealFridge.Controllers
                     possibleRecipes.Add(i);
                 }
             }
-            if(query.Cheap)
+            if (query.Cheap)
             {
                 return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r => r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
             }
