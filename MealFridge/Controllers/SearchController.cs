@@ -69,6 +69,9 @@ namespace MealFridge.Controllers
             var userId = _user.GetUserId(User);
             var banned = _restrictContext.GetUserRestrictedIngredWithIngredName(_restrictContext.GetAll(), userId);
             var dislikes = _restrictContext.GetUserDislikedIngredWithIngredName(_restrictContext.GetAll(), userId);
+            var diets = _db.Diets.Where(a => a.AccountId == userId);
+            
+
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
@@ -77,7 +80,11 @@ namespace MealFridge.Controllers
                 possibleRecipes.RemoveAll(r => !CheckIntersect(r.Cuisine, query.CuisineInclude));
             if (query.CuisineExclude != null)
                 possibleRecipes.RemoveAll(r => CheckIntersect(r.Cuisine, query.CuisineExclude));
-
+            if(diets.FirstOrDefault().Vegan == true)
+            {
+                var temp = possibleRecipes.Where(v => v.Vegan == true).ToList();
+                possibleRecipes = possibleRecipes.Where(v => v.Vegan == true).ToList();
+            }
             possibleRecipes = possibleRecipes
                 .OrderBy(p => p.Id)
                 .Skip(10 * query.PageNumber)
@@ -88,6 +95,17 @@ namespace MealFridge.Controllers
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
                 query.Url = ApiConstants.SearchByNameEndpoint;
+                if (diets.FirstOrDefault().DairyFree == true)
+                {
+                    query.DietStatus = "&intolerances=";
+                    query.DietInclude += "dairy-free";
+                }
+                if (diets.FirstOrDefault().Vegan == true)
+                {
+                    query.DietStatus = "&diet=";
+                    query.DietInclude += "vegan";
+                }
+
                 foreach (var i in await SearchApiAsync(query))
                 {
                     possibleRecipes.Add(i);

@@ -18,6 +18,9 @@ namespace MealFridge.Utils
         public bool Cheap { get; set; }
         public int PageNumber { get; set; } = 0;
 
+        public string DietStatus { get; set; }
+        public string DietInclude { get; set; }
+
         private readonly string Number = "10";
 
         public string GetUrl
@@ -53,6 +56,10 @@ namespace MealFridge.Utils
                         if (CuisineExclude != null)
                         {
                             u += "&excludeCuisine=" + CuisineExclude.Trim(',').ToLower();
+                        }
+                        if (DietStatus != null)
+                        {
+                            u += DietStatus + DietInclude;
                         }
                         break;
                 }
