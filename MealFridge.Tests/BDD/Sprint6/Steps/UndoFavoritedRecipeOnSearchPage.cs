@@ -30,10 +30,13 @@ namespace MealFridge.Tests.BDD.Sprint6.Steps
         {
             _page.UndoFavClick();
         }
+        
         [Then (@"the undo should be successful")]
         public void TheUndoShouldBeSuccessful()
         {
-            _page.undoSuccess();
+            Assert.That(_page.UndoFavSuccess());
+
         }
+        
     }
 }

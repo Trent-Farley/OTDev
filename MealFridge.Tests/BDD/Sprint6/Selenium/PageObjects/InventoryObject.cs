@@ -10,15 +10,19 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
     class InventoryObject
     {
         private const string InventoryUrl = "https://localhost:5001/Fridge";
+        private const string HomeUrl = "https://localhost:5001";
 
         private readonly IWebDriver _webDriver;
         public const int DefaultWaitInSeconds = 10;
         
         private IWebElement IngredSearch => _webDriver.FindElement(By.Id("ingredSearch"));
         private IWebElement IngredSearchConfirm => _webDriver.FindElement(By.Id("ingredSearchConfirm"));
-        private IWebElement BeefBrothCannotHave => _webDriver.FindElement(By.Id("banId-6008"));
-        private IWebElement BeefBrothDislike => _webDriver.FindElement(By.Id("hideId-6008"));
+        private IWebElement CannotHaveBtn => _webDriver.FindElement(By.Id("banIngredBtn"));
+        private IWebElement DisklikeBtn => _webDriver.FindElement(By.Id("hideIngredBtn"));
         private IWebElement UndoButton => _webDriver.FindElement(By.Id("undoFavButton"));
+        private IWebElement FirstCardTitlte => _webDriver.FindElement(By.ClassName("card-title"));
+        private int CardCount => _webDriver.FindElements(By.ClassName("card-title")).Count;
+
 
 
         public InventoryObject(IWebDriver webDriver)
@@ -32,33 +36,48 @@ namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
                 _webDriver.Navigate().GoToUrl(InventoryUrl);
             }
         }
+        public void RefreshPage()
+        {
+            _webDriver.Navigate().GoToUrl(HomeUrl);
+            _webDriver.Navigate().GoToUrl(InventoryUrl);
+        }
         public void SearchForIngredient()
         {
-            IngredSearch.SendKeys("beef");
-            IngredSearchConfirm.Click();
+            IngredSearch.SendKeys("beef" + Keys.Enter);
         }
         public void DislikeIngredientClick()
         {
-            BeefBrothDislike.Click();
+            WaitForSearchResult();
+            var temp = _webDriver.FindElement(By.Id("hideIngredBtn"));
+            temp.Click();
         }
         public void CannotHaveIngredientClick()
         {
-            BeefBrothCannotHave.Click();
+            WaitForSearchResult();
+            var temp = _webDriver.FindElement(By.Id("banIngredBtn"));
+            temp.Click();
         }
         public void UndoButtonClick()
         {
+            WaitForSearchResult();
             UndoButton.Click();
         }
         public bool BrothIsBackInSearch()
         {
-            return BeefBrothCannotHave != null;
+            WaitForSearchResult();
+            return CardCount  >= 16;
+        }
+        public bool BrothIsGoneFromSearch()
+        {
+            WaitForSearchResult();
+            return CardCount < 17;
         }
         public void WaitForSearchResult()
         {
             var wait = new WebDriverWait(_webDriver, TimeSpan.FromSeconds(DefaultWaitInSeconds));
             wait.Until(driver =>
             {
-                if (BeefBrothCannotHave == null)
+                if (CannotHaveBtn == null)
                     return false;
 
                 return true;

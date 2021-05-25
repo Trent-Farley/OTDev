@@ -42,11 +42,22 @@ namespace MealFridge.Tests.BDD.Sprint6.Steps
             _page.WaitForUndoResult();
             _page.UndoButtonClick();
         }
+        [When(@"they retry")]
+        public void Retry()
+        {
+            _page.RefreshPage();
+        }
         [Then(@"the ingredient should reappear in search")]
         public void TheIngredientShouldReappearInSearch()
         {
             _page.WaitForSearchResult();
             Assert.That(_page.BrothIsBackInSearch);
+        }
+        [Then(@"the ingredient should not reappear in search")]
+        public void ShouldNotAppear()
+        {
+            _page.WaitForSearchResult();
+            Assert.That(_page.BrothIsGoneFromSearch);
         }
     }
 }
