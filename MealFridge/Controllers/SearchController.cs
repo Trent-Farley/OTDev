@@ -97,12 +97,12 @@ namespace MealFridge.Controllers
                 query.Url = ApiConstants.SearchByNameEndpoint;
                 if (diets.FirstOrDefault().DairyFree == true)
                 {
-                    query.DietStatus = "&intolerances=";
+                    query.Intolerances = true;
                     query.DietInclude += "dairy-free";
                 }
                 if (diets.FirstOrDefault().Vegan == true)
                 {
-                    query.DietStatus = "&diet=";
+                    query.Diet = true;
                     query.DietInclude += "vegan";
                 }
 
@@ -184,6 +184,8 @@ namespace MealFridge.Controllers
                 return await Task.FromResult(StatusCode(400));
             var recipe = _db.Recipes
                 .Where(rt => rt.Id == id)
+                .Include(r => r.Recipeingreds)
+                .ThenInclude(i => i.Ingred)
                 .FirstOrDefault();
             if (recipe.Recipeingreds.Count < 1)
             {
