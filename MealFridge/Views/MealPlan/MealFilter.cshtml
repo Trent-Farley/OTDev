@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col text-center">
                         <label class="w-100 " for="#Days"> How many days? </label>
-                        @Html.DropDownListFor(d => d.Days, Enumerable.Range(1, 14).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "w-100 custom-select text-center mb-1" })
+                        @Html.DropDownListFor(d => d.Days, Enumerable.Range(1, 14).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }), new { @class = "w-100 custom-select text-center mb-1", @id = "days" })
                     </div>
                     <div class="col text-center">
                         <label class=" w-100 text-center" for="#b">Breakfast</label>
@@ -27,8 +27,8 @@
                 <div class="row" style="overflow-y: scroll; overflow-x:hidden; height: 30vh;">
                     <div class="col">
                         <div class="list-group-item">
-                            <label class="w-75" for="#vhealthy">Very healthy:</label>
-                            <input type="checkbox" title="Warning! This may get unexpected recipes due to classification!" id="vhealthy" class="custom-checkbox" asp-for="VeryHealthy" />
+                            <label class="w-75" for="#veryhealthy">Very healthy:</label>
+                            <input type="checkbox" title="Warning! This may get unexpected recipes due to classification!" id="veryhealthy" class="custom-checkbox" asp-for="VeryHealthy" />
                         </div>
                         <div class="list-group-item">
                             <label class="w-75" for="#cheap">Cheap:</label>
@@ -53,16 +53,16 @@
                     </div>
                     <div class="col">
                         <div class="list-group-item">
-                            <label class="w-75" for="#veg">Vegan:</label>
-                            <input type="checkbox" id="veg" class="custom-checkbox" asp-for="Vegan" />
+                            <label class="w-75" for="#vegan">Vegan:</label>
+                            <input type="checkbox" id="vegan" class="custom-checkbox" asp-for="Vegan" />
                         </div>
                         <div class="list-group-item">
-                            <label class="w-75" for="#gluten-free">Gluten free:</label>
-                            <input type="checkbox" id="gluten-free" class="custom-checkbox" asp-for="GlutenFree" />
+                            <label class="w-75" for="#glutenFree">Gluten free:</label>
+                            <input type="checkbox" id="glutenFree" class="custom-checkbox" asp-for="GlutenFree" />
                         </div>
                         <div class="list-group-item">
-                            <label class="w-75" for="#dairy-free">Dairy Free:</label>
-                            <input type="checkbox" id="dairy-free" class="custom-checkbox" asp-for="DairyFree" />
+                            <label class="w-75" for="#dairyFree">Dairy Free:</label>
+                            <input type="checkbox" id="dairyFree" class="custom-checkbox" asp-for="DairyFree" />
                         </div>
                         <div class="list-group-item">
                             <label class="w-75" for="#keto">Keto:</label>
@@ -87,27 +87,27 @@
                         <input class="w-50 text-center" id="servings" min="0" max="10" type="number" asp-for="Servings" />
                     </div>
                     <div class="list-group-item">
-                        <label class="w-25" for="maxCalories">Calories: </label>
-                        <input class="w-50 text-center" min="50" max="2000" step="25" type="number" asp-for="Calories" />
+                        <label class="w-25" for="#calories">Calories: </label>
+                        <input class="w-50 text-center" id="calories" min="50" max="2000" step="25" type="number" asp-for="Calories" />
                     </div>
                     <div class="list-group-item">
                         <label class="w-25" for="#minutes">Minutes:</label>
                         <input id="minutes" class="w-50 text-center" max="200" min="10" type="number" step="10" asp-for="Minutes" />
                     </div>
                     <div class="list-group-item">
-                        <label class="w-25" for="#total-fat">Tatal fat:</label>
-                        <input id="total-fat" class="w-50 text-center" max="78" min="2" type="number" step="2" asp-for="TotalFat" />
+                        <label class="w-25" for="#fat">Tatal fat:</label>
+                        <input id="fat" class="w-50 text-center" max="78" min="2" type="number" step="2" asp-for="TotalFat" />
                     </div>
                     <div class="list-group-item">
-                        <label class="w-25" for="#sat-fat">Saturated fat:</label>
-                        <input id="sat-fat" class="w-50 text-center" max="20" min="1" type="number" step="1" asp-for="SatFat" />
+                        <label class="w-25" for="#satFat">Saturated fat:</label>
+                        <input id="satFat" class="w-50 text-center" max="20" min="1" type="number" step="1" asp-for="SatFat" />
                     </div>
                     <div class="list-group-item">
                         <label class="w-25" for="#carbs">Carbs:</label>
                         <input id="carbs" class="w-50 text-center" max="275" min="5" type="number" step="5" asp-for="Carbs" />
                     </div>
                     <div class="list-group-item">
-                        <label class="w-25" for="#net-carbs">Net Carbs:</label>
+                        <label class="w-25" for="#netCarbs">Net Carbs:</label>
                         <input id="netCarbs" class="w-50 text-center" max="275" min="5" type="number" step="5" asp-for="NetCarbs" />
                     </div>
                     <div class="list-group-item">
@@ -130,7 +130,7 @@
             </div>
         </div>
         <div class="row mt-lg-5">
-            <button class="btn btn-outline-success rounded-pill w-100" type="submit"> Generate meal plan </button>
+            <button class="btn btn-outline-success rounded-pill w-100" id="filteredSubmit" type="submit"> Generate meal plan </button>
         </div>
     </div>
 </form>
