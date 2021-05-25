@@ -31,7 +31,18 @@ namespace MealFridge.Tests.BDD.Sprint6.Steps
             }
             
         }
-        
+        [Given(@"there are two items clicked in the list")]
+        public void GivenThereAreTwoItemsClickedInTheList()
+        {
+            if (_shoppingPage.CheckList())
+                _shoppingPage.ClickFirstTwoCheckboxes();
+            else
+            {
+                _shoppingPage.AddItems();
+                _shoppingPage.ClickFirstTwoCheckboxes();
+            }
+        }
+
         [When(@"a user clicks the add button")]
         public void WhenAUserClicksTheAddButton()
         {
@@ -44,15 +55,24 @@ namespace MealFridge.Tests.BDD.Sprint6.Steps
             _shoppingPage.ClickRemove();
         }
         
-        [Then(@"the items are added to the inventory and removed from the shopping list\.")]
+        [Then(@"two items are removed from the shopping list")]
+        public void ThenTwoItemsAreRemovedFromTheShoppingList_()
+        {
+            var start = _shoppingPage.ItemAmount;
+            var result = _shoppingPage.WaitForResult();
+            Assert.IsTrue(start - 2 == result || (start - 2 < 0 && result == 0));
+        }
+
+        [Then(@"the items are added to the inventory and removed from the shopping list")]
         public void ThenTheItemsAreAddedToTheInventoryAndRemovedFromTheShoppingList_()
         {
             //Need another PageObject for fridge to see they were added to it.
-            var actualResult = _shoppingPage.WaitForResult();
-            Assert.AreEqual(0, actualResult);
+            var start = _shoppingPage.ItemAmount;
+            var result = _shoppingPage.WaitForResult();
+            Assert.IsTrue(start - 2 == result || (start - 2 < 0 && result == 0));
         }
         
-        [Then(@"all items are removed from the shopping list\.")]
+        [Then(@"all items are removed from the shopping list")]
         public void ThenAllItemsAreRemovedFromTheShoppingList_()
         {
             var actualResult = _shoppingPage.WaitForResult();

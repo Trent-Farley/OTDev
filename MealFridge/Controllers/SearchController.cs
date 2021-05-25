@@ -166,6 +166,8 @@ namespace MealFridge.Controllers
                 return await Task.FromResult(StatusCode(400));
             var recipe = _db.Recipes
                 .Where(rt => rt.Id == id)
+                .Include(r => r.Recipeingreds)
+                .ThenInclude(i => i.Ingred)
                 .FirstOrDefault();
             if (recipe.Recipeingreds.Count < 1)
             {
