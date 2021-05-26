@@ -8,29 +8,86 @@
         <div class="input-group">
 
             <div class="input-group-prepend">
-                <button class="float-left btn text-success border-0" type="button" data-toggle="collapse" data-target="#shoppingList" aria-expanded="false" aria-controls="shoppingList" title="Open or close the shopping list">
-                    <i class="fa fa-shopping-cart"></i>
-                </button>
 
                 @if (signInManager.IsSignedIn(User))
                 {
-                    <div class="dropdown">
                         <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
                             <i class="fas fa-box"></i>
                         </button>
-                        <div class="dropdown-content bg-dark text-light" id="pantryTool">
-                            <label class="switch" id="pSlider" title="Ignore common food items such as salt and water to improve search results when searching by ingredients in your inventory.">
-                                <input type="checkbox" id="panCheck">
-                                <span class="slider"><label id="pToolLabel">Refine</label></span>
-                            </label>
-                        </div>
-                    </div>
                 }
                 <input id="inventorySearch" value="@Model" hidden />
                 <select id="searchType" class="w-auto custom-select border-0 text-dark">
                     <option class="bg-dark text-light" value="Recipe">Recipe Name</option>
                     <option class="bg-dark text-light" value="Ingredient">Ingredient</option>
                 </select>
+                <div class="dropdown-menu-left">
+                    <button id="dropbtn" class="btn w-auto border-0 text-dark dropdown-toggle" type="button" data-toggle="dropdown">
+                        Options
+                        <span class="caret"></span>
+                    </button>
+                    <table class="dropdown-menu">
+                        <tr>
+                            <td>
+                                <h5>Cuisines</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input title="African" id="African" type="button" value="&#x2753;" onclick="stateChange(this)" /> African<br />
+                                <input title="American" id="American" type="button" value="&#x2753;" onclick="stateChange(this)" />American<br />
+                                <input title="British" id="British" type="button" value="&#x2753;" onclick="stateChange(this)" />British<br />
+                                <input title="Cajun" id="Cajun" type="button" value="&#x2753;" onclick="stateChange(this)" />Cajun<br />
+                                <input title="Caribbean" id="Caribbean" type="button" value="&#x2753;" onclick="stateChange(this)" />Caribbean<br />
+                            </td>
+                            <td>
+                                <input title="Chinese" id="Chinese" type="button" value="&#x2753;" onclick="stateChange(this)" />Chinese<br />
+                                <input title="European" id="European" type="button" value="&#x2753;" onclick="stateChange(this)" />European<br />
+                                <input title="French" id="French" type="button" value="&#x2753;" onclick="stateChange(this)" />French<br />
+                                <input title="German" id="German" type="button" value="&#x2753;" onclick="stateChange(this)" />German<br />
+
+                                <input title="Greek" id="Greek" type="button" value="&#x2753;" onclick="stateChange(this)" />Greek<br />
+                            </td>
+                            <td>
+                                <input title="Indian" id="Indian" type="button" value="&#x2753;" onclick="stateChange(this)" />Indian<br />
+                                <input title="Irish" id="Irish" type="button" value="&#x2753;" onclick="stateChange(this)" />Irish<br />
+                                <input title="Italian" id="Italian" type="button" value="&#x2753;" onclick="stateChange(this)" />Italian<br />
+                                <input title="Japanese" id="Japanese" type="button" value="&#x2753;" onclick="stateChange(this)" />Japanese<br />
+
+                                <input title="Jewish" id="Jewish" type="button" value="&#x2753;" onclick="stateChange(this)" />Jewish<br />
+                            </td>
+                            <td>
+                                <input title="Korean" id="Korean" type="button" value="&#x2753;" onclick="stateChange(this)" />Korean<br />
+                                <input title="Latin American" id="Latin American" type="button" value="&#x2753;" onclick="stateChange(this)" />Latin American<br />
+                                <input title="Mediterranean" id="Mediterranean" type="button" value="&#x2753;" onclick="stateChange(this)" />Mediterranean<br />
+                                <input title="Mexican" id="Mexican" type="button" value="&#x2753;" onclick="stateChange(this)" />Mexican<br />
+
+                                <input title="Middle Eastern" id="Middle Eastern" type="button" value="&#x2753;" onclick="stateChange(this)" />Middle Eastern<br />
+                            </td>
+                            <td>
+                                <input title="Nordic" id="Nordic" type="button" value="&#x2753;" onclick="stateChange(this)" />Nordic<br />
+                                <input title="Southern" id="Southern" type="button" value="&#x2753;" onclick="stateChange(this)" />Southern<br />
+                                <input title="Spanish" id="Spanish" type="button" value="&#x2753;" onclick="stateChange(this)" />Spanish<br />
+                                <input title="Thai" id="Thai" type="button" value="&#x2753;" onclick="stateChange(this)" />Thai<br />
+                                <input title="Vietnamese" id="Vietnamese" type="button" value="&#x2753;" onclick="stateChange(this)" />Vietnamese<br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h5>More Options</h5>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="checkbox" id="cheapCheck" />
+                                <label for="cheapMealsCheck">Low Cost Recipes</label>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="panCheck" />
+                                <label for="panCheck">Refine Inventory Search</label>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <input id="sbn" type="text" required class="w-auto border-0 form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="input-group-append">

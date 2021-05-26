@@ -71,10 +71,10 @@ namespace MealFridge.Models.Repositories
                 {
                     //prompt user for input.
                 }
-                var rounded = UnitConverter.RoundedAmount((double)item.NeededAmount + tempAmount, item.UnitType);
+                var rounded = UnitConverter.RoundedAmount(item.NeededAmount.Value + tempAmount, item.UnitType);
                 if(item.Quantity > 0)
                 {
-                    item.Quantity = UnitConverter.Convert((double)item.Quantity, item.UnitType, rounded.Key); 
+                    item.Quantity = UnitConverter.Convert(item.Quantity.Value, item.UnitType, rounded.Key); 
                 }
                 item.NeededAmount = rounded.Value;
                 item.UnitType = rounded.Key;
@@ -181,6 +181,14 @@ namespace MealFridge.Models.Repositories
                 await AddFridgeAsync(i);
             }
             await _context.SaveChangesAsync();
+        }
+
+        public async Task AddObtained(Fridge item, bool obtained)
+        {
+            if(obtained)
+                item.Quantity += item.NeededAmount;
+            item.NeededAmount = 0;
+            await AddFridgeAsync(item);
         }
     }
 }

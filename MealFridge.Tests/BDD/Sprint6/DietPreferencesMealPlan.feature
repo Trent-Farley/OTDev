@@ -7,6 +7,7 @@ Scenario: A user generates meal plans
 	When they have set a dietary restriction
 	Then the meal plans generated will only contain compliant recipes
 
+
 Scenario: A user sets a new dietary restriction
 	Given a user wants to specify a new diet
 	When they select a diet in the preference page

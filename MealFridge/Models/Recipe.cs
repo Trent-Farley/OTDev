@@ -24,6 +24,7 @@ namespace MealFridge.Models
         public decimal? Cost { get; set; }
         public double? ServingSize { get; set; }
         public string ServingUnit { get; set; }
+        public string Cuisine { get; set; }
         public double? Calories { get; set; }
         public double? TotalFat { get; set; }
         public double? SatFat { get; set; }
@@ -41,7 +42,7 @@ namespace MealFridge.Models
         public bool? VeryHealthy { get; set; }
         public bool? Cheap { get; set; }
         public bool? Vegetarian { get; set; }
-        public bool? Vegen { get; set; }
+        public bool? Vegan { get; set; }
         public bool? GlutenFree { get; set; }
         public bool? DairyFree { get; set; }
         public bool? Keto { get; set; }

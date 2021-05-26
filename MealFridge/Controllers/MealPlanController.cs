@@ -18,7 +18,6 @@ namespace MealFridge.Controllers
         private ISavedrecipeRepo _savedRepo;
         private IMealRepo _mealRepo;
         private IRestrictionRepo _restrictionRepo;
-        
 
         public MealPlanController(IRecipeRepo ctx, UserManager<IdentityUser> user, ISavedrecipeRepo savedrecipe, IMealRepo mealRepo, IRestrictionRepo resRepo)
         {
@@ -41,8 +40,6 @@ namespace MealFridge.Controllers
             var Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
             cDay = cDay.Date + TimeSpan.FromHours(17);
             var dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes);
-            if (breakfast.Count() < 1 || Lunch.Count() < 1 || dinner.Count() < 1)
-                return await Task.FromResult(View("Index", null));
 
             var meals = new Meals
             {
@@ -50,7 +47,71 @@ namespace MealFridge.Controllers
                 Lunch = Lunch.OrderBy(d => d.Day).ToList(),
                 Dinner = dinner.OrderBy(d => d.Day).ToList(),
             };
-            return await Task.FromResult(View("Index", meals));
+            meals.DaysCount = FindLargest(meals);
+            var temp = new MealRestrictions
+            {
+                Meals = meals,
+                MealFilter = new MealFilter()
+            };
+
+            return await Task.FromResult(View("Index", temp));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> MealPlanFiltered(MealFilter filter)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = _user.GetUserId(User);
+                var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
+                var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
+                var cDay = DateTime.Now;
+                var meals = new Meals();
+                _mealRepo.RemoveOldMeals();
+                if (filter.Breakfast)
+                {
+                    cDay = cDay.Date + TimeSpan.FromHours(8);
+                    meals.Breakfast = _mealRepo.GetMeals(cDay, userId, banned, dislikes, filter.Days, true, filter)
+                        .OrderBy(d => d.Day)
+                        .ToList();
+                }
+                if (filter.Lunch)
+                {
+                    cDay = cDay.Date + TimeSpan.FromHours(12);
+                    meals.Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes, filter.Days, true, filter)
+                        .OrderBy(d => d.Day)
+                        .ToList();
+                }
+                if (filter.Dinner)
+                {
+                    cDay = cDay.Date + TimeSpan.FromHours(17);
+                    meals.Dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes, filter.Days, true, filter)
+                        .OrderBy(d => d.Day)
+                        .ToList();
+                }
+                meals.DaysCount = FindLargest(meals);
+
+                var temp = new MealRestrictions
+                {
+                    MealFilter = new MealFilter(),
+                    Meals = meals
+                };
+                return await Task.FromResult(RedirectToAction("Index"));
+            }
+
+            return await Task.FromResult(View("Index", new MealRestrictions { MealFilter = filter }));
+        }
+
+        private int FindLargest(Meals meals)
+        {
+            var max = 0;
+            if (meals.Breakfast.Count() > max)
+                max = meals.Breakfast.Count();
+            if (meals.Lunch.Count() > max)
+                max = meals.Lunch.Count();
+            if (meals.Dinner.Count() > max)
+                max = meals.Dinner.Count();
+            return max;
         }
 
         [HttpPost]
@@ -60,21 +121,27 @@ namespace MealFridge.Controllers
             var banned = _restrictionRepo.GetUserRestrictedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
             var dislikes = _restrictionRepo.GetUserDislikedIngredWithIngredName(_restrictionRepo.GetAll(), userId).Select(i => i.Ingred).ToList();
             var cDay = DateTime.Now;
+            var meals = new Meals();
+            meals.DaysCount = days;
+            _mealRepo.RemoveOldMeals();
             cDay = cDay.Date + TimeSpan.FromHours(8);
-            var breakfast = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true);
-            cDay = cDay.Date + TimeSpan.FromHours(12);
-            var Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true);
-            cDay = cDay.Date + TimeSpan.FromHours(17);
-            var dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true);
-            if (breakfast.Count < days || Lunch.Count < days || dinner.Count < days)
-                return await Task.FromResult(PartialView("MealPlan", null));
+            meals.Breakfast = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true)
+                .OrderBy(d => d.Day)
+                .ToList();
 
-            var meals = new Meals
-            {
-                Breakfast = breakfast.OrderBy(d => d.Day).ToList(),
-                Lunch = Lunch.OrderBy(d => d.Day).ToList(),
-                Dinner = dinner.OrderBy(d => d.Day).ToList(),
-            };
+            cDay = cDay.Date + TimeSpan.FromHours(12);
+            meals.Lunch = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true)
+                .OrderBy(d => d.Day)
+                .ToList();
+
+            cDay = cDay.Date + TimeSpan.FromHours(17);
+            meals.Dinner = _mealRepo.GetMeals(cDay, userId, banned, dislikes, days, true)
+                .OrderBy(d => d.Day)
+                .ToList();
+
+            if (meals.Breakfast.Count < days || meals.Lunch.Count < days || meals.Dinner.Count < days)
+                return await Task.FromResult(PartialView("MealPlan", new Meals()));
+
             return await Task.FromResult(PartialView("MealPlan", meals));
         }
 
@@ -92,8 +159,8 @@ namespace MealFridge.Controllers
             if (!int.TryParse(query.QueryValue, out var id))
                 return await Task.FromResult(StatusCode(400));
             var meal = _mealRepo.GetAllMealsWithRecipes()
-                .Where(rt => rt.RecipeId == id)
-                .FirstOrDefault();
+                .First(rt => rt.RecipeId == id);
+
             return await Task.FromResult(PartialView("MealModal", meal));
         }
 
@@ -108,6 +175,13 @@ namespace MealFridge.Controllers
             var newMeal = _mealRepo.GetMeal(cday, userId, banned, dislikes);
 
             return await Task.FromResult(PartialView("MealCard", newMeal));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOldMealPlan()
+        {
+            _mealRepo.RemoveOldMeals();
+            return await Task.FromResult(RedirectToAction("Index"));
         }
 
         public async Task<IActionResult> SavedRecipe(int id, string other)

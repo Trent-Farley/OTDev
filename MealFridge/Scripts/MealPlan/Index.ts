@@ -1,10 +1,25 @@
-﻿let RECIPEID: string = "";
+﻿$("#filter-button").on('click', () => {
+    $('#generate').addClass("d-none");
+    $('#filter-button').addClass("d-none");
+    $('#delete-button').addClass("d-none");
+});
+$("#close-button").on('click', () => {
+    $('#generate').removeClass("d-none");
+    $('#filter-button').removeClass("d-none");
+    $('#delete-button').removeClass("d-none");
+});
+$(document).ready(() => {
+    try {
+        $("#dialog").modal('show');
+    } catch { }
+})
+let RECIPEID: string = "";
 function getMealPlan(): void {
     $.ajax({
         url: "/MealPlan/MealPlan",
         type: "POST",
         data: {
-            days: 7
+            Days: 7
         },
         error: (err) => { console.log(err); },
         success: (generatedMeals) => {
@@ -84,7 +99,6 @@ function regenerate(mealDay, currentId) {
             mealDay: mealDay
         },
         success: (data) => {
-            console.log(currentId);
             $("#" + currentId).html(data);
         },
         error: (err) => { console.log(err); }

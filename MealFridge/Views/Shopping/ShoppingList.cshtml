@@ -9,6 +9,16 @@
 }
 @if (Model.Where(x => x.Shopping == true).Count() > 0)
 {
+    <div class="container-fluid">
+        <div class="float-left">
+            <button id="print-list-button" class="btn btn-outline-info"><i class="fa fa-print"></i></button>
+            <button id="measure-swap" class="btn btn-outline-info">Swap Measurement type</button>
+        </div>
+        <div class="float-right">   
+            <button id="add-obtained" class="btn btn-outline-info">Add Obtained to Fridge</button>
+            <button id="remove-obtained" class="btn btn-outline-info btn-danger">Remove Obtained</button>
+        </div>
+    </div>
     <div class="card-body border border-dark rounded-lg">
         <table class="table shadow-sm table-hover" id="shopping-list">
             <thead>
