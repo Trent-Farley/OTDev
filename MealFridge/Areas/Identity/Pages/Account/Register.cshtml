@@ -1,0 +1,81 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+@using AspNetCore.ReCaptcha
+
+<div class="row p-md-2">
+
+    <div class="col-lg-8 bg-primary p-md-2 justify-content-center">
+        <div class="card p-lg-3 shadow-lg rounded-lg text-center">
+            <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                <h4 class="card-title border-bottom pt-3">Register</h4>
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Input.Email"></label>
+                    <input asp-for="Input.Email" placeholder="example@example.com" class="text-center form-control" />
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.Password"></label>
+                    <input asp-for="Input.Password" class="form-control text-center" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Input.ConfirmPassword"></label>
+                    <input asp-for="Input.ConfirmPassword" class="form-control text-center" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                </div>
+                @Html.ReCaptcha()
+                <recaptcha />
+                <button type="submit" class="btn w-100 btn-outline-primary rounded-pill">Register</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-3 bg-success">
+        <div class="card shadow-lg rounded-lg">
+            <div class="card-body">
+                <img class="card-img-top" src="~/img/OTDLogo.png" />
+            </div>
+            <div class="card-footer">
+                <i>Powered by On Track Development</i>
+            </div>
+        </div>
+    </div>
+    @*<div class="col-md-6 col-md-offset-2">
+           <section>
+                    <h4>Use another service to register.</h4>
+                    <hr />
+                    @{
+                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                        {
+                            <div>
+                                <p>
+                                    There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                    for details on setting up this ASP.NET application to support logging in via external services.
+                                </p>
+                            </div>
+                        }
+                        else
+                        {
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
+                        }
+                    }
+                </section>
+        </div>            *@
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
