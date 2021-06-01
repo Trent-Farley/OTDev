@@ -15,6 +15,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MealFridge.Models.Interfaces;
 using MealFridge.Models.Repositories;
+using AspNetCore.ReCaptcha;
 
 namespace MealFridge
 {
@@ -41,6 +42,7 @@ namespace MealFridge
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddReCaptcha(Configuration.GetSection("ReCaptcha"));
             services.AddScoped<IRecipeRepo, RecipeRepo>();
             services.AddScoped<ISavedrecipeRepo, SavedrecipeRepo>();
             services.AddScoped<IFridgeRepo, FridgeRepo>();
