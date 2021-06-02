@@ -91,19 +91,15 @@
             </div>
             <input id="sbn" type="text" required class="w-auto border-0 form-control  " placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="input-group-append">
-                <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName()" type="button">
+                <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName(true)" type="button">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
     </div>
     <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
-    <div id="main" class="card-columns"></div>
-    <div id="search-button" class="d-flex justify-content-center">
-        <button type="button" class="btn btn-primary  d-none w-50 mt-4 mb-5" id="morebutton" onclick="searchByName()">
-            Get more recipes!
-        </button>
-    </div>
+    <div id="main"></div>
+
     <div id="modal-container"></div>
 </div>
 @section Scripts{
