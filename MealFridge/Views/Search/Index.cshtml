@@ -103,6 +103,18 @@
     <div id="modal-container"></div>
 </div>
 @section Scripts{
+    @if (signInManager.IsSignedIn(User))
+    {
+        <script type="text/javascript">
+            window.sessionStorage.setItem("in", true);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            window.sessionStorage.setItem("in", false);
+        </script>
+    }
     <script src="~/js/Search/Index.js"></script>
     <script src="~/js/Search/RecipeDetails.js"></script>
 }
