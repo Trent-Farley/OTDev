@@ -3,7 +3,6 @@ window.onload = () => {
     if (prevSearch !== null) {
         let newSearch = <HTMLInputElement>document.getElementById("sbn");
         newSearch.value = prevSearch;
-        window.sessionStorage.clear();
         searchByName(true)
     }
 };
@@ -78,8 +77,12 @@ function inventorySearch(): void {
 }
 let CURRENT_NO_SEARCHES = 0;
 function rateLimit(): boolean {
-    ++CURRENT_NO_SEARCHES;
-    if (CURRENT_NO_SEARCHES > 4) {
+    if (CURRENT_NO_SEARCHES < 5) {
+        ++CURRENT_NO_SEARCHES;
+    }
+    let loggedIn = window.sessionStorage.getItem("in");
+
+    if (CURRENT_NO_SEARCHES > 4 && loggedIn === "false") {
         $("#modal-container").empty();
         $("#modal-container").html(`
     <div class="modal show" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
@@ -106,13 +109,12 @@ function rateLimit(): boolean {
         return true;
     }
 }
-function searchByName(page: boolean): void {
+function searchByName(isPage: boolean): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
     let cheap: HTMLInputElement = <HTMLInputElement>document.getElementById("cheapCheck");
-
     if (rateLimit()) {
-        if (page) {
+        if (isPage) {
             pageNumber = 0;
         }
         if (!search.value) {
