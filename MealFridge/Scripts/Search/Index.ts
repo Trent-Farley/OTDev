@@ -4,7 +4,7 @@ window.onload = () => {
         let newSearch = <HTMLInputElement>document.getElementById("sbn");
         newSearch.value = prevSearch;
         window.sessionStorage.clear();
-        searchByName()
+        searchByName(true)
     }
 };
 
@@ -76,54 +76,90 @@ function inventorySearch(): void {
         }
     })
 }
-function searchByName(): void {
+let CURRENT_NO_SEARCHES = 0;
+function rateLimit(): boolean {
+    ++CURRENT_NO_SEARCHES;
+    if (CURRENT_NO_SEARCHES > 4) {
+        $("#modal-container").empty();
+        $("#modal-container").html(`
+    <div class="modal show" id="recipe-modal" tabindex="-1" role="dialog" aria-labelledby="modal_title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered  modal-lg modal-dialog-scrollable w-100" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title" id="modal_title">Warning!</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+              <div class="modal-body">
+                Looks like you are past the limit of 5 searches. Please sign in to search more
+             </div>
+        </div>
+    <div>
+    <div>
+
+`);
+        $('#recipe-modal').modal("show");
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+function searchByName(page: boolean): void {
     let search: HTMLInputElement = <HTMLInputElement>document.getElementById("sbn");
     let type: HTMLInputElement = <HTMLInputElement>document.getElementById("searchType");
     let cheap: HTMLInputElement = <HTMLInputElement>document.getElementById("cheapCheck");
-    if (!search.value) {
-        $("#warning-toast-body").empty();
-        $("#warning-toast-body").append("Search can not be empty!");
-        $(".toast").toast('show');
-        return;
-    }
-    let inCuisine = "";
-    $("[inCuisine]").each(function (i, el) {
-        inCuisine += el.id + ',';
-    });
-    let exCuisine = "";
-    $("[exCuisine]").each(function (i, el) {
-        exCuisine += el.id + ',';
-    });
-    $.ajax({
-        url: "/Search/SearchByName",
-        type: "POST",
-        data: {
-            QueryValue: search.value,
-            SearchType: type.value,
-            Cheap: cheap.checked,
-            PageNumber: pageNumber,
-            CuisineInclude: inCuisine,
-            CuisineExclude: exCuisine
-        },
-        error: (err) => { console.log(err); },
-        success: (recipeCards) => {
-            $("#morebutton").removeClass("d-none");
 
-            if (search.value.toString() != searchparam) {
-                pageNumber = 0;
-                searchparam = search.value.toString();
-            }
-            if (pageNumber < 1) {
-                $("#main").empty();
-                $("#main").html(recipeCards);
-                ++pageNumber;
-            }
-            else {
-                $("#main").append(recipeCards);
-                ++pageNumber;
-            }
+    if (rateLimit()) {
+        if (page) {
+            pageNumber = 0;
         }
-    })
+        if (!search.value) {
+            $("#warning-toast-body").empty();
+            $("#warning-toast-body").append("Search can not be empty!");
+            $(".toast").toast('show');
+            return;
+        }
+        let inCuisine = "";
+        $("[inCuisine]").each(function (i, el) {
+            inCuisine += el.id + ',';
+        });
+        let exCuisine = "";
+        $("[exCuisine]").each(function (i, el) {
+            exCuisine += el.id + ',';
+        });
+        $.ajax({
+            url: "/Search/SearchByName",
+            type: "POST",
+            data: {
+                QueryValue: search.value,
+                SearchType: type.value,
+                Cheap: cheap.checked,
+                PageNumber: pageNumber,
+                CuisineInclude: inCuisine,
+                CuisineExclude: exCuisine
+            },
+            error: (err) => { console.log(err); },
+            success: (recipeCards) => {
+                $("#morebutton").removeClass("d-none");
+
+                if (search.value.toString() != searchparam) {
+                    pageNumber = 0;
+                    searchparam = search.value.toString();
+                }
+                if (pageNumber < 1) {
+                    $("#main").empty();
+                    $("#main").html(recipeCards);
+                    ++pageNumber;
+                }
+                else {
+                    $("#main").append(recipeCards);
+                    ++pageNumber;
+                }
+            }
+        })
+    }
 }
 function undoFavorite(id: string): void {
     $.ajax({
@@ -232,10 +268,6 @@ function commonInventory(list: string, amount: string): void {
             list: list,
             amount: parseInt(amount)
         },
-        //success: (data) => {
-        //    $("#fridge-table-main").empty();
-        //    $("#fridge-table-main").html(data);
-        //},
         error: (err) => { console.log(err); }
     })
     alert("Your ingredient has been cooked!");
@@ -244,6 +276,6 @@ const inputSearch: HTMLInputElement = <HTMLInputElement>document.getElementById(
 inputSearch.addEventListener("keydown", (e) => {
     //checks whether the pressed key is "Enter"
     if (e.keyCode === 13) {
-        searchByName();
+        searchByName(true);
     }
 });

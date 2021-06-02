@@ -32,10 +32,6 @@ function getDetails(id: string): void {
             $("#modal-container").empty();
             $("#modal-container").html(data);
             $('#recipe-modal').modal("show");
-
-            document.getElementById('button-cart').addEventListener('click', () => {
-                addToShoppingList(id);
-            })
         },
         error: (err) => { console.log(err); }
     });

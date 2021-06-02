@@ -366,9 +366,8 @@ input:checked + .slider:before {
     vertical-align: middle;
     margin-left: auto;
     margin-right: auto;
-    top: 30%;
-    right: 40%;
-    left: 40%;
+    top: 20%;
+    right: 35%;
     bottom: 50%;
     z-index: 100;
 }
