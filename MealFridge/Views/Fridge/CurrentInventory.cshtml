@@ -3,7 +3,7 @@
 @if (Model.Where(x => x.Quantity > 0).Count() < 1)
 {
     <div class="card shadow-lg">
-        <h6 class="card-title">Inventory is currently empty!</h6>
+        <center> <h6 class="card-title">Inventory is currently empty!</h6> </center>
     </div>
 }
 @if (Model.Where(x => x.Quantity > 0).Count() > 0)

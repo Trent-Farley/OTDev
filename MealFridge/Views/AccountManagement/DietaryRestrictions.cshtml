@@ -16,8 +16,8 @@
 <p> </p>
 <div class="container">
     <div class="row">
-        <div class="col" style="box-shadow:10px 10px 5px grey">
-            <div id="cnhIngredList">
+        <div class="col" style="box-shadow:10px 10px 5px grey;">
+            <div class="container" style="background-color:white;">
                 <h1>Diet Settings</h1>
                 <ul>
                     <li>
@@ -71,30 +71,39 @@
                 </ul>
                 <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
             </div>
+            </div>
+            <div class="col" style="box-shadow:10px 10px 5px grey;">
+                <div class="container" style="background-color:white;">
+                    <h1>Restricted Ingredients</h1>
+                    @if (Model.userRestrictions.Count() > 0)
+                    {
+                <table class="table table-bordered table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th> Ingredients Flagged as "Cannot Have" </th>
+                        </tr>
+                    </thead>
+
+                    @foreach (var i in Model.userRestrictions)
+                    {
+                <tbody>
+                    <tr>
+                        <td> @i.Ingred.Name </td>
+                        <td> <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
+                            <i class="far fa-times-circle"></i>
+                        </button> </td>
+                    </tr>
+                </tbody>
+                    }
+                    </table>
+                    }
+                    @if (Model.userRestrictions.Count() < 1)
+                    {
+                        <p>--Nothing to show--</p>
+}
+</div>
+            </div>
         </div>
-        <div class="col" style="box-shadow:10px 10px 5px grey">
-            <div id="cnhIngredList">
-                <h1>Restricted Ingredients</h1>
-                <p>Ingredients Flagged as "Cannot Have"</p>
-                @if (Model.userRestrictions.Count() > 0)
-                {
-                    <ul>
-                        @foreach (var i in Model.userRestrictions)
-                        {
-                            <li id="cnhIngredItem" style="display:inline-block">
-                                <label>@i.Ingred.Name</label>
-                                <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
-                                    <i class="far fa-times-circle"></i>
-                                </button>
-                            </li>
-                        }
-                    </ul>
-                }
-                @if (Model.userRestrictions.Count() < 1)
-                {<p>--Nothing to show--</p>}
-                </div>  
-           </div>
-    </div>
 </div>
 
    
