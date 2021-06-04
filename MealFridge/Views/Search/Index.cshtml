@@ -11,12 +11,12 @@
 
                 @if (signInManager.IsSignedIn(User))
                 {
-                        <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
-                            <i class="fas fa-box"></i>
-                        </button>
+                    <button id="SearchInventory" class="float-right btn text-primary border-0" type="button" title="Find recipes based on ingredients in your fridge" onclick="inventorySearch()">
+                        <i class="fas fa-box"></i>
+                    </button>
                 }
                 <input id="inventorySearch" value="@Model" hidden />
-                <select id="searchType" class="w-auto custom-select border-0 text-dark">
+                <select id="searchType" class="w-auto custom-select rounded-pill border-0 text-dark">
                     <option class="bg-dark text-light" value="Recipe">Recipe Name</option>
                     <option class="bg-dark text-light" value="Ingredient">Ingredient</option>
                 </select>
@@ -89,24 +89,32 @@
                     </table>
                 </div>
             </div>
-            <input id="sbn" type="text" required class="w-auto border-0 form-control" placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
+            <input id="sbn" type="text" required class="w-auto border-0 form-control  " placeholder="Recipe name or ingredient" aria-label="Search for recipes by name">
             <div class="input-group-append">
-                <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName()" type="button">
+                <button class="btn text-dark border-0" title="search for recipes" onclick="searchByName(true)" type="button">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
     </div>
     <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
-    <div id="main" class="card-columns"></div>
-    <div id="search-button" class="d-flex justify-content-center">
-        <button type="button" class="btn btn-primary  d-none w-50 mt-4 mb-5" id="morebutton" onclick="searchByName()">
-            Get more recipes!
-        </button>
-    </div>
+    <div id="main"></div>
+
     <div id="modal-container"></div>
 </div>
 @section Scripts{
+    @if (signInManager.IsSignedIn(User))
+    {
+        <script type="text/javascript">
+            window.sessionStorage.setItem("in", true);
+        </script>
+    }
+    else
+    {
+        <script type="text/javascript">
+            window.sessionStorage.setItem("in", false);
+        </script>
+    }
     <script src="~/js/Search/Index.js"></script>
     <script src="~/js/Search/RecipeDetails.js"></script>
 }

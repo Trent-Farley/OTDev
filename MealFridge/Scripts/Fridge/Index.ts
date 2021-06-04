@@ -1,4 +1,71 @@
-﻿function addIngredient(id: string, amount: string): void {
+﻿function unitQuantity(id: string, type: string): void {
+    $("#modal-container").empty();
+    $("#modal-container").html(`
+            <div class="modal fade" id="selector" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Enter the amount and measurement</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="amount">Amount of item:</label>
+                            <input type="number" id="amount" min="0" max="1000">
+                            <label for="units">Unit type:</label>
+                            <select id="units">
+                                <option value="Teaspoon">Teaspoon</option>
+                                <option value="Tablespoon">Tablespoon</option>
+                                <option value="Cup">Cup</option>
+                                <option value="Pint">Pint</option>
+                                <option value="Quart">Quart</option>
+                                <option value="Gallon">Gallon</option>
+                                <option value="Milliliter">Milliliter</option>
+                                <option value="Liter">Liter</option>
+                                <option value="Gram">Gram</option>
+                                <option value="Kilogram">Kilogram</option>
+                                <option value="Ounce">Ounce</option>
+                                <option value="Pound">Pound</option>
+                            </select>
+                        </div>
+                        <div class="modal-footer" id="buttons">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `);
+    if (type == "inventory") {
+        $('#buttons').html(`
+            <button type="button" class="btn btn-primary" id="addFridge">Submit</button>
+        `);
+        const addFridge = document.getElementById("addFridge");
+        addFridge.addEventListener("click", () => {
+            let amount = $("#amount").val().toString();
+            let unit = $("#units").val().toString();
+            $('#selector').modal("hide")
+            addIngredient(id, amount, unit)
+        })
+    }
+    else {
+        $('#buttons').html(`
+            <button type="button" class="btn btn-primary" id="addShopping">Submit</button>
+        `)
+        const addShop = document.getElementById("addShopping");
+        addShop.addEventListener("click", () => {
+            let amount = $("#amount").val().toString();
+            let unit = $("#units").val().toString();
+            $('#selector').modal("hide");
+            addShopping(id, amount, unit);
+        })
+    }
+    $('#selector').modal();
+}
+
+
+
+function addIngredient(id: string, amount: string, unit: string): void {
     let current = parseInt($("#current-card-" + id).text(), 10);
     $("#current-card-" + id).empty()
     $("#current-card-" + id).append((current + 1).toString());//Add one for updated value
@@ -8,7 +75,8 @@
         method: "POST",
         data: {
             id: id,
-            amount: parseInt(amount, 10)
+            amount: parseInt(amount, 10),
+            unit: unit
         },
         success: (data) => {
             $("#fridge-table-main").empty();
@@ -18,7 +86,7 @@
     })
 }
 
-function addShopping(id: string, amount: string): void {
+function addShopping(id: string, amount: string, unit: string): void {
     $.ajax({
         url: "/Shopping/AddItem",
         method: "POST",

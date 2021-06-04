@@ -21,8 +21,8 @@
 <ul>
     @foreach (var i in Model)
     {
-<li id="cnhIngredItem">
-    <label>@i.Ingred.Name</label>
+<li>
+    <label id="cnhIngredItem">@i.Ingred.Name</label>
     <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
         <i class="far fa-times-circle"></i>
     </button>

@@ -47,7 +47,7 @@ namespace MealFridge.Utils
         };
         public static List<ConvertPair> massUs = new List<ConvertPair>()
         {
-            new ConvertPair("pound", "pound", 1, new List<string>() { "pound", "pounds", "lb" }),
+            new ConvertPair("pound", "pound", 1, new List<string>() { "pound", "pounds", "lb", "lbs" }),
             new ConvertPair("ounce", "pound", .0625, new List<string>() { "ounce", "ounces", "oz", "ozs" })
         };
 

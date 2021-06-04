@@ -67,7 +67,6 @@ namespace MealFridge.Controllers
         public async Task<IActionResult> SearchByName(Query query)
         {
             var userId = _user.GetUserId(User);
-            
             var possibleRecipes = _db.Recipes
                 .Where(r => r.Title.Contains(query.QueryValue))
                 .Include(s => s.Savedrecipes.Where(s => s.AccountId == userId))
@@ -88,8 +87,8 @@ namespace MealFridge.Controllers
                 .Skip(10 * query.PageNumber)
                 .Take(10)
                 .ToList();
-           
-            if (possibleRecipes.Count < 10)
+
+            if (possibleRecipes.Count < 10 && userId != null)
             {
                 query.Credentials = _config["SApiKey"];
                 query.QueryName = "query";
@@ -121,10 +120,6 @@ namespace MealFridge.Controllers
                     }
                 }
             }
-            //if (query.Cheap)
-            //{
-            //    return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Where(r => r.Cost != null).Distinct().OrderBy(r => r.Cost).Take(10)));
-            //}
             return await Task.FromResult(PartialView("RecipeCards", possibleRecipes.Distinct().Take(10)));
         }
 
@@ -139,8 +134,8 @@ namespace MealFridge.Controllers
                 .Where(a => a.IngredId == ingredient.Id)
                 .Skip(10 * query.PageNumber)
                 .Take(10);
-            List<Recipe> possibleRecipes = new List<Recipe>();
-            if (ingredient != null)
+            List<Recipe> possibleRecipes = new();
+            if (ingredient != null && userId != null)
             {
                 foreach (var recipeIngred in recipesWithIngredient)
                 {
@@ -319,6 +314,7 @@ namespace MealFridge.Controllers
             //_db.Fridges.Add(fridgeIngredient);
             return await Task.FromResult(StatusCode(200));
         }
+
         public Query SetDiets(Query query)
         {
             var userId = _user.GetUserId(User);

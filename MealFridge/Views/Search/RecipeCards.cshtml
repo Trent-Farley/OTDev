@@ -3,73 +3,96 @@
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
 @* Change Model into IEnumerable<Tuple<Recipe, int>> to fix broken fav count *@
-@if (Model != null)
+@if (Model.Count() > 0)
 {
-    @foreach (var r in Model)
+    @if (!SignInManager.IsSignedIn(User))
     {
-        var temp = r.Savedrecipes.FirstOrDefault() ?? new Savedrecipe()
-        {
-            Shelved = false,
-            Favorited = false,
-        };
+        <div class="card w-100 shadow-lg mb-lg-2">
+            <h4 class="card-title bg-warning text-center border-bottom p-lg-4">
+                Please log in for more results
+            </h4>
+            <a class="card-link btn btn-outline-primary float-right" asp-area="Identity" asp-page="/Account/Login">Login here </a>
+        </div>
+    }
+    <div class="card-columns">
 
-        @if (temp.Shelved ?? false || r.Banned)
+        @foreach (var r in Model)
         {
-            continue;
+            var temp = r.Savedrecipes.FirstOrDefault() ?? new Savedrecipe()
+            {
+                Shelved = false,
+                Favorited = false,
+            };
+
+            @if (temp.Shelved ?? false || r.Banned)
+            {
+                continue;
+            }
+
+            <div class="card shadow-lg">
+                <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + r.Image)" alt="Recipe Image">
+
+                @if (temp.Favorited ?? false)
+                {
+                    <div class="card-img-overlay">
+                        <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
+                            <i class="fa fa-heart"> </i>
+                        </h3>
+                    </div>
+                }
+
+                @if (r.Dislike)
+                {
+                    <div class="card-img-overlay">
+                        <h3 class="text-md-right p-1 text-warning bg-dark d-inline shadow-lg">
+                            <i class="fa fa-flag-usa"> </i>
+                        </h3>
+                    </div>
+                }
+                <div class="card-body">
+                    <h4 class="card-title"> @r.Title </h4>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group btn-group-lg w-100">
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <button type="button"
+                                    id="favButton"
+                                    class="btn btn-outline-success"
+                                    style="display:inline-block"
+                                    onclick="addFavorite('@r.Id')" title="Favorite recipe">
+                                <i class="fa fa-heart"> @r.Savedrecipes.Where(f => f.RecipeId == r.Id && f.Favorited != false).Count()</i>
+                            </button>
+                            <button type="button"
+                                    class="btn btn-outline-danger"
+                                    style="display:inline-block"
+                                    onclick="addShelf('@r.Id')" title="Shelf recipe">
+                                <i class="fa fa-stop"></i>
+                            </button>
+
+                        }
+                        <button id="btnInfo" class="btn btn-outline-primary" onclick="getDetails('@r.Id')" type="button" title="Get information">
+                            <i class="fa fa-info"> </i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         }
-
-        <div class="card shadow-lg">
-            <img class="card-img-top" src="@("https://spoonacular.com/recipeImages/" + r.Image)" alt="Recipe Image">
-
-            @if (temp.Favorited ?? false)
-            {
-                <div class="card-img-overlay">
-                    <h3 class="text-md-right p-1 text-danger bg-dark d-inline shadow-lg">
-                        <i class="fa fa-heart"> </i>
-                    </h3>
-                </div>
-            }
-
-            @if (r.Dislike)
-            {
-                <div class="card-img-overlay">
-                    <h3 class="text-md-right p-1 text-warning bg-dark d-inline shadow-lg">
-                        <i class="fa fa-flag-usa"> </i>
-                    </h3>
-                </div>
-            }
-            <div class="card-body">
-                <h4 class="card-title"> @r.Title </h4>
-            </div>
-            <div class="card-footer">
-                <div class="btn-group btn-group-lg w-100">
-
-                    @if (SignInManager.IsSignedIn(User))
-                    {
-                        <button type="button"
-                                id="favButton"
-                                class="btn btn-outline-success"
-                                style="display:inline-block"
-                                onclick="addFavorite('@r.Id')" title="Favorite recipe">
-                            <i class="fa fa-heart"> @r.Savedrecipes.Where(f => f.RecipeId == r.Id && f.Favorited != false).Count()</i>
-                        </button>
-                        <button type="button"
-                                class="btn btn-outline-danger"
-                                style="display:inline-block"
-                                onclick="addShelf('@r.Id')" title="Shelf recipe">
-                            <i class="fa fa-stop"></i>
-                        </button>
-
-                    }
-                    <button id="btnInfo" class="btn btn-outline-primary" onclick="getDetails('@r.Id')" type="button" title="Get information">
-                        <i class="fa fa-info"> </i>
-                    </button>
-                </div>
-            </div>
+    </div>
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <div id="search-button" class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary w-50 mt-4 mb-5" id="morebutton" onclick="searchByName(false)">
+                Find more recipes!
+            </button>
         </div>
     }
 }
 
-@if (Model == null)
+@if (Model == null || Model.Count() < 1)
 {
-    <p>No results found!</p>}
+    <div class="card shadow-lg">
+        <h4 class="card-title border-bottom p-lg-4">No results found!</h4>
+    </div>
+}
