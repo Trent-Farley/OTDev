@@ -132,7 +132,7 @@ namespace MealFridge.Controllers
             return PartialView("ShoppingList", userInventory);
         }
         [HttpPost]
-        public async Task<IActionResult> AddItem(int id, int amount)
+        public async Task<IActionResult> AddItem(int id, int amount, string unit)
         {
             //Find the current fridge and user 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -142,8 +142,16 @@ namespace MealFridge.Controllers
                 IngredId = id,
                 NeededAmount = 0,
                 Quantity = 0,
-                Shopping = false
+                Shopping = false,
+                UnitType = unit
             };
+            if (fridgeIngredient.UnitType != "" &&
+                fridgeIngredient.UnitType != unit &&
+                unit != null && fridgeIngredient.UnitType != null && unit != "" &&
+                fridgeIngredient.Quantity.HasValue)
+            {
+                fridgeIngredient.NeededAmount = UnitConverter.Convert(fridgeIngredient.NeededAmount.Value, fridgeIngredient.UnitType, unit);
+            }
             fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
             fridgeIngredient.NeededAmount += amount;
             //Interact with the repo
