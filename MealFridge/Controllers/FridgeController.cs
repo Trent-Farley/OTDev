@@ -66,7 +66,7 @@ namespace MealFridge.Controllers
         /// <param name="amount">Amount of the ingredient to be added or updated</param>
         /// <returns>A PartialView with the current inventory of the user</returns>
         [HttpPost]
-        public async Task<IActionResult> AddItem(int id, int amount)
+        public async Task<IActionResult> AddItem(int id, int amount, string unit)
         {
             //Find the current fridge and user
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -76,9 +76,18 @@ namespace MealFridge.Controllers
                 IngredId = id,
                 NeededAmount = 0,
                 Quantity = 0,
-                Shopping = false
+                Shopping = false,
+                UnitType = unit
             };
             fridgeIngredient.Ingred = await ingredientRepo.FindByIdAsync(id);
+            if (fridgeIngredient.UnitType != "" &&
+                fridgeIngredient.UnitType != unit &&
+                unit != null && fridgeIngredient.UnitType != null && unit != "" &&
+                fridgeIngredient.Quantity.HasValue)
+            {
+                fridgeIngredient.Quantity = UnitConverter.Convert(fridgeIngredient.Quantity.Value, fridgeIngredient.UnitType, unit);
+            }
+            fridgeIngredient.UnitType = unit;
             fridgeIngredient.Quantity += amount;
             if (fridgeIngredient.Quantity <= 0 && fridgeIngredient.NeededAmount <= 0)
                 RemoveItemAsync(fridgeIngredient);
