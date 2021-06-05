@@ -1,10 +1,10 @@
-﻿using MealFridge.Models.Interfaces;
+﻿using TastyMeals.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
     public partial class Ingredient : IFoodItem
     {

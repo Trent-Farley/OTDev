@@ -1,4 +1,4 @@
-﻿namespace MealFridge.Models
+﻿namespace TastyMeals.Models
 {
     public class ErrorViewModel
     {

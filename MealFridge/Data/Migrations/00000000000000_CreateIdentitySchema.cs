@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace MealFridge.Data.Migrations
+namespace TastyMeals.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

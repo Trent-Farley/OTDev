@@ -1,12 +1,12 @@
-﻿using MealFridge.Models;
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.ViewModels;
+﻿using TastyMeals.Models;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
 
-namespace MealFridge.Controllers
+namespace TastyMeals.Controllers
 {
     public class AccountManagementController : Controller
     {

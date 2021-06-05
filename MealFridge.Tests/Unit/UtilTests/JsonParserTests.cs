@@ -1,12 +1,12 @@
-﻿using MealFridge.Models;
-using MealFridge.Utils;
+﻿using TastyMeals.Models;
+using TastyMeals.Utils;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MealFridge.Tests.UtilTests
+namespace TastyMeals.Tests.UtilTests
 {
     [TestFixture]
     //Testing the JsonParser.cs in the Utils Folder  

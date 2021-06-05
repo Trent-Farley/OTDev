@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
     public partial class Recipe
     {
         public Recipe()
         {
             Meals = new HashSet<Meal>();
-            Recipeingreds = new HashSet<Recipeingred>();
-            Savedrecipes = new HashSet<Savedrecipe>();
+            Recipeingreds = new HashSet<RecipeIngredient>();
+            Savedrecipes = new HashSet<SavedRecipe>();
         }
 
         public int Id { get; set; }
@@ -54,7 +54,7 @@ namespace MealFridge.Models
         public bool? Whole30 { get; set; }
 
         public virtual ICollection<Meal> Meals { get; set; }
-        public virtual ICollection<Recipeingred> Recipeingreds { get; set; }
-        public virtual ICollection<Savedrecipe> Savedrecipes { get; set; }
+        public virtual ICollection<RecipeIngredient> Recipeingreds { get; set; }
+        public virtual ICollection<SavedRecipe> Savedrecipes { get; set; }
     }
 }

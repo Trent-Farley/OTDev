@@ -3,18 +3,18 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MealFridge.Models;
-using MealFridge.Utils;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models;
+using TastyMeals.Utils;
+using TastyMeals.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Moq;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MealFridge.Models.Repositories;
+using TastyMeals.Models.Repositories;
 
-namespace MealFridge.Tests.Models
+namespace TastyMeals.Tests.Models
 {
     class TestRestrictionRepo
     {
@@ -38,7 +38,7 @@ namespace MealFridge.Tests.Models
                 new Restriction {AccountId = "d", IngredId = 3, Banned=false, Dislike=true, Ingred = null }
             };
             Mock<DbSet<Restriction>> mockRestrictionDbSet = GetMockDbSet(restrictions.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Restrictions).Returns(mockRestrictionDbSet.Object);
             IRestrictionRepo restrictionRepo = new RestrictionRepo(mockContext.Object);
 
@@ -58,7 +58,7 @@ namespace MealFridge.Tests.Models
                 new Restriction {AccountId = "d", IngredId = 3, Banned=false, Dislike=true, Ingred = null }
             };
             Mock<DbSet<Restriction>> mockRestrictionDbSet = GetMockDbSet(restrictions.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Restrictions).Returns(mockRestrictionDbSet.Object);
             IRestrictionRepo restrictionRepo = new RestrictionRepo(mockContext.Object);
 
@@ -78,7 +78,7 @@ namespace MealFridge.Tests.Models
                 new Restriction {AccountId = "d", IngredId = 3, Banned=false, Dislike=true, Ingred = null }
             };
             Mock<DbSet<Restriction>> mockRestrictionDbSet = GetMockDbSet(restrictions.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Restrictions).Returns(mockRestrictionDbSet.Object);
             IRestrictionRepo restrictionRepo = new RestrictionRepo(mockContext.Object);
 
@@ -100,7 +100,7 @@ namespace MealFridge.Tests.Models
                 new Restriction {AccountId = "d", IngredId = 3, Banned=false, Dislike=true, Ingred = null }
             };
             Mock<DbSet<Restriction>> mockRestrictionDbSet = GetMockDbSet(restrictions.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Restrictions).Returns(mockRestrictionDbSet.Object);
             IRestrictionRepo restrictionRepo = new RestrictionRepo(mockContext.Object);
 
@@ -120,7 +120,7 @@ namespace MealFridge.Tests.Models
                 new Restriction {AccountId = "d", IngredId = 3, Banned=false, Dislike=true, Ingred = null }
             };
             Mock<DbSet<Restriction>> mockRestrictionDbSet = GetMockDbSet(restrictions.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Restrictions).Returns(mockRestrictionDbSet.Object);
             IRestrictionRepo restrictionRepo = new RestrictionRepo(mockContext.Object);
 
@@ -145,7 +145,7 @@ namespace MealFridge.Tests.Models
                 new Restriction {AccountId = "d", IngredId = 3, Banned=false, Dislike=true, Ingred = null }
             };
             Mock<DbSet<Restriction>> mockRestrictionDbSet = GetMockDbSet(restrictions.AsQueryable());
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Restrictions).Returns(mockRestrictionDbSet.Object);
             IRestrictionRepo restrictionRepo = new RestrictionRepo(mockContext.Object);
 

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MealFridge.Models.ViewModels
+namespace TastyMeals.Models.ViewModels
 {
 #nullable enable
 

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using MealFridge.Tests.BDD.Sprint6.Selenium.Driver;
-using MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects;
+using TastyMeals.Tests.BDD.Sprint6.Selenium.Driver;
+using TastyMeals.Tests.BDD.Sprint6.Selenium.PageObjects;
 using NUnit.Framework;
 using TechTalk.SpecFlow;
 
-namespace MealFridge.Tests.BDD.Sprint6.Steps
+namespace TastyMeals.Tests.BDD.Sprint6.Steps
 {
     [Binding]
        

@@ -1,6 +1,6 @@
 using System.Data.Common;
-using MealFridge.Models;
-using MealFridge.Utils;
+using TastyMeals.Models;
+using TastyMeals.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,22 +11,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models.Interfaces;
 
-namespace MealFridge.Controllers
+namespace TastyMeals.Controllers
 {
     public class SearchController : Controller
     {
         private readonly IConfiguration _config;
         private readonly UserManager<IdentityUser> _user;
-        private readonly MealFridgeDbContext _db;
+        private readonly TastyMealsDbContext _db;
         private readonly ISpnApiService _spnApi;
         private readonly IRestrictionRepo _restrictContext;
         private readonly IRecipeIngredRepo _recipeIngredContext;
         private readonly IFridgeRepo _fridgeContext;
         private readonly IRecipeRepo _recipeContext;
 
-        public SearchController(IConfiguration config, MealFridgeDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext, IRecipeRepo recipeRepo)
+        public SearchController(IConfiguration config, TastyMealsDbContext context, UserManager<IdentityUser> user, ISpnApiService service, IRestrictionRepo restrictContext, IFridgeRepo fridgeContext, IRecipeIngredRepo recipeIngredContext, IRecipeRepo recipeRepo)
         {
             _db = context;
             _config = config;
@@ -235,7 +235,7 @@ namespace MealFridge.Controllers
             if (userId == null)
                 return StatusCode(400);
             var tempRecipe = _db.Recipes.Where(r => r.Id == id).FirstOrDefault();
-            var savedRecipe = new Savedrecipe
+            var savedRecipe = new SavedRecipe
             {
                 Recipe = tempRecipe,
                 AccountId = userId.ToString()
@@ -256,7 +256,7 @@ namespace MealFridge.Controllers
             return StatusCode(200);
         }
 
-        public List<Ingredient> CheckInventory(List<Recipeingred> recipes)
+        public List<Ingredient> CheckInventory(List<RecipeIngredient> recipes)
         {
             var userId = _user.GetUserId(User);
             var fridge = _db.Fridges.Where(i => i.AccountId == userId).Include(n => n.Ingred).ToList();

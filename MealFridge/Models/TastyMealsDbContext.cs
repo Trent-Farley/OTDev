@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
-    public partial class MealFridgeDbContext : DbContext
+    public partial class TastyMealsDbContext : DbContext
     {
-        public MealFridgeDbContext()
+        public TastyMealsDbContext()
         {
         }
 
-        public MealFridgeDbContext(DbContextOptions<MealFridgeDbContext> options)
+        public TastyMealsDbContext(DbContextOptions<TastyMealsDbContext> options)
             : base(options)
         {
         }
@@ -22,15 +22,15 @@ namespace MealFridge.Models
         public virtual DbSet<Ingredient> Ingredients { get; set; }
         public virtual DbSet<Meal> Meals { get; set; }
         public virtual DbSet<Recipe> Recipes { get; set; }
-        public virtual DbSet<Recipeingred> Recipeingreds { get; set; }
+        public virtual DbSet<RecipeIngredient> Recipeingreds { get; set; }
         public virtual DbSet<Restriction> Restrictions { get; set; }
-        public virtual DbSet<Savedrecipe> Savedrecipes { get; set; }
+        public virtual DbSet<SavedRecipe> Savedrecipes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=MealFridge");
+                optionsBuilder.UseNpgsql("Host=localhost;Database=TastyMeals;Username=postgres;Password=1234");
             }
         }
 
@@ -275,7 +275,7 @@ namespace MealFridge.Models
                 entity.Property(e => e.Whole30).HasColumnName("whole30");
             });
 
-            modelBuilder.Entity<Recipeingred>(entity =>
+            modelBuilder.Entity<RecipeIngredient>(entity =>
             {
                 entity.HasKey(e => new { e.RecipeId, e.IngredId })
                     .HasName("PK__RECIPEIN__E2D37987BF60EECB");
@@ -351,7 +351,7 @@ namespace MealFridge.Models
                     .HasConstraintName("Restrictions_FK_Ingred");
             });
 
-            modelBuilder.Entity<Savedrecipe>(entity =>
+            modelBuilder.Entity<SavedRecipe>(entity =>
             {
                 entity.HasKey(e => new { e.AccountId, e.RecipeId })
                     .HasName("PK__SAVEDREC__E5F53C1459AEA173");

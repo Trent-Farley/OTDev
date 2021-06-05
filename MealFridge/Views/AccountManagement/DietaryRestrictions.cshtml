@@ -1,5 +1,5 @@
 ﻿@{ ViewBag.Title = "DietaryRestriction"; }
-@model MealFridge.Models.ViewModels.DietaryRestrictions
+@model DietaryRestrictions
 <div class="navbar navbar-expand-md d-flex" style="background-color:azure">
     <ul class="nav nav-tabs justify-content-center">
         <li class="nav-item">
@@ -71,43 +71,43 @@
                 </ul>
                 <button type="button" title="Update Diet Settings" class="btn btn-primary" onclick="updateDiet()" id="dietUpdateButton">Update</button>
             </div>
-            </div>
-            <div class="col" style="box-shadow:10px 10px 5px grey;">
-                <div class="container" style="background-color:white;">
-                    <h1>Restricted Ingredients</h1>
-                    @if (Model.userRestrictions.Count() > 0)
-                    {
-                <table class="table table-bordered table-striped table-sm">
-                    <thead>
-                        <tr>
-                            <th> Ingredients Flagged as "Cannot Have" </th>
-                        </tr>
-                    </thead>
+        </div>
+        <div class="col" style="box-shadow:10px 10px 5px grey;">
+            <div class="container" style="background-color:white;">
+                <h1>Restricted Ingredients</h1>
+                @if (Model.userRestrictions.Count() > 0)
+                {
+                    <table class="table table-bordered table-striped table-sm">
+                        <thead>
+                            <tr>
+                                <th> Ingredients Flagged as "Cannot Have" </th>
+                            </tr>
+                        </thead>
 
-                    @foreach (var i in Model.userRestrictions)
-                    {
-                <tbody>
-                    <tr>
-                        <td> @i.Ingred.Name </td>
-                        <td> <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
-                            <i class="far fa-times-circle"></i>
-                        </button> </td>
-                    </tr>
-                </tbody>
-                    }
+                        @foreach (var i in Model.userRestrictions)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td> @i.Ingred.Name </td>
+                                    <td>
+                                        <button type="button" title="Remove from list" class="cnhIngredButton" id="btn-@i.IngredId" onclick="removeRestrictedIngredient(@i.IngredId)">
+                                            <i class="far fa-times-circle"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        }
                     </table>
-                    }
-                    @if (Model.userRestrictions.Count() < 1)
-                    {
-                        <p>--Nothing to show--</p>
-}
-</div>
+                }
+                @if (Model.userRestrictions.Count() < 1)
+                {
+                    <p>--Nothing to show--</p>
+                }
             </div>
         </div>
+    </div>
 </div>
 
-   
-    
 <div class="fixed-bottom d-flex justify-content-center w-50 " id="alert"></div>
 @section Scripts{
     <script src="~/js/Preferences/Index.js"></script>

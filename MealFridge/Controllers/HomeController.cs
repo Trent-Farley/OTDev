@@ -1,11 +1,11 @@
-﻿using MealFridge.Utils;
+﻿using TastyMeals.Utils;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Threading.Tasks;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models.Interfaces;
 using Microsoft.Extensions.Configuration;
 
-namespace MealFridge.Controllers
+namespace TastyMeals.Controllers
 {
     public class HomeController : Controller
     {

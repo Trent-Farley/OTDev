@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MealFridge.Tests.Utils;
-using MealFridge.Controllers;
+using TastyMeals.Tests.Utils;
+using TastyMeals.Controllers;
 using Microsoft.AspNetCore.Mvc;
-using MealFridge.Models;
+using TastyMeals.Models;
 
-namespace MealFridge.Tests.Home
+namespace TastyMeals.Tests.Home
 {
     /// <summary>
     /// Tester: Trent Farley

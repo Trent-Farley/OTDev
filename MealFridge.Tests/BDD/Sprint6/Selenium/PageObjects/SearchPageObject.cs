@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
+namespace TastyMeals.Tests.BDD.Sprint6.Selenium.PageObjects
 {
     class SearchPageObject
     {

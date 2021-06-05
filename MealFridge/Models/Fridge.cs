@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
     public partial class Fridge
     {

@@ -1,7 +1,7 @@
-﻿using MealFridge.Models;
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.ViewModels;
-using MealFridge.Utils;
+﻿using TastyMeals.Models;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.ViewModels;
+using TastyMeals.Utils;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Controllers
+namespace TastyMeals.Controllers
 {
     public class MealPlanController : Controller
     {
@@ -188,7 +188,7 @@ namespace MealFridge.Controllers
         {
             var userId = _user.GetUserId(User);
             var favRecipe = await _recipeRepo.FindByIdAsync(id);
-            var recipe = new Savedrecipe
+            var recipe = new SavedRecipe
             {
                 Recipe = favRecipe,
                 AccountId = userId.ToString(),

@@ -1,8 +1,8 @@
-﻿using MealFridge.Controllers;
-using MealFridge.Models;
-using MealFridge.Models.ViewModels;
-using MealFridge.Tests.Utils;
-using MealFridge.Utils;
+﻿using TastyMeals.Controllers;
+using TastyMeals.Models;
+using TastyMeals.Models.ViewModels;
+using TastyMeals.Tests.Utils;
+using TastyMeals.Utils;
 using Microsoft.AspNetCore.Mvc;
 using NUnit.Framework;
 using System;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MealFridge.Tests.MealPlan
+namespace TastyMeals.Tests.MealPlan
 {
     /// <summary>
     /// Tester: Trent Farley
@@ -88,7 +88,7 @@ namespace MealFridge.Tests.MealPlan
         {
             //Act
             var results = await _mealPlanController.GetFavoritses();
-            var data = (results as PartialViewResult).Model as IEnumerable<Savedrecipe>;
+            var data = (results as PartialViewResult).Model as IEnumerable<SavedRecipe>;
             //assert
             Assert.That(data, Is.Not.Null);
             Assert.That(data.Count(), Is.EqualTo(10));
@@ -112,7 +112,7 @@ namespace MealFridge.Tests.MealPlan
             };
             //Act
             var results = await controller.GetFavoritses();
-            var data = (results as PartialViewResult).Model as IEnumerable<Savedrecipe>;
+            var data = (results as PartialViewResult).Model as IEnumerable<SavedRecipe>;
             //assert
             Assert.That(data, Is.Not.Null);
             Assert.That(data.Count(), Is.EqualTo(0));

@@ -1,18 +1,18 @@
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.ViewModels;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Repositories
+namespace TastyMeals.Models.Repositories
 {
     public class MealRepo : Repository<Meal>, IMealRepo
     {
         private DbSet<Recipe> _recipeSet;
 
-        public MealRepo(MealFridgeDbContext ctx) : base(ctx)
+        public MealRepo(TastyMealsDbContext ctx) : base(ctx)
         {
             _recipeSet = _context.Set<Recipe>();
         }

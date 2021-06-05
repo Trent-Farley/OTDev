@@ -1,11 +1,11 @@
-﻿using MealFridge.Models.ViewModels;
+﻿using TastyMeals.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Interfaces
+namespace TastyMeals.Models.Interfaces
 {
     public interface IMealRepo : IRepository<Meal>
     {

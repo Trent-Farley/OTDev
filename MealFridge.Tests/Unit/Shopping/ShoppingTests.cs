@@ -1,8 +1,8 @@
-﻿using MealFridge.Models;
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.Repositories;
-using MealFridge.Utils;
-using MealFridge.Tests.Utils;
+﻿using TastyMeals.Models;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.Repositories;
+using TastyMeals.Utils;
+using TastyMeals.Tests.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Moq;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MealFridge.Tests.Shopping
+namespace TastyMeals.Tests.Shopping
 {
 
     /// <summary>
@@ -26,7 +26,7 @@ namespace MealFridge.Tests.Shopping
     {
 
         private Mock<DbSet<Fridge>> _mockFridgeDbSet;
-        private Mock<MealFridgeDbContext> _mockContext;
+        private Mock<TastyMealsDbContext> _mockContext;
         private List<Fridge> _data;
         [SetUp]
         public void Setup()
@@ -78,7 +78,7 @@ namespace MealFridge.Tests.Shopping
                     _data.Add(d);
                 });
 
-            _mockContext = new Mock<MealFridgeDbContext>();
+            _mockContext = new Mock<TastyMealsDbContext>();
             _mockContext.Setup(ctx => ctx.Fridges).Returns(_mockFridgeDbSet.Object);
             _mockContext.Setup(ctx => ctx.Set<Fridge>()).Returns(_mockFridgeDbSet.Object);
             _mockContext.Setup(d => d.Fridges.Remove(It.IsAny<Fridge>()))
@@ -207,7 +207,7 @@ namespace MealFridge.Tests.Shopping
         public async Task ShoppingList_UnitConverterUsLiquid()
         {
             IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
-            var addItem = new Recipeingred
+            var addItem = new RecipeIngredient
             {
                 IngredId = 1,
                 RecipeId = 1,
@@ -225,7 +225,7 @@ namespace MealFridge.Tests.Shopping
         public async Task ShoppingList_UnitConverterMetricToUsLiquid()
         {
             IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
-            var addItem = new Recipeingred
+            var addItem = new RecipeIngredient
             {
                 IngredId = 1,
                 RecipeId = 1,
@@ -243,7 +243,7 @@ namespace MealFridge.Tests.Shopping
         public async Task ShoppingList_UnitConverterUsMass()
         {
             IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
-            var addItem = new Recipeingred
+            var addItem = new RecipeIngredient
             {
                 IngredId = 2,
                 RecipeId = 1,
@@ -261,7 +261,7 @@ namespace MealFridge.Tests.Shopping
         public async Task ShoppingList_UnitConverterMetricToUsMass()
         {
             IFridgeRepo fridgeRepo = new FridgeRepo(_mockContext.Object);
-            var addItem = new Recipeingred
+            var addItem = new RecipeIngredient
             {
                 IngredId = 2,
                 RecipeId = 1,

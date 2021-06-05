@@ -1,12 +1,12 @@
-using MealFridge.Models.Interfaces;
-using MealFridge.Utils;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Utils;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 
-namespace MealFridge.Models.Repositories
+namespace TastyMeals.Models.Repositories
 {
     public class SpnApiService : ISpnApiService
     {

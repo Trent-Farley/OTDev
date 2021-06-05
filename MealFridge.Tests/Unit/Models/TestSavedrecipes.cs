@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MealFridge.Models;
-using MealFridge.Utils;
+using TastyMeals.Models;
+using TastyMeals.Utils;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
-namespace MealFridge.Tests.Models
+namespace TastyMeals.Tests.Models
 {
     class TestSavedrecipes
     {
-        private static Savedrecipe MakeSavedRecipe()
+        private static SavedRecipe MakeSavedRecipe()
         {
-            return new Savedrecipe()
+            return new SavedRecipe()
             {
                 AccountId = "77",
                 RecipeId = 121,

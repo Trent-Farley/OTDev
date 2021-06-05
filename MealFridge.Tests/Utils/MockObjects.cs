@@ -1,8 +1,8 @@
 ﻿using Castle.Core.Logging;
-using MealFridge.Models;
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.ViewModels;
-using MealFridge.Utils;
+using TastyMeals.Models;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.ViewModels;
+using TastyMeals.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading;
 
-namespace MealFridge.Tests.Utils
+namespace TastyMeals.Tests.Utils
 {
     public static class MockObjects
     {
@@ -29,12 +29,12 @@ namespace MealFridge.Tests.Utils
             return mockSet;
         }
 
-        public static List<Recipeingred> CreateRecipeIngreds(int count, int recipeId)
+        public static List<RecipeIngredient> CreateRecipeIngreds(int count, int recipeId)
         {
-            var res = new List<Recipeingred>();
+            var res = new List<RecipeIngredient>();
             for (var i = 0; i < count; ++i)
             {
-                res.Add(new Recipeingred
+                res.Add(new RecipeIngredient
                 {
                     IngredId = recipeId,
                     RecipeId = i
@@ -199,12 +199,12 @@ namespace MealFridge.Tests.Utils
             return config;
         }
 
-        public static Savedrecipe[] CreateSavedRecipes(int count)
+        public static SavedRecipe[] CreateSavedRecipes(int count)
         {
-            var svRecipes = new Savedrecipe[count];
+            var svRecipes = new SavedRecipe[count];
             for (var i = 0; i < count; ++i)
             {
-                svRecipes[i] = new Savedrecipe
+                svRecipes[i] = new SavedRecipe
                 {
                     AccountId = "1",
                     Recipe = new Recipe { Id = i },

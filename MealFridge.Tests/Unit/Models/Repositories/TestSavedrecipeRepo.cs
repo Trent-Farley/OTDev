@@ -2,27 +2,27 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MealFridge.Models;
-using MealFridge.Utils;
-using MealFridge.Tests.Utils;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models;
+using TastyMeals.Utils;
+using TastyMeals.Tests.Utils;
+using TastyMeals.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Moq;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MealFridge.Models.Repositories;
+using TastyMeals.Models.Repositories;
 
-namespace MealFridge.Tests.Models
+namespace TastyMeals.Tests.Models
 {
     class TestSavedrecipeRepo
     {
-        public Mock<DbSet<Savedrecipe>> mockSavedRecipeDbSet;
-        public Mock<MealFridgeDbContext> context = new Mock<MealFridgeDbContext>();
+        public Mock<DbSet<SavedRecipe>> mockSavedRecipeDbSet;
+        public Mock<TastyMealsDbContext> context = new Mock<TastyMealsDbContext>();
         public ISavedrecipeRepo savedRecipeRepo;
         public IMealRepo mealRepo;
-        public List<Savedrecipe> list;
+        public List<SavedRecipe> list;
 
         private Mock<DbSet<T>> GetMockDbSet<T>(IQueryable<T> entities) where T : class
         {
@@ -33,15 +33,15 @@ namespace MealFridge.Tests.Models
             mockSet.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(entities.GetEnumerator());
             return mockSet;
         }
-        public List<Savedrecipe> SavedRecipeFactory()
+        public List<SavedRecipe> SavedRecipeFactory()
         {
-            return new List<Savedrecipe>
+            return new List<SavedRecipe>
             {
-                new Savedrecipe { AccountId= "this", RecipeId=7, Favorited = true, Shelved = false, Recipe = null},
-                new Savedrecipe { AccountId = "is", RecipeId = 13, Favorited = true, Shelved = false, Recipe = null },
-                new Savedrecipe { AccountId = "my", RecipeId = 77, Favorited = false, Shelved = true, Recipe = null },
-                new Savedrecipe { AccountId = "test", RecipeId = 666, Favorited = false, Shelved = true, Recipe = null },
-                new Savedrecipe { AccountId = "test", RecipeId = 123, Favorited = true, Shelved = false, Recipe = null}
+                new SavedRecipe { AccountId= "this", RecipeId=7, Favorited = true, Shelved = false, Recipe = null},
+                new SavedRecipe { AccountId = "is", RecipeId = 13, Favorited = true, Shelved = false, Recipe = null },
+                new SavedRecipe { AccountId = "my", RecipeId = 77, Favorited = false, Shelved = true, Recipe = null },
+                new SavedRecipe { AccountId = "test", RecipeId = 666, Favorited = false, Shelved = true, Recipe = null },
+                new SavedRecipe { AccountId = "test", RecipeId = 123, Favorited = true, Shelved = false, Recipe = null}
          };
         }
 

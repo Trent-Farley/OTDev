@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Interfaces
+namespace TastyMeals.Models.Interfaces
 {
     public interface IRecipeIngredRepo
     {
-        List<Recipeingred> GetIngredients(int recipeId);
+        List<RecipeIngredient> GetIngredients(int recipeId);
     }
 }

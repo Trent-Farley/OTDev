@@ -1,4 +1,4 @@
-﻿using MealFridge.Models;
+﻿using TastyMeals.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,10 +12,10 @@ using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Web;
-using MealFridge.Utils;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Utils;
+using TastyMeals.Models.Interfaces;
 
-namespace MealFridge.Controllers
+namespace TastyMeals.Controllers
 {
     public class FridgeController : Controller
     {

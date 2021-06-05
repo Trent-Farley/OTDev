@@ -5,7 +5,7 @@ using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 
-namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
+namespace TastyMeals.Tests.BDD.Sprint6.Selenium.PageObjects
 {
     class InventoryObject
     {

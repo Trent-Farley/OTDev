@@ -2,25 +2,25 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MealFridge.Models;
-using MealFridge.Utils;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models;
+using TastyMeals.Utils;
+using TastyMeals.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Moq;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MealFridge.Models.Repositories;
-using MealFridge.Tests.Utils;
+using TastyMeals.Models.Repositories;
+using TastyMeals.Tests.Utils;
 
-namespace MealFridge.Tests.Models
+namespace TastyMeals.Tests.Models
 {
     class TestRecipeRepo
     {
         private Mock<DbSet<Recipe>> _mockRecipeDbSet;
         private List<Recipe> _recipes;
-        Mock<MealFridgeDbContext> _mockContext;
+        Mock<TastyMealsDbContext> _mockContext;
         IRecipeRepo _recipeRepo;
         [SetUp]
         public void SetUp()
@@ -33,7 +33,7 @@ namespace MealFridge.Tests.Models
                 new Recipe{Title="peanut butter & jelly", Id = 3}
             };
             _mockRecipeDbSet = MockObjects.GetMockDbSet(_recipes.AsQueryable());
-            _mockContext = new Mock<MealFridgeDbContext>();
+            _mockContext = new Mock<TastyMealsDbContext>();
             _mockContext.Setup(ctx => ctx.Set<Recipe>()).Returns(_mockRecipeDbSet.Object);
             _recipeRepo = new RecipeRepo(_mockContext.Object);
 

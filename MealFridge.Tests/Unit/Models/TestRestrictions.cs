@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using MealFridge.Models;
-using MealFridge.Utils;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models;
+using TastyMeals.Utils;
+using TastyMeals.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Moq;
 
-namespace MealFridge.Tests.Models
+namespace TastyMeals.Tests.Models
 {
     class TestRestrictions
     {

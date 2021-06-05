@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MealFridge.Data
+namespace TastyMeals.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {

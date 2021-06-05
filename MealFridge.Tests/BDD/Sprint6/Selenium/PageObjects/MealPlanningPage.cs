@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects
+namespace TastyMeals.Tests.BDD.Sprint6.Selenium.PageObjects
 {
     public class MealPlanningPage
     {

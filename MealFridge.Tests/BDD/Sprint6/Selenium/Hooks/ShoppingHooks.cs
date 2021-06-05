@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-using MealFridge.Tests.BDD.Sprint6.Selenium.Driver;
-using MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects;
+using TastyMeals.Tests.BDD.Sprint6.Selenium.Driver;
+using TastyMeals.Tests.BDD.Sprint6.Selenium.PageObjects;
 using TechTalk.SpecFlow;
 
-namespace MealFridge.Tests.BDD.Sprint6.Selenium.Hooks
+namespace TastyMeals.Tests.BDD.Sprint6.Selenium.Hooks
 {
     [Binding]
     class ShoppingHooks

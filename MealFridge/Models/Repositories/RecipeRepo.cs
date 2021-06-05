@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace MealFridge.Models.Repositories
+namespace TastyMeals.Models.Repositories
 {
     public class RecipeRepo : Repository<Recipe>, IRecipeRepo
     {
-        public RecipeRepo(MealFridgeDbContext ctx) : base(ctx)
+        public RecipeRepo(TastyMealsDbContext ctx) : base(ctx)
         {
             _dbSet.Include(ri => ri.Recipeingreds);
         }
@@ -44,7 +44,7 @@ namespace MealFridge.Models.Repositories
                 {
                     var originalRIs = recipe.Recipeingreds;
                     var ingDb = _context.Set<Ingredient>();
-                    var rIngDb = _context.Set<Recipeingred>();
+                    var rIngDb = _context.Set<RecipeIngredient>();
                     recipe.Recipeingreds = null;
                     _dbSet.Add(recipe);
                     await _context.SaveChangesAsync();

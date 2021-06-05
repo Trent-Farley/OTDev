@@ -1,4 +1,4 @@
-﻿using MealFridge.Utils;
+﻿using TastyMeals.Utils;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MealFridge.Tests
+namespace TastyMeals.Tests
 {
     [TestFixture]
     class QueryTest

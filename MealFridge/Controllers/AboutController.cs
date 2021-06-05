@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MealFridge.Controllers
+namespace TastyMeals.Controllers
 {
     public class AboutController : Controller
     {
@@ -12,6 +12,7 @@ namespace MealFridge.Controllers
         {
             return View();
         }
+
         public IActionResult AboutUs()
         {
             return View();

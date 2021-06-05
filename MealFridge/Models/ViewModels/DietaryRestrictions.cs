@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.ViewModels
+namespace TastyMeals.Models.ViewModels
 {
     public class DietaryRestrictions
     {

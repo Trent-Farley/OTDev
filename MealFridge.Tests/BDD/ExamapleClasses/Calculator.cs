@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MealFridge.Tests.Business.Features
+namespace TastyMeals.Tests.Business.Features
 {
     public class Calculator
     {

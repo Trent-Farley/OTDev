@@ -3,14 +3,14 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
     public partial class Ingredient
     {
         public Ingredient()
         {
             Fridges = new HashSet<Fridge>();
-            Recipeingreds = new HashSet<Recipeingred>();
+            Recipeingreds = new HashSet<RecipeIngredient>();
             Restrictions = new HashSet<Restriction>();
         }
 
@@ -32,7 +32,7 @@ namespace MealFridge.Models
         public double? Protein { get; set; }
 
         public virtual ICollection<Fridge> Fridges { get; set; }
-        public virtual ICollection<Recipeingred> Recipeingreds { get; set; }
+        public virtual ICollection<RecipeIngredient> Recipeingreds { get; set; }
         public virtual ICollection<Restriction> Restrictions { get; set; }
     }
 }

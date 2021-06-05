@@ -1,11 +1,11 @@
-﻿using MealFridge.Tests.BDD.Sprint6.Selenium.Driver;
-using MealFridge.Tests.BDD.Sprint6.Selenium.PageObjects;
+﻿using TastyMeals.Tests.BDD.Sprint6.Selenium.Driver;
+using TastyMeals.Tests.BDD.Sprint6.Selenium.PageObjects;
 using NUnit.Framework;
 using System;
 using System.Threading;
 using TechTalk.SpecFlow;
 
-namespace MealFridge.Tests.BDD.Sprint6
+namespace TastyMeals.Tests.BDD.Sprint6
 {
     [Binding]
     public class CutomAmountOfDaysSteps

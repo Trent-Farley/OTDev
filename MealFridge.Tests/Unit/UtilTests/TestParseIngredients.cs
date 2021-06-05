@@ -1,4 +1,4 @@
-﻿using MealFridge.Models;
+﻿using TastyMeals.Models;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using System;
@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MealFridge.Utils;
-using MealFridge.Models.Repositories;
+using TastyMeals.Utils;
+using TastyMeals.Models.Repositories;
 
-namespace MealFridge.Tests
+namespace TastyMeals.Tests
 {
     [TestFixture]
     //INside of SearchSpnApi.cs, Line ~56

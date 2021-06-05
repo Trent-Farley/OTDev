@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MealFridge.Models.Repositories;
+using TastyMeals.Models.Repositories;
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
     public class FridgeAndRecipeViewModel
     {

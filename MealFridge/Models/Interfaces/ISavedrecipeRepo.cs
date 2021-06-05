@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Interfaces
+namespace TastyMeals.Models.Interfaces
 {
-    public interface ISavedrecipeRepo: IRepository<Savedrecipe>
+    public interface ISavedrecipeRepo: IRepository<SavedRecipe>
     {
-        List<Savedrecipe> FindAccount(string userId, IQueryable<Savedrecipe> other);
-        void RemoveSavedRecipe(Savedrecipe recipe);
-        Savedrecipe Savedrecipe(string userId, int recipeid);
-        Savedrecipe CreateNewSavedRecipe(Recipe recipe, string userId);
-        List<Savedrecipe> GetShelvedRecipe(string userId, IQueryable<Savedrecipe> other);
-        List<Savedrecipe> GetFavoritedRecipe(string userId);
-        List<Savedrecipe> GetFavoritedRecipeWithIQueryable(string userId, IQueryable<Savedrecipe> other);
-        List<Savedrecipe> GetAllRecipes(string userId, IQueryable<Savedrecipe> other);
+        List<SavedRecipe> FindAccount(string userId, IQueryable<SavedRecipe> other);
+        void RemoveSavedRecipe(SavedRecipe recipe);
+        SavedRecipe Savedrecipe(string userId, int recipeid);
+        SavedRecipe CreateNewSavedRecipe(Recipe recipe, string userId);
+        List<SavedRecipe> GetShelvedRecipe(string userId, IQueryable<SavedRecipe> other);
+        List<SavedRecipe> GetFavoritedRecipe(string userId);
+        List<SavedRecipe> GetFavoritedRecipeWithIQueryable(string userId, IQueryable<SavedRecipe> other);
+        List<SavedRecipe> GetAllRecipes(string userId, IQueryable<SavedRecipe> other);
     }
 }

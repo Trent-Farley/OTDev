@@ -37,6 +37,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Npgsql" Version="5.0.5" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,9 +51,16 @@
     <Watch Include="**/*.css" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="Views\_ViewImports.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Watch Remove="Views\_ViewImports.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Register.cshtml" />
     <None Include="Scripts\Preferences\Index.ts" />
     <None Include="Views\Shopping\ShoppingList.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptTarget>ES2015</TypeScriptTarget>

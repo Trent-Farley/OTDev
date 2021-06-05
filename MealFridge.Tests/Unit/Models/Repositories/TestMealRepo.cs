@@ -1,7 +1,7 @@
-﻿using MealFridge.Models;
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.Repositories;
-using MealFridge.Tests.Utils;
+﻿using TastyMeals.Models;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.Repositories;
+using TastyMeals.Tests.Utils;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using NUnit.Framework;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MealFridge.Tests.Unit.Models.Repositories
+namespace TastyMeals.Tests.Unit.Models.Repositories
 {
     /// <summary>
     /// Tester: Trent Farley
@@ -23,7 +23,7 @@ namespace MealFridge.Tests.Unit.Models.Repositories
     {
         private List<Recipe> _recipes;
         private List<Meal> _meals;
-        private Mock<MealFridgeDbContext> _mockContext;
+        private Mock<TastyMealsDbContext> _mockContext;
         private IMealRepo _mealRepo;
         private TimeSpan _breakfast = TimeSpan.FromHours(8);
         private TimeSpan _lunch = TimeSpan.FromHours(12);
@@ -57,7 +57,7 @@ namespace MealFridge.Tests.Unit.Models.Repositories
                     _recipes.Add(d);
                 });
             // Setup of mockcontext
-            _mockContext = new Mock<MealFridgeDbContext>();
+            _mockContext = new Mock<TastyMealsDbContext>();
             _mockContext.Setup(ctx => ctx.Meals).Returns(mockMealDbSet.Object);
             _mockContext.Setup(ctx => ctx.Set<Recipe>()).Returns(mockRecipeDbSet.Object);
             _mockContext.Setup(ctx => ctx.Set<Meal>()).Returns(mockMealDbSet.Object);

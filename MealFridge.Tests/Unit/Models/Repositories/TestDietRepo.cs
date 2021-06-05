@@ -3,20 +3,20 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MealFridge.Models;
-using MealFridge.Utils;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models;
+using TastyMeals.Utils;
+using TastyMeals.Models.Interfaces;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using Moq;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using MealFridge.Models.Repositories;
+using TastyMeals.Models.Repositories;
 using System.Threading.Tasks;
-using MealFridge.Tests.Utils;
+using TastyMeals.Tests.Utils;
 
-namespace MealFridge.Tests.Models
+namespace TastyMeals.Tests.Models
 {
     internal class TestDietRepo
     {
@@ -47,7 +47,7 @@ namespace MealFridge.Tests.Models
                 string id = (string)x;
                 return diets.Where(f => (f.AccountId == id)).FirstOrDefault();
             });
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Diets).Returns(mockDietDbSet.Object);
             mockContext.Setup(ctx => ctx.Set<Diet>()).Returns(mockDietDbSet.Object);
             IDietRepo dietRepo = new DietRepo(mockContext.Object);
@@ -74,7 +74,7 @@ namespace MealFridge.Tests.Models
                 string id = (string)x;
                 return diets.Where(f => (f.AccountId == id)).FirstOrDefault();
             });
-            Mock<MealFridgeDbContext> mockContext = new Mock<MealFridgeDbContext>();
+            Mock<TastyMealsDbContext> mockContext = new Mock<TastyMealsDbContext>();
             mockContext.Setup(ctx => ctx.Diets).Returns(mockDietDbSet.Object);
             mockContext.Setup(ctx => ctx.Set<Diet>()).Returns(mockDietDbSet.Object);
             IDietRepo dietRepo = new DietRepo(mockContext.Object);

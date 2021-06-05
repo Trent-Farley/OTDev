@@ -1,14 +1,14 @@
-﻿using MealFridge.Models.Interfaces;
+﻿using TastyMeals.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Repositories
+namespace TastyMeals.Models.Repositories
 {
     public class IngredientRepo: Repository<Ingredient>, IIngredientRepo
     {
-        public IngredientRepo(MealFridgeDbContext ctx) : base(ctx) { }
+        public IngredientRepo(TastyMealsDbContext ctx) : base(ctx) { }
 
         public async Task AddIngredAsync(Ingredient ingredient)
         {

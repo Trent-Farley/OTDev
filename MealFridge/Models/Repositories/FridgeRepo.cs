@@ -1,15 +1,15 @@
-﻿using MealFridge.Models.Interfaces;
+﻿using TastyMeals.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MealFridge.Utils; 
+using TastyMeals.Utils; 
 
-namespace MealFridge.Models.Repositories
+namespace TastyMeals.Models.Repositories
 {
     public class FridgeRepo: Repository<Fridge>, IFridgeRepo
     {
-        public FridgeRepo(MealFridgeDbContext ctx) : base(ctx) { }
+        public FridgeRepo(TastyMealsDbContext ctx) : base(ctx) { }
 
         public async Task<bool> ExistsAsync(string userId, int ingredId)
         {
@@ -61,7 +61,7 @@ namespace MealFridge.Models.Repositories
                 _dbSet.Add(fridgeIngredient);
             await _context.SaveChangesAsync();
         }
-        public async Task AddRecipeIngred(string userId, Recipeingred r)
+        public async Task AddRecipeIngred(string userId, RecipeIngredient r)
         {
             if (await ExistsAsync(userId, r.IngredId))
             {

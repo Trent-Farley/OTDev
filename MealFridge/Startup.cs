@@ -1,4 +1,4 @@
-using MealFridge.Data;
+using TastyMeals.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,16 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MealFridge.Models;
+using TastyMeals.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MealFridge.Models.Interfaces;
-using MealFridge.Models.Repositories;
+using TastyMeals.Models.Interfaces;
+using TastyMeals.Models.Repositories;
 using AspNetCore.ReCaptcha;
 
-namespace MealFridge
+namespace TastyMeals
 {
     public class Startup
     {
@@ -32,11 +32,13 @@ namespace MealFridge
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDbContext<MealFridgeDbContext>(opts =>
+                options.UseNpgsql(
+                    Configuration.GetConnectionString("DefaultConnection")
+                    )
+                );
+            services.AddDbContext<TastyMealsDbContext>(opts =>
             {
-                opts.UseSqlServer(Configuration["ConnectionStrings:MealFridge"] + ";MultipleActiveResultSets=true");
+                opts.UseNpgsql(Configuration["ConnectionStrings:MealFridge"] + ";MultipleActiveResultSets=true");
             });
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();

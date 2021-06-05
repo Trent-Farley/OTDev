@@ -2,7 +2,7 @@
 using System;
 using TechTalk.SpecFlow;
 
-namespace MealFridge.Tests.Business.Features.Example.Steps
+namespace TastyMeals.Tests.Business.Features.Example.Steps
 {
     [Binding]
     public class CalculatorSteps

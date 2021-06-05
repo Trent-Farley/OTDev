@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
-    public partial class Recipeingred
+    public partial class RecipeIngredient
     {
         public int RecipeId { get; set; }
         public int IngredId { get; set; }

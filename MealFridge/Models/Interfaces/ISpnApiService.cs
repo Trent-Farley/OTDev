@@ -1,10 +1,10 @@
-﻿using MealFridge.Utils;
+﻿using TastyMeals.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Interfaces
+namespace TastyMeals.Models.Interfaces
 {
     public interface ISpnApiService
     {

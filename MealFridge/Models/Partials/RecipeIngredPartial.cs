@@ -1,8 +1,8 @@
-﻿using MealFridge.Models.Interfaces;
+﻿using TastyMeals.Models.Interfaces;
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
-    public partial class Recipeingred : IFoodItem
+    public partial class RecipeIngredient : IFoodItem
     {
     }
 }

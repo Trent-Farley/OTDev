@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
-namespace MealFridge.Areas.Identity.Pages.Account
+namespace TastyMeals.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     [ValidateReCaptcha]

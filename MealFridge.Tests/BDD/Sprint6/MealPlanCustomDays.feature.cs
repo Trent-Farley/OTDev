@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace MealFridge.Tests.BDD.Sprint6
+namespace TastyMeals.Tests.BDD.Sprint6
 {
     using TechTalk.SpecFlow;
     using System;

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using MealFridge.Models;
-using MealFridge.Models.Interfaces;
+using TastyMeals.Models;
+using TastyMeals.Models.Interfaces;
 using Newtonsoft.Json.Linq;
 
-namespace MealFridge.Utils
+namespace TastyMeals.Utils
 {
     public static class JsonParser
     {
@@ -59,9 +59,9 @@ namespace MealFridge.Utils
             }
         }
 
-        public static ICollection<Recipeingred> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
+        public static ICollection<RecipeIngredient> GetIngredients(JArray ingredients, int recipeId, List<Ingredient> list) //Can Test whole function
         {
-            var retingredients = new List<Recipeingred>();
+            var retingredients = new List<RecipeIngredient>();
             if (ingredients == null)
                 return GetIngredientsForRandom(recipeId, list);
             foreach (var ing in ingredients)
@@ -73,7 +73,7 @@ namespace MealFridge.Utils
                     retingredients.First(i => i.IngredId == ingId).Amount += ing["amount"]?.Value<double>();
                     continue;
                 }
-                var newRI = new Recipeingred
+                var newRI = new RecipeIngredient
                 {
                     RecipeId = recipeId,
                     IngredId = ingId,
@@ -88,12 +88,12 @@ namespace MealFridge.Utils
             return retingredients;
         }
 
-        private static ICollection<Recipeingred> GetIngredientsForRandom(int recipeId, List<Ingredient> list)
+        private static ICollection<RecipeIngredient> GetIngredientsForRandom(int recipeId, List<Ingredient> list)
         {
-            var retingredients = new List<Recipeingred>();
+            var retingredients = new List<RecipeIngredient>();
             foreach (var ing in list)
             {
-                var newRI = new Recipeingred
+                var newRI = new RecipeIngredient
                 {
                     RecipeId = recipeId,
                     IngredId = ing.Id,

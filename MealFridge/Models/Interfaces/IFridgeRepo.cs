@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MealFridge.Models.Interfaces
+namespace TastyMeals.Models.Interfaces
 {
     public interface IFridgeRepo : IRepository<Fridge>
     {
@@ -12,7 +12,7 @@ namespace MealFridge.Models.Interfaces
         List<Fridge> FindByAccount(string userId);
         List<Ingredient> FindByIngredient(int ingredId);
         Task AddFridgeAsync(Fridge fridgeIngredient);
-        Task AddRecipeIngred(string userId, Recipeingred r);
+        Task AddRecipeIngred(string userId, RecipeIngredient r);
         Task AddObtained(Fridge item, bool obtained);
         Task Swap(string userId);
     }

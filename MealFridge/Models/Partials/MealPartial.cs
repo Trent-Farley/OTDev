@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MealFridge.Models
+namespace TastyMeals.Models
 {
     public partial class Meal
     {

@@ -41,7 +41,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MealFridge\MealFridge.csproj" />
+    <ProjectReference Include="..\MealFridge\TastyMeals.csproj" />
   </ItemGroup>
 
   <ItemGroup>

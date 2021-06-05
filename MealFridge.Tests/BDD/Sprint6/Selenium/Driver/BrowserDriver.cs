@@ -5,7 +5,7 @@ using System.Text;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
-namespace MealFridge.Tests.BDD.Sprint6.Selenium.Driver
+namespace TastyMeals.Tests.BDD.Sprint6.Selenium.Driver
 {
     public class BrowserDriver : IDisposable
     {
