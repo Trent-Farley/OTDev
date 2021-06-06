@@ -92,10 +92,19 @@ function addShopping(id: string, amount: string, unit: string): void {
         method: "POST",
         data: {
             id: id,
-            amount: parseInt(amount, 10)
+            amount: parseInt(amount, 10),
+            unit: unit
         },
         success: (data) => {
-            alert("Added item to shopping list.")
+            $("#alert").empty();
+            $("#alert").html(`
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                  Added item to shopping list!
+                </div>
+            `)
         },
         error: (err) => { console.log(err); }
     })
